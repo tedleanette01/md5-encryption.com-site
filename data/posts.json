@@ -1,0 +1,18 @@
+[
+  {
+    "title": "What Is MD5 Hashing and Why Is It Still Used?",
+    "date": "2026-03-15",
+    "excerpt": "A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.",
+    "image": "what-is-md5-hashing.jpg",
+    "url": "blogs/what-is-md5-hashing.html",
+    "slug": "what-is-md5-hashing"
+  },
+  {
+    "title": "MD5 Encryption vs Hashing: What People Usually Mean",
+    "date": "2026-04-18",
+    "excerpt": "Learn why people often say MD5 encryption, why that wording is technically wrong, and what hashing actually means in practice.",
+    "image": "md5-encryption-vs-hashing.jpg",
+    "url": "blogs/md5-encryption-vs-hashing.html",
+    "slug": "md5-encryption-vs-hashing"
+  }
+]

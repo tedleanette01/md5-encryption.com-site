@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.">
+    <title>What Is MD5 Hashing and Why Is It Still Used? | md5-encryption.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap');
+        .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+        .prose h1, .prose h2, .prose h3 { font-family: 'Space Grotesk', sans-serif; }
+        .hero-image-container { filter: brightness(0.85) contrast(1.1); }
+.prose p {
+    margin-bottom: 1.25em;
+    line-height: 1.75;
+}
+    </style>
+</head>
+<body class="tail-container bg-slate-950 text-slate-200">
+    <!-- HEADER -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex items-center justify-between py-5">
+                <a href="../index.html" class="flex items-center gap-x-2 group">
+                    <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center rounded-2xl text-slate-950 text-2xl font-bold rotate-12 group-hover:rotate-0 transition-transform">🔐</div>
+                    <span class="heading-font text-3xl tracking-[-1px] text-white">md5-encryption</span>
+                    <span class="text-cyan-400 text-3xl tracking-[-1px]">.</span>
+                    <span class="text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="../index.html" class="hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="../tools.html" class="hover:text-cyan-400 transition-colors">Tools</a>
+                    <a href="../about.html" class="hover:text-cyan-400 transition-colors">About</a>
+                    <a href="../legal-notice.html" class="hover:text-cyan-400 transition-colors">Legal</a>
+                </nav>
+                <button onclick="window.location.href='../tools.html'" class="flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
+                    TRY HASH TOOL <span class="text-lg leading-none">⚡</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- BIG STORY HERO -->
+    <div class="relative h-screen flex items-end">
+        <img src="../images/what-is-md5-hashing.jpg" alt="What Is MD5 Hashing and Why Is It Still Used?" 
+     class="absolute inset-0 w-full h-full object-cover hero-image-container">
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/70 to-transparent"></div>
+        
+        <div class="relative max-w-screen-2xl mx-auto px-8 pb-20 z-10">
+            <div class="max-w-3xl">
+                <div class="inline-flex items-center text-cyan-300 text-sm font-mono mb-6 px-5 py-2 bg-white/10 backdrop-blur-md rounded-3xl">
+                    Article • 15. March 2026
+                </div>
+                <h1 class="heading-font text-6xl md:text-7xl leading-none tracking-[-2px] text-white">What Is MD5 Hashing and Why Is It Still Used?</h1>
+                <p class="mt-8 text-2xl text-slate-200 max-w-2xl">A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ARTICLE CONTENT -->
+    <div class="max-w-screen-2xl mx-auto px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            <div class="lg:col-span-8 prose prose-invert prose-headings:heading-font prose-headings:tracking-[-0.5px] max-w-none text-slate-200 text-[21px] leading-relaxed">
+                <h1>What Is MD5 Hashing and Why Is It Still Used?</h1>
+<p>MD5 is one of those technical terms that still appears in old tutorials, download pages, scripts, and database examples. The name can sound complex, but the basic idea is simple: MD5 takes input data and turns it into a fixed-length hash value. The input can be a short word, a full sentence, or the contents of a file. The output is always a 128-bit message digest, usually shown as 32 hexadecimal characters.</p>
+<p>The official specification is <a href="https://www.rfc-editor.org/rfc/rfc1321.html">RFC 1321</a>, published in 1992 by Ronald Rivest. The RFC describes MD5 as a message-digest algorithm that produces a fingerprint of input data. That fingerprint is useful when you want to compare data without looking at the full original value. If two files produce different MD5 hashes, the files are different. If they produce the same hash, they are probably the same, but that word probably matters because MD5 has known collision weaknesses.</p>
+<p>A hash is not the same thing as encryption. Encryption is designed to be reversible with the correct key. Hashing is designed to be one-way. When someone enters text into an MD5 generator, the tool is not hiding the text in a form that can later be opened. It is calculating a digest. This is why old phrases like MD5 encryption are technically wrong, even though many people still search for them.</p>
+<p>MD5 became popular because it was fast, easy to implement, and available almost everywhere. Developers used it for checksums, duplicate detection, cache keys, database comparisons, and older password storage systems. Some of those uses are still acceptable when the goal is non-security file identification or accidental corruption detection. Other uses are no longer acceptable, especially password storage and digital signatures.</p>
+<p>The main weakness is collision resistance. A collision happens when two different inputs produce the same hash. Secure hash functions should make that extremely hard. MD5 no longer meets that expectation for serious security work. The later <a href="https://www.rfc-editor.org/rfc/rfc6151">RFC 6151</a> updated the security considerations for MD5 and HMAC-MD5, which is one reason modern guidance points developers toward stronger algorithms for cryptographic protection.</p>
+<p>Still, it would be wrong to say MD5 has no practical use at all. If you are checking whether a file changed during a normal transfer, comparing old archive data, or maintaining legacy systems, MD5 may appear in your workflow. The important rule is to understand what problem you are solving. MD5 can help identify data. It should not protect passwords, financial data, certificates, or anything where an attacker could benefit from creating a collision.</p>
+<p>For a simple example, the text hello always produces the same MD5 hash. Change one character and the output changes completely. That behavior makes hashes useful for comparison. It also explains why hashes are used in software downloads: the publisher can show a known hash, and the user can calculate the hash of the downloaded file to see whether the file matches.</p>
+<p>The best way to treat MD5 today is as a legacy and learning tool. Learn it because you will still see it. Use it carefully for simple checksum and compatibility tasks. Avoid it when the job requires modern security. In later guides on this site, we will compare MD5 with SHA-256 and explain why password hashing needs algorithms such as bcrypt or Argon2id instead of general-purpose hash functions.</p>
+
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="lg:col-span-4">
+                <div class="sticky top-8 space-y-8">
+                    <a href="../tools.html" class="block p-7 border border-dashed border-cyan-400 hover:border-cyan-300 rounded-3xl transition-colors text-center">
+                        <span class="text-4xl block mb-3">⚡</span>
+                        <div class="font-semibold text-cyan-400">Test this concept live in the hash tool</div>
+                        <p class="text-slate-400 text-sm mt-2">All calculations happen in your browser</p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-12">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="grid md:grid-cols-12 gap-y-8">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-x-2 mb-4">
+                        <span class="text-4xl">🔐</span>
+                        <span class="heading-font text-3xl tracking-[-1px]">md5-encryption.com</span>
+                    </div>
+                    <p class="text-slate-400 max-w-xs">Practical, no-nonsense guides on hashing, checksums and modern password security.</p>
+                </div>
+                <div class="md:col-span-7 text-xs text-slate-500 font-mono text-right">
+                    © 2026 md5-encryption.com • Fully static • Client-side tools only
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        console.log('%c✅ Blog detail loaded', 'color:#00e5c8; font-family:monospace');
+    </script>
+</body>
+</html>

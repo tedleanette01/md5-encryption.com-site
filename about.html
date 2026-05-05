@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About • md5-encryption.com</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        .tail-container * { font-family: 'Inter', system_ui, sans-serif; }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="tail-container bg-slate-950 text-slate-200">
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-8">
+            <div class="flex items-center justify-between py-5">
+                <a href="index.html" class="flex items-center gap-x-2 group">
+                    <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center rounded-2xl text-slate-950 text-2xl font-bold rotate-12 group-hover:rotate-0 transition-transform">🔐</div>
+                    <span class="heading-font text-3xl tracking-[-1px] text-white">md5-encryption</span>
+                    <span class="text-cyan-400 text-3xl tracking-[-1px]">.</span>
+                    <span class="text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="tools.html" class="hover:text-cyan-400 transition-colors">Tools</a>
+                    <a href="index.html#archive" class="hover:text-cyan-400 transition-colors">Articles</a>
+                    <a href="about.html" class="text-cyan-400">About</a>
+                    <a href="legal-notice.html" class="hover:text-cyan-400 transition-colors">Legal</a>
+                </nav>
+                <button onclick="window.location.href='tools.html'" class="flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
+                    TRY HASH TOOL <span class="text-lg leading-none">⚡</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-screen-2xl mx-auto px-8 pt-16 pb-24">
+        <div class="max-w-2xl">
+            <h1 class="heading-font text-6xl tracking-[-2px] leading-none">We explain hashing the way it actually works in 2026.</h1>
+            <p class="mt-8 text-2xl text-slate-300">MD5 is our entry point — because people still search for it — but we immediately show where it belongs (and where it absolutely doesn’t).</p>
+            
+            <div class="prose prose-invert mt-16 text-lg">
+                <p>Our goal is simple: give developers, sysadmins, and technical beginners accurate, practical knowledge about checksums, hash functions, and secure password storage.</p>
+                <p>We never recommend MD5 for passwords. Instead we show the real trade-offs, the math behind collisions, and the modern standards (bcrypt, Argon2id, SHA-3) that actually protect users.</p>
+                
+                <h2 class="mt-12">Why this site exists</h2>
+                <p>Too many outdated tutorials still suggest MD5 for passwords. We exist to replace those myths with clear, production-ready guidance while still respecting MD5’s legitimate uses in file integrity checks.</p>
+                
+                <div class="flex gap-8 mt-12 border-l-4 border-cyan-400 pl-8 text-slate-400">
+                    <div>100% static &amp; lightning fast</div>
+                    <div>No tracking • No ads • No nonsense</div>
+                    <div>Written by people who ship real systems</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-slate-950 border-t border-slate-800 py-12">
+        <div class="max-w-screen-2xl mx-auto px-8 text-xs font-mono text-slate-400">© 2026 md5-encryption.com • Honest hashing education</div>
+    </footer>
+</body>
+</html>
