@@ -1,8 +1,9 @@
 name: Build and Deploy Python Site
 on:
-  push:
-    branches: ["main", "master"]
-  workflow_dispatch: # Allows manual clicking to run the script
+  workflow_dispatch:
+  schedule:
+    - cron: '0 9 */4 * *'
+
 
 jobs:
   build:
