@@ -1,0 +1,42 @@
+
+<p>Replacing MD5 password storage is not a matter of converting one digest into another. A secure password function needs the original password, and the application normally does not have it until the user logs in or completes a reset. A safe migration therefore combines legacy verification, immediate rehashing, account resets, monitoring, and a deadline for removing the old path.</p>
+<h2>Confirm exactly what the legacy system stores</h2>
+<p>Do not assume every 32-character hexadecimal value is plain MD5(password). The system may hash a username, static salt, prefix, character encoding, or repeated digest. Review source code, old deployment packages, database procedures, and test accounts. Document the exact byte construction.</p>
+<p>Identify every service that reads or writes the field. Imports, mobile APIs, administrative tools, and forgotten background jobs can recreate MD5 records after the main website is fixed.</p>
+<h2>Select the replacement design</h2>
+<p>For a new general application design, Argon2id is a strong choice when supported by a maintained library. scrypt is a memory-hard alternative, bcrypt may suit legacy platforms, and PBKDF2 may be required in certain environments. Use current guidance and benchmark parameters on production-class hardware.</p>
+<p>Store the library’s complete self-describing result. It should include the algorithm, version, cost settings, salt, and derived value. Add a field or format that makes the verifier explicit rather than guessing only from string length.</p>
+<h2>Use opportunistic migration at login</h2>
+<p>When a user submits a password, locate the account and inspect its algorithm marker. For an MD5 record, calculate the exact legacy verifier and compare it. If it matches, immediately hash the submitted password with the new function and replace the old record within a safe transaction.</p>
+<p>After migration, the next login uses only the modern verifier. This approach upgrades active users without knowing or resetting their passwords in advance.</p>
+<h2>Do not wrap MD5 in a new hash</h2>
+<p>Hashing the stored MD5 string with Argon2id may add cost, but it does not create the same result as hashing the real password. An attacker who cracks or already knows the MD5 digest can attack the wrapper as the effective secret. The design also keeps the old construction as a permanent dependency.</p>
+<p>If an emergency control temporarily wraps legacy records, label it as an interim measure, keep the inner algorithm metadata, and still rehash the real password at the next successful login.</p>
+<h2>Plan for users who do not return</h2>
+<p>Opportunistic migration never reaches dormant accounts. Set a deadline based on risk. After that date, disable legacy login and require a password reset before access. High-privilege, high-value, and previously compromised accounts should move earlier.</p>
+<p>Reset messages should not reveal whether an account exists. Tokens must be random, single-use, short-lived, and protected from logging. Notify users through established channels and avoid sending passwords by email.</p>
+<h2>Control the compatibility period</h2>
+<p>Legacy verification code is sensitive because it accepts a weak format. Restrict it to records explicitly marked MD5. Do not try MD5 automatically after every modern verification failure; that can create downgrade behavior or unexpected account matches.</p>
+<p>Record migration metrics: number of MD5 accounts, successful conversions, reset completions, inactive accounts, errors, and remaining dependencies. A compatibility path without measurement often becomes permanent.</p>
+<h2>Handle encoding consistently</h2>
+<p>Old systems may have hashed Latin-1, UTF-8, UTF-16, lowercase usernames, trimmed passwords, or platform-specific strings. Reproducing the old verification requires exact compatibility, but the new system should define a clear input policy.</p>
+<p>Do not normalize or transform the submitted password before legacy verification unless the old system did so. After success, pass the intended password bytes to the new library according to the new application policy.</p>
+<h2>Protect the migration endpoint</h2>
+<p>A login that can verify cheap MD5 hashes remains attractive to attackers. Apply rate limits, credential-stuffing detection, multifactor challenges, and monitoring. Consider stricter controls for legacy accounts because their offline protection is weaker.</p>
+<p>Avoid detailed error messages that distinguish an MD5 account from a modern one. Keep algorithm data internal.</p>
+<h2>Test the migration before release</h2>
+<ul>
+<li>Create known legacy records covering lengths, encodings, and special characters.</li>
+<li>Confirm correct passwords migrate and wrong passwords fail.</li>
+<li>Confirm the MD5 value is removed after a successful transaction.</li>
+<li>Test retries, database failures, concurrent logins, and rollback.</li>
+<li>Verify new records fit through backups, replicas, APIs, and exports.</li>
+<li>Confirm reset flows invalidate old credentials and tokens.</li>
+</ul>
+<h2>Remove MD5 deliberately</h2>
+<p>When the deadline passes, disable MD5 verification, remove old creation code, archive migration evidence, and scan the database for remaining records. Decide whether locked or deleted accounts need historical values retained; usually they should not keep live reusable verifiers.</p>
+<p>Search code and configuration again to find dead helpers. Add automated checks that reject new MD5 password use.</p>
+<h2>Communicate without creating panic</h2>
+<p>Tell users what action is required, the deadline, and where to get help. Do not claim that every password was recovered merely because MD5 was used. Explain that the storage method did not provide current protection and that resets or rehashing reduce risk.</p>
+<h2>The migration outcome to aim for</h2>
+<p>A successful project ends with one modern password-verification path, versioned records, measured parameters, secure reset handling, and no silent fallback to MD5. The foundation is described in <a href="secure-password-storage-guide.html">the secure password storage guide</a>. Treat migration as a controlled authentication change, not a database-format cleanup, because users, sessions, reset flows, and incident response all depend on it.</p>

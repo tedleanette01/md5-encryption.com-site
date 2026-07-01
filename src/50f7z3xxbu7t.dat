@@ -1,0 +1,44 @@
+
+<p>A cryptographic hash function converts input data into a fixed-length digest. The input may be a short password, a text document, a disk image, or a stream measured in terabytes. The output length stays fixed for the selected algorithm. That simple interface supports file verification, digital signatures, authenticated messages, content addressing, and many other systems.</p>
+<h2>Deterministic input, fixed-size output</h2>
+<p>A cryptographic hash is deterministic: identical bytes produce an identical digest. The word “bytes” matters. Text that looks the same to a person can have different encodings, line endings, Unicode normalization, or hidden metadata and therefore produce a different result.</p>
+<p>MD5 always produces 128 bits, SHA-1 produces 160 bits, and SHA-256 produces 256 bits. Hexadecimal text is only a display format, so a SHA-256 digest appears as 64 hex characters because each character represents four bits.</p>
+<h2>Messages are processed in blocks</h2>
+<p>Many traditional hashes pad the message, split it into fixed-size blocks, and update an internal state for each block. The final state becomes the digest. SHA-256 follows this broad pattern. SHA-3 instead uses a sponge construction that absorbs input into a larger state and then squeezes out the requested output.</p>
+<p>Developers rarely need to implement these internal steps. They do need to understand streaming APIs. A program can hash a large file chunk by chunk without loading it all into memory, as long as the bytes are processed in the correct order and the hash state is finalized once.</p>
+<h2>The avalanche effect</h2>
+<p>A small input change should create a large, unpredictable output change. Changing one bit typically alters many digest bits. This is called the avalanche effect. It helps hashes detect tiny file changes and prevents obvious relationships between similar messages and their outputs.</p>
+<p>The avalanche effect does not prove an algorithm is secure. A broken hash can still produce outputs that look random. Security comes from extensive analysis of collision, preimage, second-preimage, and structural resistance.</p>
+<h2>Three properties that are often confused</h2>
+<h3>Preimage resistance</h3>
+<p>Given a digest, it should be infeasible to find an input that produces it. Password attackers often sidestep the abstract problem by guessing likely human passwords rather than searching the full input space.</p>
+<h3>Second-preimage resistance</h3>
+<p>Given one specific message, it should be infeasible to find a different message with the same digest. This matters when an attacker wants to replace a known trusted object.</p>
+<h3>Collision resistance</h3>
+<p>It should be infeasible to find any two different messages with the same digest. Because of the birthday effect, an ideal n-bit hash provides roughly n divided by two bits of collision security. The detailed article <a href="hash-collision-explained.html">what is a hash collision</a> explains these attack goals.</p>
+<h2>Why hashing is not encryption</h2>
+<p>Encryption is reversible with a key. Hashing has no decryption key and intentionally loses information by mapping unlimited inputs into a limited output space. A digest cannot contain enough information to reconstruct every possible input uniquely.</p>
+<p>Online services that claim to “decrypt MD5” usually search databases of previously computed values or test guesses. They may return a matching input for common text, but they are not reversing the function. The site’s earlier guide on <a href="md5-encryption-vs-hashing.html">MD5 encryption vs hashing</a> covers this distinction.</p>
+<h2>Why matching hashes are useful</h2>
+<p>If two files produce the same strong digest and no attacker controls the process, they are overwhelmingly likely to be identical. This supports duplicate detection, cache keys, data synchronization, and file integrity checks. In hostile settings, collision strength and authenticity of the expected digest become important.</p>
+<p>A checksum alone does not identify the publisher. A digital signature signs a digest or manifest with a private key and lets users verify it with a trusted public key.</p>
+<h2>General hashes are not password hashes</h2>
+<p>SHA-256 and SHA-3 are fast by design. Password storage needs expensive verification because human passwords are guessable. Dedicated functions such as Argon2id, scrypt, bcrypt, and PBKDF2 add configurable resource cost and use unique salts.</p>
+<p>Hashing a password with SHA-256 many times is a custom construction unless it follows a defined password-based key-derivation standard. Use high-level password libraries rather than building loops by hand.</p>
+<h2>Encoding and canonicalization cause real bugs</h2>
+<ul>
+<li>UTF-8 and UTF-16 encode the same visible text differently.</li>
+<li>Windows and Unix line endings produce different file bytes.</li>
+<li>Uppercase and lowercase text are different inputs.</li>
+<li>JSON property order and whitespace may change a raw-message hash.</li>
+<li>Compressed and extracted files are different objects.</li>
+<li>A trailing newline changes the digest.</li>
+</ul>
+<p>Protocols must define exactly which bytes are hashed. When signing or authenticating structured data, use the protocol’s canonicalization rules rather than inventing your own.</p>
+<h2>Incremental hashing in applications</h2>
+<p>Open the file in binary mode, initialize the chosen algorithm, read fixed-size chunks, update the state for each chunk, and finalize once at the end. Handle read failures and files that change while being read. For high-assurance systems, record file size and other metadata beside the digest.</p>
+<p>Do not reuse a finalized hash object unless the library documents that behavior. Do not compare only a shortened prefix for a security decision. Use the full digest or a protocol-defined truncation with a justified security level.</p>
+<h2>Choosing a hash in practice</h2>
+<p>SHA-256 is a broad default for checksums and interoperable integrity records. SHA-3 provides a different construction and functions such as SHAKE. MD5 and SHA-1 belong in legacy compatibility paths, not new collision-sensitive designs. For keyed integrity, use HMAC or a defined authenticated construction rather than plain concatenation.</p>
+<h2>The useful mental model</h2>
+<p>Think of a cryptographic hash as a deterministic fingerprint function with specific security limits, not a magic proof. It can show that bytes match an expected value. It cannot by itself prove who supplied those bytes, keep data secret, or make passwords expensive to guess. When you match the algorithm and surrounding protocol to the claim you need, hashing becomes a precise and reliable engineering tool.</p>

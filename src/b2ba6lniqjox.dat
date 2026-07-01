@@ -1,0 +1,46 @@
+
+<p>A checksum can show that data matches an expected digest. A digital signature can also provide evidence about who signed the data, assuming the public key is trusted and the signature is verified correctly. The difference matters whenever you download software, distribute firmware, approve documents, or build an update system.</p>
+<h2>A checksum answers an integrity question</h2>
+<p>A publisher calculates a hash such as SHA-256 over a file and publishes the result. You calculate the same hash locally. If the full values match, the file probably matches the publisher’s version, provided the algorithm is strong and the expected value is authentic.</p>
+<p>The weak point is distribution. If an attacker compromises a download server and replaces both the file and the checksum displayed beside it, your local comparison may pass. The calculation worked; the source of the expected value was not independently authenticated.</p>
+<h2>A digital signature adds a private key</h2>
+<p>A signing system uses a private key to create a signature and a corresponding public key to verify it. Properly implemented digital signatures can provide origin authentication and integrity, and they can support non-repudiation within the surrounding legal and operational context. NIST defines these properties in its <a href="https://csrc.nist.gov/glossary/term/digital_signature">digital signature glossary</a>.</p>
+<p>The signature often covers a cryptographic digest of the file or a release manifest. If the file changes, verification fails. If the signature was not created by the expected private key, verification also fails.</p>
+<h2>Trust moves to the public key</h2>
+<p>A signature is only as trustworthy as the method used to associate the public key with the publisher. Attackers can sign malicious software with their own key. The mathematics may verify perfectly while the identity is wrong.</p>
+<p>Public keys are trusted through mechanisms such as certificate authorities, operating-system trust stores, package-manager keyrings, pinned fingerprints, transparency systems, or keys distributed through an established secure channel. Users need to check the signer identity, not only a green “valid signature” label.</p>
+<h2>Why publishers often provide both</h2>
+<p>A checksum is convenient for quick comparison, mirror validation, caching, and detecting transfer errors. A signature establishes authenticity for a file or a manifest containing many checksums. Publishing both supports different tools and makes troubleshooting clearer.</p>
+<p>A signed manifest is efficient: the publisher signs one small document that lists SHA-256 values for every release asset. Users verify the manifest once, then verify each downloaded file against its listed checksum.</p>
+<h2>MD5 does not become safe because it is signed</h2>
+<p>If a signature scheme signs an MD5 digest, collision attacks may allow different content to share the signed value. The exact exploitability depends on the format and protocol, but the design relies on a broken collision property. Modern signing standards use current approved hashes and algorithms.</p>
+<p>Similarly, posting an MD5 checksum over HTTPS does not repair MD5’s collision weakness. HTTPS protects the connection to the page; it does not change the algorithm’s behavior. Use SHA-256 or stronger for new release metadata.</p>
+<h2>Checksums in trusted internal systems</h2>
+<p>Inside a controlled pipeline, a checksum may be sufficient for detecting accidental corruption between stages. If access controls and authenticated transport already establish the source, adding a separate signature to every intermediate file may not be necessary.</p>
+<p>Document that assumption. Pipelines change, artifacts cross trust boundaries, and internal storage can be compromised. High-impact releases should be signed near the build system and verified before deployment.</p>
+<h2>Digital signatures in software distribution</h2>
+<p>Package managers typically verify signed repository metadata, package signatures, or both. Operating systems may check code-signing certificates. Container ecosystems can attach signatures and provenance records to images. These controls reduce reliance on users manually comparing long strings.</p>
+<p>Automation still needs failure handling. A system that logs a signature error and installs the package anyway has no effective control. Verification must fail closed, surface a clear reason, and provide a secure recovery path.</p>
+<h2>Common verification mistakes</h2>
+<ul>
+<li>Downloading the file and checksum from the same untrusted mirror.</li>
+<li>Checking only a few characters of a digest.</li>
+<li>Accepting an expired, revoked, or unexpected signing key without review.</li>
+<li>Ignoring the algorithm name and assuming every checksum is SHA-256.</li>
+<li>Confusing a self-signed signature with a trusted publisher identity.</li>
+<li>Allowing unsigned fallback when signature verification fails.</li>
+</ul>
+<h2>A practical release workflow</h2>
+<ol>
+<li>Build artifacts in a controlled environment.</li>
+<li>Calculate full SHA-256 checksums for final immutable files.</li>
+<li>Create a manifest containing file names, versions, sizes, and digests.</li>
+<li>Sign the manifest with a protected private key.</li>
+<li>Publish the files, manifest, signature, and key-verification instructions.</li>
+<li>Verify signatures and checksums in deployment automation.</li>
+<li>Rotate and revoke keys through a documented process.</li>
+</ol>
+<h2>How users should verify a download</h2>
+<p>First, verify the signature using the publisher’s expected public key or platform trust mechanism. Then calculate the file checksum and compare it with the signed manifest. The commands in <a href="verify-file-checksum-windows-macos-linux.html">the checksum verification tutorial</a> cover the local hashing step.</p>
+<h2>The right tool for the claim</h2>
+<p>Use a checksum to claim that bytes match a known value. Use a digital signature to claim that a holder of a specific private key approved those bytes or their manifest. Establish separately why you trust that key. For public software and other adversarial settings, combine current hashes, signatures, protected keys, and clear verification behavior. No single long hexadecimal string proves the entire supply chain is safe.</p>

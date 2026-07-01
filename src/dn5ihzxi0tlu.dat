@@ -1,0 +1,46 @@
+
+<p>MD5, SHA-1, and SHA-256 appear together in legacy databases, checksum pages, certificates, source-control history, and security documentation. They are not equivalent. MD5 and SHA-1 have practical collision attacks and should not protect new security decisions. SHA-256 remains a current, widely supported choice for file integrity and many cryptographic protocols.</p>
+<h2>Three algorithms from different generations</h2>
+<p>MD5 was published in 1992 and produces a 128-bit digest. SHA-1 was standardized in the 1990s and produces 160 bits. SHA-256 is part of the SHA-2 family and produces 256 bits. Output length affects the generic search space, but structural cryptanalysis determines whether an attacker can do much better than brute force.</p>
+<p>Both MD5 and SHA-1 failed their intended collision-security goals. SHA-256 has not suffered a comparable practical break in its full form.</p>
+<h2>MD5: useful history, unsafe trust</h2>
+<p>MD5 remains visible because it is easy to implement, fast, and embedded in old systems. It can still detect ordinary transfer errors when data and expected values are trusted. It can also match historical records and serve as a non-security identifier when collisions are harmless.</p>
+<p>Do not use MD5 for passwords, digital signatures, certificates, hostile file verification, or new authenticated protocols. Chosen-prefix collision techniques make it possible to engineer different inputs with the same digest in ways that matter to security.</p>
+<h2>SHA-1: stronger than MD5, but also retired</h2>
+<p>SHA-1’s 160-bit output once made it a common replacement for MD5. Cryptanalytic progress reduced its collision security, and the 2017 SHAttered project demonstrated a practical collision between two PDF files. That result ended any credible case for new collision-sensitive use.</p>
+<p>NIST has announced a transition away from SHA-1 for all applications and points users toward SHA-2 and SHA-3. Some legacy systems still verify old signatures or identify historical objects with SHA-1, but new designs should not create fresh dependencies on it.</p>
+<h2>SHA-256: the modern baseline</h2>
+<p>SHA-256 is widely implemented in operating systems, TLS libraries, package managers, cloud APIs, blockchains, and programming languages. Its 256-bit output provides an idealized collision-security level of about 128 bits. No practical collision has been demonstrated for the full algorithm.</p>
+<p>It is a strong default for checksums, release manifests, content identifiers, and protocol uses that specify SHA-256. It is not a password-hashing function. Its speed helps attackers guess passwords quickly, just as MD5’s speed does.</p>
+<h2>Digest length and visible format</h2>
+<ul>
+<li>MD5: 128 bits, usually 32 hexadecimal characters.</li>
+<li>SHA-1: 160 bits, usually 40 hexadecimal characters.</li>
+<li>SHA-256: 256 bits, usually 64 hexadecimal characters.</li>
+</ul>
+<p>String length can be a clue during an audit, but it is not reliable proof of the construction. Values may be truncated, encoded with Base64, combined with salts, or wrapped in proprietary formats. Confirm the code and documentation.</p>
+<h2>Collision, preimage, and password attacks</h2>
+<p>A collision attack seeks any two inputs with the same digest. A preimage attack starts with a digest and seeks an input that produces it. Password cracking typically guesses likely inputs rather than exploiting a collision. These differences explain why MD5 is dangerous for several separate reasons.</p>
+<p>For signatures and certificates, collision weakness is central. For password databases, speed and human predictability dominate. For file checksums, the concern depends on whether errors are accidental or an attacker controls the content.</p>
+<h2>Performance should not drive the wrong choice</h2>
+<p>MD5 may benchmark faster than SHA-256 on some systems, but modern processors often accelerate SHA-256. In most file-verification workflows, disk and network input dominate. Measure the complete task before using a broken hash to save an assumed amount of time.</p>
+<p>For passwords, neither “slower than MD5” nor “more bits” is enough. Use a dedicated password function with configurable resource cost.</p>
+<h2>Migration by use case</h2>
+<h3>File checksum records</h3>
+<p>Add a SHA-256 field while retaining MD5 or SHA-1 for historical matching. Calculate SHA-256 from the original file, not from the old digest. Store the algorithm label and full value.</p>
+<h3>Password records</h3>
+<p>Verify the legacy record at login, then create an Argon2id or other approved password record from the submitted password. You cannot safely convert the old digest alone into a modern verifier.</p>
+<h3>Signed data</h3>
+<p>Update the complete signing profile, including hash, signature algorithm, certificates, key sizes, validation rules, and client support. Do not simply replace a name in configuration without compatibility testing.</p>
+<h2>Quick selection guide</h2>
+<ul>
+<li>New file integrity record: SHA-256 or another current algorithm.</li>
+<li>Legacy MD5 or SHA-1 comparison: retain only for compatibility and add SHA-256.</li>
+<li>Password storage: Argon2id, scrypt, bcrypt, or approved PBKDF2 settings.</li>
+<li>Digital signatures: follow a current signature standard and library.</li>
+<li>Message authentication: use HMAC or a protocol-defined authenticated construction.</li>
+</ul>
+<h2>Do not stack weak algorithms</h2>
+<p>Hashing with MD5 and then SHA-1, or storing both and accepting either, does not create a clean modern design. Custom combinations complicate analysis and may retain the weakest behavior. Use a current standard construction with an explicit version and migration path.</p>
+<h2>The practical ranking</h2>
+<p>For new collision-sensitive work, SHA-256 is suitable; MD5 and SHA-1 are not. For passwords, all three are the wrong category of function. For old archives, retain historical hashes as metadata but add a current digest. This distinction keeps compatibility without allowing legacy algorithms to make present-day trust decisions. For a closer look at two of these options, see <a href="md5-vs-sha-256.html">MD5 vs SHA-256</a>.</p>

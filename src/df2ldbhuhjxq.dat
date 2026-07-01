@@ -1,0 +1,36 @@
+
+<p>A rainbow table is a precomputed data structure used to look up passwords or other inputs that correspond to unsalted hash values. It trades storage and preparation time for faster attacks later. Rainbow tables became widely known during the era of unsalted MD5 and NTLM databases, but their practical value drops sharply when every password record uses a unique random salt.</p>
+<h2>Why precomputation helps an attacker</h2>
+<p>Suppose an attacker expects to steal many databases that store plain MD5(password). The same password always produces the same MD5 value, regardless of the user or website. The attacker can calculate common candidates once and reuse those results against every matching database.</p>
+<p>A simple lookup table could store each password beside its hash, but large candidate sets consume enormous storage. Rainbow tables use chains of hash and reduction operations to represent many candidates more compactly. During an attack, the tool searches those chains for a path that leads to the target hash.</p>
+<h2>Hashing and reduction are different steps</h2>
+<p>The hash function turns a candidate password into a digest. A reduction function maps a digest back into the password candidate space; it does not decrypt the hash and does not necessarily recover the original password. Rainbow-table chains alternate these operations many times.</p>
+<p>Different reduction functions are used at different chain positions to reduce chain merging. Only selected endpoints are stored. When a target digest appears to fall within a chain, the attacker reconstructs that chain to locate a matching candidate.</p>
+<h2>Rainbow tables do not make hashes reversible</h2>
+<p>The table may find a password that produces the target digest, but the process is not mathematical decryption. It relies on prior computation, a selected candidate set, and the deterministic behavior of the hash. If the original password falls outside the table’s character set, length range, language assumptions, or mutation rules, the table may not find it.</p>
+<p>Collisions also mean a matching candidate is not always guaranteed to be the exact original input. For password verification, any candidate accepted by the system may be enough for an attacker, so that distinction does not rescue insecure storage.</p>
+<h2>Unique salts defeat reusable tables</h2>
+<p>A salt changes the input for each password record. Instead of hashing only the password, a proper password-hashing function incorporates a unique random salt. The attacker would need a separate precomputed table for every possible salt, which removes the large reuse advantage.</p>
+<p>The salt can be stored openly. Its protection comes from uniqueness, not secrecy. Read <a href="password-salting-explained.html">the password salting guide</a> for generation, storage, and verification details.</p>
+<h2>Why salted MD5 is still weak</h2>
+<p>Salts make classic rainbow tables inefficient, but they do not make individual guesses expensive. An attacker can read the salt from a stolen record, combine it with each candidate, calculate MD5 quickly, and compare the result. Modern cracking is often performed directly with GPUs rather than through precomputed rainbow tables.</p>
+<p>This is why “we use salts” is not a complete password-storage answer. Secure systems also need a slow, adjustable password function. Argon2id and scrypt impose memory cost; bcrypt imposes an adjustable computation cost; PBKDF2 repeats a pseudorandom function many times.</p>
+<h2>Where rainbow tables still matter</h2>
+<ul>
+<li>Legacy databases containing unsalted MD5, SHA-1, or NTLM hashes.</li>
+<li>Old operating-system credential formats and forensic investigations.</li>
+<li>Training environments that demonstrate the value of salts.</li>
+<li>Weak custom systems where a fixed global salt is effectively reusable.</li>
+<li>Applications that hash predictable tokens without unique context.</li>
+</ul>
+<p>A fixed “salt” compiled into an application does not stop cross-user precomputation if every record uses the same value. It may force an attacker to build a table specific to that application, but the result remains reusable across all of its users.</p>
+<h2>Direct cracking is often the bigger modern threat</h2>
+<p>Attackers now use highly optimized tools that generate candidates from dictionaries, leaked password patterns, masks, rules, and probabilistic models. They calculate hashes on demand at high speed. This avoids the storage limits of rainbow tables and adapts better to known password habits.</p>
+<p>For a defender, the conclusion stays the same: do not use fast general-purpose hashes for passwords. A unique salt stops shared work, while a password-specific cost slows each direct guess. Strong user passwords and multifactor authentication add further protection.</p>
+<h2>How to audit an existing database</h2>
+<p>Identify the exact algorithm and construction from source code and configuration, not from digest length alone. Check whether salts are random, unique, and stored per record. Confirm the database column preserves the entire encoded output. Review account creation, password changes, imports, and reset flows because they may use different code paths.</p>
+<p>If records are unsalted, prioritize migration. Keep the old verifier only as long as needed. On successful login, hash the submitted password with a current function and replace the legacy record. Require resets for inactive or high-risk accounts on a defined schedule.</p>
+<h2>How to describe the risk accurately</h2>
+<p>It is common to say that attackers “decrypt” MD5 with a rainbow table. That wording is misleading. They search a precomputed structure for an input that hashes to the same output. The distinction matters because it explains why random salts, work factors, and password entropy change the economics of the attack.</p>
+<h2>The lasting lesson</h2>
+<p>Rainbow tables exploit repeatability across unsalted hashes. Unique salts remove that repeatability, but only a proper password-hashing function makes each new guess costly. Defend against the broader offline-guessing problem, not only one historical tool. Store passwords with current libraries, self-describing records, tunable parameters, and an upgrade process that can respond as hardware improves.</p>

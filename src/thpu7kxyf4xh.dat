@@ -1,0 +1,38 @@
+
+<p>bcrypt and Argon2id are both password-hashing functions, but they come from different hardware eras. bcrypt remains widely deployed and can be safe with an appropriate cost factor and careful input handling. Argon2id adds configurable memory hardness and is generally the better choice for new systems that have reliable library support.</p>
+<h2>The decision in one paragraph</h2>
+<p>Choose Argon2id for a new application unless compatibility, compliance, or platform limitations give you a concrete reason not to. Keep bcrypt for existing systems when migration cost is significant and current settings remain defensible. Do not replace either with MD5, SHA-1, or plain SHA-256. A longer digest from a fast hash does not provide the adjustable guessing cost that passwords need.</p>
+<h2>How bcrypt works</h2>
+<p>bcrypt is based on the Blowfish key schedule and includes a salt and cost parameter. The cost grows exponentially: increasing it by one roughly doubles the work. Its long deployment history means mature implementations exist in many languages and frameworks.</p>
+<p>bcrypt also has limitations. Many implementations process only the first 72 bytes of the password. Handling of null bytes and Unicode has varied across libraries and versions. Pre-hashing to avoid the limit can introduce new problems if the construction is not defined carefully. Developers must follow the behavior of their exact library.</p>
+<h2>How Argon2id differs</h2>
+<p>Argon2id exposes memory cost, time cost, and parallelism. The memory requirement makes large parallel cracking campaigns more expensive because each guess competes for memory capacity and bandwidth, not only processor cycles. Argon2id’s hybrid access pattern is intended to balance side-channel and trade-off resistance.</p>
+<p>The design is documented in <a href="https://www.rfc-editor.org/rfc/rfc9106.html">RFC 9106</a>. High-level libraries usually encode the version, parameters, salt, and result in one string, which supports verification and later upgrades.</p>
+<h2>Security comparison</h2>
+<h3>Resistance to specialized hardware</h3>
+<p>bcrypt’s adjustable CPU cost remains useful, but it uses a relatively small, fixed memory footprint. Argon2id lets defenders demand much more memory per guess, which is a stronger fit for modern GPU and accelerator threats.</p>
+<h3>Operational maturity</h3>
+<p>bcrypt has decades of deployment and broad compatibility. Argon2 libraries are now common, but some older enterprise platforms, managed identity products, and hardware modules may not support it. A theoretically preferred algorithm that your team cannot operate safely is not an automatic improvement.</p>
+<h3>Input behavior</h3>
+<p>Argon2id handles long inputs without bcrypt’s well-known 72-byte boundary, although applications still need request-size controls. With bcrypt, test how the library treats UTF-8 passwords and lengths near the limit. Never silently truncate user input without clear policy and migration planning.</p>
+<h2>Performance and capacity planning</h2>
+<p>Both functions should be tuned on production-class hardware. For bcrypt, select the highest cost factor that meets authentication latency and capacity goals. For Argon2id, tune memory first, then time and parallelism. Measure peak login bursts, password resets, background rehashing, and autoscaling behavior.</p>
+<p>Do not compare algorithms only by milliseconds on one laptop. A 250 ms bcrypt operation and a 250 ms Argon2id operation impose different costs on attackers and servers. Memory use, hardware acceleration, concurrency, and implementation quality all matter.</p>
+<h2>Migration options</h2>
+<p>A common approach is opportunistic rehashing. Keep the bcrypt verifier for existing records. After a successful login, hash the submitted password with Argon2id and replace the bcrypt record. Mark algorithms explicitly or use their self-describing formats. Accounts that do not return can be reset later according to risk and policy.</p>
+<p>Do not wrap an existing bcrypt string in Argon2id and call the migration complete. That may add some cost, but it preserves unknown weaknesses in old parameters and complicates future verification. Rehash the actual password when it is available.</p>
+<h2>When bcrypt is still a reasonable choice</h2>
+<ul>
+<li>Your framework provides a mature bcrypt implementation but no trustworthy Argon2id support.</li>
+<li>You operate a legacy authentication service with tested bcrypt settings and a planned migration window.</li>
+<li>A regulated or constrained environment mandates an approved alternative that excludes Argon2id.</li>
+<li>Your team has verified password-length behavior, cost settings, update procedures, and capacity.</li>
+</ul>
+<p>“Widely used” does not mean every bcrypt deployment is safe. Low cost factors, old libraries, truncated database fields, and mishandled long passwords can undermine it.</p>
+<h2>When Argon2id should be the default</h2>
+<p>Argon2id fits new web applications, APIs, desktop services, and identity systems where memory can be allocated predictably and libraries are maintained. It is especially suitable when you want explicit control over the cost imposed on parallel attackers.</p>
+<p>Start with reputable guidance, then benchmark. The <a href="argon2id-password-hashing-guide.html">Argon2id implementation guide</a> covers parameters, registration, login, denial-of-service controls, and rehashing in more detail.</p>
+<h2>What neither algorithm solves</h2>
+<p>No password hash prevents credential stuffing with passwords stolen elsewhere. Neither stops phishing, malicious browser extensions, session theft, insecure reset links, or administrative abuse. Support password managers, allow long passphrases, use multifactor authentication, rate-limit attempts, and monitor risky login patterns.</p>
+<h2>Final recommendation</h2>
+<p>For greenfield development, Argon2id is the stronger general recommendation because memory hardness better addresses current cracking hardware. For a well-maintained bcrypt system, an emergency rewrite may introduce more risk than a measured migration. Confirm the current cost, library behavior, and input handling, then move active users gradually. The goal is not to win an algorithm debate; it is to make stolen password verifiers expensive to attack and easy to upgrade.</p>

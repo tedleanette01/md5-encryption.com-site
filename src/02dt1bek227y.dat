@@ -1,0 +1,33 @@
+
+<p>SHA-256 and SHA3-256 both produce 256-bit digests and are approved for modern cryptographic use, but they are built differently. SHA-256 belongs to the SHA-2 family and uses a Merkle-Damgård-style construction. SHA3-256 is based on the Keccak sponge construction. For most applications, SHA-256 remains a safe and practical default; SHA-3 provides design diversity and capabilities that are useful in specific protocols.</p>
+<h2>Same output size, different internal design</h2>
+<p>SHA-256 processes messages in fixed-size blocks through a compression function and returns a 256-bit result. SHA3-256 absorbs input into a larger internal state, then squeezes out the digest. The shared “256” describes output length, not identical security engineering.</p>
+<p>NIST standardized SHA-3 in <a href="https://csrc.nist.gov/pubs/fips/202/final">FIPS 202</a>. The standard also includes SHA3-224, SHA3-384, SHA3-512, and the extendable-output functions SHAKE128 and SHAKE256. SHA-2 remains approved and widely used; SHA-3 was not introduced because SHA-256 was broken.</p>
+<h2>Security status</h2>
+<p>No practical attack is known that breaks the full collision resistance of SHA-256 or SHA3-256. For ideal 256-bit hashes, generic collision work is around 2 to the power of 128, while generic preimage work is around 2 to the power of 256. Real protocol security can be lower because of key sizes, truncation, implementation defects, or surrounding design.</p>
+<p>Do not confuse SHA-256 with SHA-1. SHA-1 has a 160-bit output and demonstrated practical collision attacks. NIST has directed users away from SHA-1 toward SHA-2 and SHA-3. MD5 is weaker still for collision-sensitive work.</p>
+<h2>Performance depends on the platform</h2>
+<p>SHA-256 is often faster in general software because CPUs, operating systems, TLS stacks, and libraries have years of optimization and may include dedicated instructions. SHA-3 can perform well in hardware and in optimized implementations, but results vary greatly by processor and message size.</p>
+<p>Benchmark the library and deployment target if hashing is on a critical path. Do not select a security algorithm from an isolated online benchmark. Data size, batching, hardware acceleration, language overhead, and side-channel protections can change the result.</p>
+<h2>Length-extension behavior</h2>
+<p>A common mistake is to build message authentication as hash(secret || message). With Merkle-Damgård hashes such as SHA-256, that construction can be vulnerable to a length-extension attack. SHA3-256’s sponge construction does not have the same generic property.</p>
+<p>This does not mean developers should replace HMAC-SHA-256 with a custom keyed SHA3 expression. Use HMAC, KMAC, or a protocol-defined authenticated construction. Standard designs specify key handling, domain separation, encoding, and output length, reducing opportunities for subtle errors.</p>
+<h2>Interoperability usually favors SHA-256</h2>
+<p>SHA-256 is built into common package managers, certificate systems, source-control workflows, cloud APIs, file-checking tools, and programming platforms. If two teams need to exchange checksums with minimal friction, SHA-256 is usually the easiest current option.</p>
+<p>SHA-3 support is now common in major cryptographic libraries and languages, but it is not universal in legacy systems. Check exact naming because “SHA3-256” and “Keccak-256” are not always interchangeable. Some blockchain ecosystems use a Keccak variant with padding rules that differ from standardized SHA3-256.</p>
+<h2>When SHA-3 is a good choice</h2>
+<ul>
+<li>A protocol or standard explicitly requires SHA-3, SHAKE, or KMAC.</li>
+<li>You need an extendable-output function with a variable result length.</li>
+<li>You want algorithmic diversity from SHA-2 in a carefully designed system.</li>
+<li>Your target hardware implements Keccak efficiently.</li>
+<li>You are building a new construction reviewed around sponge-based primitives.</li>
+</ul>
+<h2>When SHA-256 is the simpler choice</h2>
+<p>Use SHA-256 for ordinary file checksums, content identifiers, release manifests, and interoperable integrity records unless another standard applies. It is supported by the commands in <a href="verify-file-checksum-windows-macos-linux.html">the cross-platform checksum guide</a> and provides a strong security margin for these uses.</p>
+<p>For digital signatures, follow the signature standard and library rather than choosing a hash independently. For password storage, choose neither SHA-256 nor SHA3-256 directly; use Argon2id or another password-specific function. For message authentication, use HMAC-SHA-256, KMAC, or the construction required by the protocol.</p>
+<h2>Migration does not need to be dramatic</h2>
+<p>If an existing system uses SHA-256 correctly, there is usually no reason to replace it solely because SHA-3 exists. Algorithm migrations have costs: new identifiers, updated clients, changed database schemas, test vectors, compatibility periods, and rollback plans. Change when the threat model, standard, or product requirements justify it.</p>
+<p>Design agility instead. Store the algorithm name with the digest, allow versioned formats, avoid fixed 64-character assumptions throughout business logic, and keep cryptographic choices behind maintained interfaces. That makes a future transition safer if requirements change. This also prevents a format decision made today from becoming an undocumented security dependency years later.</p>
+<h2>The practical conclusion</h2>
+<p>SHA-256 is a mature, secure, widely interoperable default. SHA3-256 is a secure alternative with a fundamentally different construction and a larger family of sponge-based tools. Choose based on protocol requirements, platform support, performance evidence, and the exact security property you need. Do not treat SHA-3 as a password hash, do not confuse Keccak variants, and do not invent keyed constructions simply because one hash avoids a known structural property of another.</p>

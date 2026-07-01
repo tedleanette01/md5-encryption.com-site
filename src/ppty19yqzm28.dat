@@ -1,0 +1,33 @@
+
+<p>MD5 is a fast general-purpose hash. Password storage needs the opposite: a deliberately expensive, adjustable function that makes every guess costly for an attacker. MD5 also lacks a built-in salt format, memory-cost controls, and a standard upgrade path. These design differences mean that even a technically correct MD5 implementation exposes users to avoidable risk after a database breach.</p>
+<h2>Password verification is not encryption</h2>
+<p>A secure application does not need to recover a user’s password. During registration, it stores the output of a password-hashing function together with its salt and parameters. During login, it runs the submitted password through the same function and compares the result. If a system can decrypt every stored password, compromise of the decryption key exposes every account at once.</p>
+<p>MD5 is one-way in the narrow mathematical sense, but that does not make it suitable. Attackers usually do not reverse the digest directly. They guess likely passwords, hash each guess, and compare the outputs. Human-chosen passwords have limited and uneven entropy, so an algorithm that permits cheap guessing fails the real threat model.</p>
+<h2>MD5 lets attackers test guesses too quickly</h2>
+<p>MD5 was engineered for speed on general data. Modern GPUs and specialized cracking tools can evaluate enormous numbers of MD5 candidates. The exact rate depends on hardware, software, encoding, and the attack mode, but the security conclusion does not: each guess costs far too little.</p>
+<p>A password function raises that cost through time, memory, or both. Argon2id is memory-hard, meaning each parallel guess requires significant memory bandwidth and capacity as well as computation. bcrypt has an adjustable work factor, and scrypt also adds memory cost. These functions do not make weak passwords strong, but they reduce the number of guesses an attacker can afford.</p>
+<h2>Unsalted MD5 exposes repeated passwords</h2>
+<p>If two users choose the same password and the system stores plain MD5(password), both database values are identical. An attacker can identify password reuse immediately and crack all matching accounts together. Precomputed lookup tables also become effective because the same password always has the same digest across databases.</p>
+<p>A unique random salt changes this. The application combines each password with a different salt through the selected password-hashing function. Identical passwords then produce different stored records. Salts do not need to be secret, but they must be generated correctly and stored with the result.</p>
+<p>Adding a salt to MD5 is still not enough. It blocks simple precomputation and reveals less about repeated passwords, yet every new guess remains extremely fast. Salt solves one problem; a proper work factor and memory cost solve another.</p>
+<h2>Repeated MD5 is a fragile custom design</h2>
+<p>Some legacy systems try to repair MD5 by applying it many times, mixing usernames into the input, or combining it with SHA-1 or SHA-256. These schemes are hard to review, easy to encode inconsistently, and often much weaker than maintainers expect. They also lack standard parameter formats and library support.</p>
+<p>Security improves when you use a widely reviewed algorithm through a maintained library. A standard encoded record can include the algorithm version, salt, memory setting, iteration count, parallelism, and digest. That metadata lets the application verify old records and upgrade them after a successful login.</p>
+<h2>What current guidance recommends</h2>
+<p>The <a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP Password Storage Cheat Sheet</a> recommends Argon2id as the first choice in common application environments, with scrypt as an alternative when Argon2id is unavailable. bcrypt remains relevant for legacy systems, particularly when its input-length limitations are handled correctly. PBKDF2 is often used where specific compliance requirements apply.</p>
+<p>These recommendations include parameter tuning. A work factor copied from an old tutorial may be too cheap on current hardware. Measure verification time on production-class systems, select settings that meet your latency and capacity targets, and retest periodically.</p>
+<h2>A safe storage workflow</h2>
+<ol>
+<li>Accept the password over a protected connection and avoid logging it.</li>
+<li>Pass the password to a trusted password-hashing library using a current algorithm.</li>
+<li>Generate a cryptographically random, unique salt for every record.</li>
+<li>Store the library’s complete encoded result, including parameters and version.</li>
+<li>Compare through the library’s verification function rather than writing custom equality logic.</li>
+<li>Rate-limit login attempts and monitor credential-stuffing behavior.</li>
+<li>Rehash after successful login when the stored parameters are outdated.</li>
+</ol>
+<h2>How to identify an MD5 password database</h2>
+<p>A 32-character hexadecimal field is a warning sign, although format alone is not proof. Review the application code, authentication library, migration history, and database documentation. Check whether usernames, static salts, or prefixes are mixed into the input. Do not test with real user passwords or export production hashes into uncontrolled tools.</p>
+<p>If MD5 is confirmed, treat migration as a security project. You normally cannot convert an MD5 digest directly into Argon2id without knowing the password. Instead, verify the old record at login, then hash the submitted password with the new function and replace the record. Accounts that never return may need a password reset.</p>
+<h2>The point developers should remember</h2>
+<p>The problem with MD5 password storage is not only that MD5 has collision attacks. Password cracking mainly targets guesses and preimages, and MD5’s speed makes that attack cheap. The right replacement is not simply a longer fast hash. Use a dedicated password-hashing function, unique salts, tuned parameters, maintained libraries, and an upgrade plan. MD5 can remain a checksum in limited legacy contexts, but it should never protect user passwords.</p>

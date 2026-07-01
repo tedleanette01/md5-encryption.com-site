@@ -1,0 +1,39 @@
+
+<p>Password hashing and encryption solve different problems. Encryption protects data that an authorized system must recover later. Password hashing supports verification without storing a recoverable copy of the password. Confusing the two can turn one stolen key into a breach of every user account or lead a team to store passwords with a fast hash that attackers can guess cheaply.</p>
+<h2>Encryption is designed to be reversible</h2>
+<p>An encryption algorithm transforms plaintext into ciphertext using a key. A system with the correct key can recover the original plaintext. This is necessary for data such as payment details held under strict controls, private documents, backup archives, or secrets that software must use again.</p>
+<p>The security boundary therefore includes the key. If attackers steal the database but not the key, strong encryption may still protect the data. If they steal both, they can decrypt everything protected by that key. Key rotation, access control, hardware-backed storage, audit logs, and separation of duties are central to safe encryption.</p>
+<h2>Password hashing is designed for verification</h2>
+<p>An application normally does not need to know a user’s password after registration. It needs to answer one question at login: does the submitted value match the one used to create this account? A password-hashing function creates a stored verifier that supports that comparison without a decryption operation.</p>
+<p>The stored record should include a unique salt and the algorithm parameters. The application runs the submitted password through the same function and asks a maintained library to verify it. The original password should never be logged, emailed back, displayed in an admin panel, or recoverable through a master database key.</p>
+<h2>Why a general hash is not enough</h2>
+<p>MD5, SHA-1, SHA-256, and SHA-3 are designed to process data quickly. That speed is useful for file integrity and many cryptographic protocols, but it helps password crackers test guesses at scale. A password function should be intentionally expensive and configurable.</p>
+<p>Argon2id combines computation with significant memory use. scrypt is also memory-hard. bcrypt uses an adjustable cost and remains common in older systems. PBKDF2 repeats a pseudorandom function many times and is important in environments with specific standards or library constraints. The right choice depends on platform support and requirements, but plain MD5 or SHA-256 is not a substitute.</p>
+<h2>Salts, keys, and peppers are not the same</h2>
+<h3>Salt</h3>
+<p>A salt is a unique random value generated for each password record. It is stored openly beside the hash. Salts prevent identical passwords from producing identical stored outputs and force attackers to work separately on each record.</p>
+<h3>Encryption key</h3>
+<p>An encryption key must remain secret because possession enables decryption. It should not sit in the same unrestricted database as the ciphertext. Key management is an operational discipline, not an extra string appended to application data.</p>
+<h3>Pepper</h3>
+<p>A pepper is an optional secret used in addition to per-user salts. It is stored outside the password database, often in a secret manager or hardware-backed service. A pepper can add defense in depth, but it creates rotation and availability concerns and does not replace a strong password-hashing function.</p>
+<h2>What happens after a database breach</h2>
+<p>With encrypted passwords, attackers who obtain the decryption key recover every password directly. Users may have reused those passwords elsewhere, multiplying the damage. With properly hashed passwords, attackers must test guesses against each record. Strong parameters and unique salts make that work slower and more expensive.</p>
+<p>Hashing does not make a breach harmless. Weak passwords can still be guessed, application logs may contain secrets, and attackers may steal sessions or reset tokens. Password hashing is one layer alongside multifactor authentication, rate limits, monitoring, secure recovery, and breach response.</p>
+<h2>Common design decisions</h2>
+<ul>
+<li>Store passwords with Argon2id or another approved password-hashing function, not reversible encryption.</li>
+<li>Encrypt data only when the application has a legitimate need to recover the original value.</li>
+<li>Use independent keys for different purposes and keep them outside the database where practical.</li>
+<li>Let established libraries generate salts and encode parameters.</li>
+<li>Version stored formats so records can be upgraded over time.</li>
+<li>Do not invent a combined “encrypt then MD5” scheme.</li>
+</ul>
+<h2>When systems need access to another service’s password</h2>
+<p>Sometimes a legacy integration appears to require storing a user’s third-party password. First look for OAuth, scoped API tokens, service accounts, or delegated authorization. These alternatives reduce the blast radius and support revocation. If a recoverable credential truly must be stored, it is a secret and requires encryption with strong key management, not password hashing.</p>
+<p>That stored integration secret is different from the password users enter to authenticate to your own application. Label the fields and threat models clearly so developers do not apply one storage pattern to both.</p>
+<h2>A practical test for choosing the control</h2>
+<p>Ask whether the original value must ever be recovered. If yes, use authenticated encryption and protect the key. If no, and the value is a human password used only for login verification, use a dedicated password-hashing function. If the value is a file or message that needs an integrity identifier, use a current general-purpose hash such as SHA-256. This three-way distinction prevents many design mistakes.</p>
+<h2>Build the right recovery experience</h2>
+<p>Secure systems cannot tell users their old password because they do not know it. They provide a password-reset flow using a short-lived, single-use token delivered through a verified channel. A support agent should never be able to reveal or manually decrypt passwords. That limitation is evidence of a sound architecture, not a missing feature.</p>
+<h2>The core difference</h2>
+<p>Encryption protects recoverable data with a secret key. Password hashing creates a costly verifier with no decryption path. General hashing identifies data but is too fast for passwords. Once those roles are separated, algorithm selection, database design, incident response, and user recovery become much clearer. For the specific risks of legacy storage, read <a href="why-md5-not-for-passwords.html">why MD5 should never be used for passwords</a>.</p>

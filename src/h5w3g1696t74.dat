@@ -1,0 +1,46 @@
+
+<p>The final days of the year are a practical point to review cryptographic dependencies before new projects and compliance cycles begin. Hashing often hides in authentication services, release pipelines, databases, APIs, caches, backups, and vendor integrations. A focused audit can find legacy MD5 or SHA-1 use before it becomes part of another year’s architecture.</p>
+<h2>Define the scope before scanning code</h2>
+<p>List the systems that create or consume digests: password databases, software releases, file stores, API authentication, certificates, signed documents, duplicate detection, build caches, audit logs, migration tools, and imported data. Include third-party services and old scripts.</p>
+<p>The same algorithm can have different risk in different roles. MD5 as a harmless cache key is not equivalent to MD5 in a signature workflow. Record the purpose and consequence of a collision or guessed value.</p>
+<h2>Inventory algorithms and constructions</h2>
+<p>Search source code, configuration, infrastructure templates, database schemas, CI workflows, and dependencies for MD5, SHA-1, SHA-256, SHA-3, HMAC, bcrypt, scrypt, Argon2, PBKDF2, and custom helpers. Look for generic function names such as hash(), digest(), checksum(), sign(), and encodePassword().</p>
+<p>Do not stop at algorithm names. Identify concatenation order, salts, keys, truncation, iteration counts, memory settings, encodings, and output lengths. A custom hash(secret || message) construction may be unsafe even when it uses SHA-256.</p>
+<h2>Review password storage first</h2>
+<p>Confirm that every account path uses a password-specific function. Check registration, login, password change, reset, import, administrative creation, mobile APIs, and dormant legacy endpoints. Verify unique random salts and complete self-describing records.</p>
+<p>Measure current parameters on production-class hardware. Plan rehashing for outdated records. The <a href="secure-password-storage-guide.html">secure password storage guide</a> provides a full implementation checklist.</p>
+<h2>Check file and software integrity workflows</h2>
+<p>Find release pages, manifests, object stores, backup catalogs, and transfer scripts that publish MD5 or SHA-1. Add SHA-256 or a current alternative. Where authenticity matters, confirm that releases are signed and verification fails closed.</p>
+<p>Test a real download from publication through deployment. Controls that exist only in documentation may not be executed by users or automation.</p>
+<h2>Inspect digital signatures and certificates</h2>
+<p>Identify signature algorithms, digest algorithms, key sizes, certificate chains, expiration dates, timestamping, and revocation behavior. Review vendor and partner compatibility before changing profiles.</p>
+<p>MD5 and SHA-1 should not generate new signatures. Follow current platform and standards guidance rather than replacing individual settings without understanding the complete profile.</p>
+<h2>Audit keyed hashes and API signatures</h2>
+<p>Look for plain hashes used as message authentication, secret-prefix constructions, static tokens, reused keys, ambiguous string concatenation, and missing replay protection. Prefer HMAC with a current hash or a protocol-defined authenticated scheme.</p>
+<p>Define canonical serialization, timestamp windows, nonce behavior, key identifiers, rotation, and error handling. Make sure comparison uses a safe library function.</p>
+<h2>Find dangerous truncation</h2>
+<p>Database columns, log formats, URLs, and identifiers may store only part of a digest. Truncation reduces the collision and guessing space. Determine whether each shortened value is only a display label or controls uniqueness, authorization, replacement, or trust.</p>
+<p>Restore full digests for security decisions. If a protocol intentionally truncates output, document the resulting security level and expected object volume.</p>
+<h2>Review dependency and library health</h2>
+<ul>
+<li>Is the cryptographic library maintained?</li>
+<li>Are security updates applied promptly?</li>
+<li>Do wrappers expose safe high-level APIs?</li>
+<li>Are deprecated algorithms disabled by default?</li>
+<li>Do tests cover known vectors and migration formats?</li>
+<li>Are platform compliance modes changing behavior?</li>
+</ul>
+<p>Remove duplicate internal helpers that make it easy for teams to choose inconsistent parameters.</p>
+<h2>Test failure paths</h2>
+<p>Corrupt a test artifact and confirm deployment stops. Present an invalid signature and confirm there is no unsigned fallback. Simulate an unavailable secret manager. Verify that password hashing errors do not create accounts with empty or weak records.</p>
+<p>Security behavior during failure is often more important than the happy path.</p>
+<h2>Create a migration register</h2>
+<p>For every legacy use, record the owner, purpose, algorithm, data volume, external dependencies, target design, compatibility period, test plan, and deadline. Prioritize password records, signatures, public software, and attacker-controlled inputs.</p>
+<p>Do not remove historical hashes needed for archive matching without preserving them as labeled metadata. Add stronger values and move trust decisions first.</p>
+<h2>Set standards for the coming year</h2>
+<p>Publish an internal policy that names approved password functions, checksum algorithms, HMAC profiles, signature libraries, minimum parameters, and exception handling. Include examples for common languages and CI systems.</p>
+<p>Exceptions should have an owner, reason, compensating controls, review date, and removal plan. “The vendor requires it” is a starting fact, not a permanent risk decision.</p>
+<h2>Evidence to keep</h2>
+<p>Preserve inventory results, benchmark data, test outputs, migration tickets, key-rotation records, and approved exceptions. This evidence helps future maintainers understand why a choice was made and supports incident response.</p>
+<h2>End the year with fewer hidden assumptions</h2>
+<p>A useful audit does not try to replace every legacy hash in one week. It identifies where weak algorithms make security decisions, verifies that modern controls actually run, and assigns concrete migration work. Start with password storage and signed releases, then address APIs, content identifiers, and low-risk compatibility uses. The result should be a smaller, documented set of exceptions and a clear standard for new work.</p>

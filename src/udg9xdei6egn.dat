@@ -1,0 +1,51 @@
+
+<p>Secure password storage assumes that the database may eventually be exposed. The goal is to keep attackers from recovering user passwords cheaply even after they obtain the stored records. That requires a password-specific hashing function, unique salts, tuned parameters, careful application code, restricted access, and a migration path.</p>
+<h2>Choose a password function, not a fast hash</h2>
+<p>Use Argon2id where a maintained implementation is available and operational constraints allow it. scrypt is a strong memory-hard alternative. bcrypt remains common in existing systems, while PBKDF2 may be required in some regulated environments. Follow current framework and standards guidance for the exact settings.</p>
+<p>Do not store MD5, SHA-1, plain SHA-256, or SHA-3 outputs as password verifiers. These functions are fast, which allows attackers to test guesses at high speed. Even a unique salt cannot fix that core problem.</p>
+<h2>Let the library manage salts and encoding</h2>
+<p>A modern password library should create a random salt for every record and return a self-describing string containing the algorithm, version, parameters, salt, and derived value. Store the complete output. Make the database field long enough for future formats and confirm that application layers do not trim it.</p>
+<p>Do not use usernames, timestamps, or account IDs as salts. Do not keep one global salt. Salt is public metadata whose value comes from randomness and uniqueness.</p>
+<h2>Registration flow</h2>
+<ol>
+<li>Receive the password over TLS.</li>
+<li>Apply a clear length policy and reject absurdly large requests before expensive hashing.</li>
+<li>Avoid silent truncation and normalize only if the authentication design explicitly defines it.</li>
+<li>Call the library’s high-level password-hash function.</li>
+<li>Store the complete encoded verifier.</li>
+<li>Exclude the password from logs, traces, analytics, crash reports, and support tools.</li>
+</ol>
+<p>Support long passwords and password managers. Complexity rules that force one uppercase letter, one number, and one symbol often produce predictable patterns. Screening against known breached passwords can provide more value than frequent forced changes.</p>
+<h2>Login flow</h2>
+<p>Look up the account, pass the submitted password and stored record to the library’s verify function, and return a generic error on failure. Use rate limits and risk signals around the endpoint. Do not reveal whether an email address exists through different messages or timing where practical.</p>
+<p>After a successful verification, check whether the stored parameters are outdated. If so, create a fresh record with current settings and replace the old one. Opportunistic rehashing upgrades active users without a disruptive mass reset.</p>
+<h2>Parameter tuning</h2>
+<p>Start from current guidance, then benchmark on production-class hardware under realistic concurrency. A setting that takes 300 ms on a developer laptop may behave differently in a small container, serverless function, mobile device, or overloaded authentication cluster.</p>
+<p>For Argon2id, memory cost is a central defense. Time cost and parallelism also matter. For bcrypt, the cost factor controls computation. Revisit settings after infrastructure changes and at regular intervals, because attacker hardware and application capacity both evolve.</p>
+<h2>Optional peppering</h2>
+<p>A pepper is a secret stored separately from the password database. It can provide defense in depth if attackers steal only the database. Manage it through a secret manager or hardware-backed service, restrict access, version it, and plan rotation before deployment.</p>
+<p>A pepper does not replace salts, work factors, or database security. If the secret is lost, users may be unable to authenticate. If it is compromised, passwords still need the protection of the underlying password function.</p>
+<h2>Database and backup controls</h2>
+<p>Limit which services and staff can read password records. Most application operations need verification through an authentication service, not direct database access. Monitor exports, snapshots, replicas, and unusual query volume. Encrypt backups and control their keys separately.</p>
+<p>Do not copy production hashes into development environments. Use synthetic test accounts. Treat password tables as sensitive even though the values are not plaintext.</p>
+<h2>Password reset is part of storage security</h2>
+<p>Generate reset tokens with a cryptographically secure random source. Make them single-use, short-lived, and bound to the correct account and purpose. Store a hash of the token where practical so a database read does not reveal live reset links.</p>
+<p>After reset, invalidate relevant sessions and old tokens according to risk. Notify the user without exposing sensitive details. Support staff should never be able to reveal the old password.</p>
+<h2>Migration from legacy records</h2>
+<p>Store or infer the legacy algorithm safely, verify it only during login, then hash the submitted password with the new function. Delete the old verifier after successful migration. Require resets for inactive accounts or records that cannot be identified reliably.</p>
+<p>Do not hash the old MD5 string with Argon2id and treat that as equivalent to hashing the real password. It creates a layered legacy dependency and may preserve low-entropy cracking targets.</p>
+<h2>Operational mistakes that undermine good algorithms</h2>
+<ul>
+<li>Using outdated default parameters for years.</li>
+<li>Truncating encoded records in the database.</li>
+<li>Logging password fields during debugging.</li>
+<li>Running a separate weak hash path for mobile or imported users.</li>
+<li>Allowing unlimited online attempts.</li>
+<li>Keeping reset tokens valid after use.</li>
+<li>Failing open when the secret manager or hashing service errors.</li>
+</ul>
+<h2>Use layered authentication controls</h2>
+<p>Strong hashing limits damage after verifier theft. Multifactor authentication, credential-stuffing detection, secure sessions, phishing-resistant methods, and protected account recovery address different attacks. No storage algorithm can compensate for a reset link that never expires or an administrator who can impersonate users without audit.</p>
+<h2>A maintainable security standard</h2>
+<p>Document the approved algorithms, minimum parameters, benchmark method, library versions, migration logic, field sizes, incident process, and review schedule. Tests should confirm that old records verify, new records use current settings, failed attempts are handled safely, and rehashing works.</p>
+<p>The practical standard is clear: use a dedicated password function through a maintained library, accept its self-describing format, tune it on real systems, and plan for change. The earlier <a href="argon2id-password-hashing-guide.html">Argon2id guide</a> provides implementation detail for the leading new-system choice.</p>

@@ -1,0 +1,57 @@
+
+<p>A password pepper is an optional secret used in addition to per-user salts and a password-hashing function. Unlike a salt, the pepper is not stored in the password database. If an attacker steals only that database, the missing secret creates another barrier to offline guessing. The benefit is real only when the pepper is protected separately and operated carefully.</p>
+<h2>Salt and pepper have different jobs</h2>
+<p>A salt is unique random data for each password record and is stored openly with the hash. It prevents repeated passwords from producing the same result and stops attackers from sharing precomputed work across accounts.</p>
+<p>A pepper is shared or versioned secret material. It behaves more like a cryptographic key. It must be restricted, monitored, backed up appropriately, and rotated through a planned process.</p>
+<h2>A pepper never replaces password hashing</h2>
+<p>Do not use a pepper with MD5 and claim the passwords are secure. If the pepper leaks, attackers are left with a fast, weak database. Use Argon2id, scrypt, bcrypt, or an approved PBKDF2 configuration first. A pepper adds defense in depth to a sound base.</p>
+<p>The <a href="password-salting-explained.html">password salting guide</a> explains why salts remain necessary even when a secret is added.</p>
+<h2>Where to store the pepper</h2>
+<p>Keep it outside the database and its ordinary backups. Options include a managed secret store, hardware security module, protected key-management service, or isolated authentication service. The application should receive only the access it needs.</p>
+<p>Storing the pepper in the same configuration dump, container image, or unrestricted environment file as database credentials may reduce the separation. Threat-model which systems an attacker is likely to compromise together.</p>
+<h2>Two common designs</h2>
+<h3>Pre-hash peppering</h3>
+<p>The application combines the password with a pepper before running the password function. The construction and encoding must be defined carefully. Naive concatenation can create ambiguity, length issues, and cross-language incompatibility.</p>
+<h3>Post-hash HMAC</h3>
+<p>The application first creates the normal password-hash output, then authenticates that record with HMAC under the pepper key. Verification checks the HMAC before or alongside the password function according to the design. This can separate password hashing from key use, but it adds record and rotation complexity.</p>
+<p>Follow a reviewed architecture and library guidance. Do not invent a custom format during an incident.</p>
+<h2>Rotation is the hard part</h2>
+<p>If a pepper is compromised, it should change. But the application cannot always recalculate a pre-hash-peppered password record without the user’s plaintext password. Rotation may require keeping old and new key versions, re-peppering after successful login, or forcing password resets.</p>
+<p>With a post-hash HMAC design, rotation may be possible over existing stored password records if the underlying record is available and the construction permits it. That operational advantage should be evaluated with security review.</p>
+<h2>Availability and disaster recovery</h2>
+<p>If the pepper service is unavailable, login may fail for every user. Build redundancy, access controls, monitoring, and tested recovery. Do not create an insecure fallback that skips the pepper when the service is down.</p>
+<p>If the pepper is lost permanently and cannot be restored, affected password records may become unverifiable. Backups need protection and controlled access without placing the secret beside the database copy it is meant to defend.</p>
+<h2>Who can access the pepper?</h2>
+<p>Limit access to the authentication component. Analytics, reporting, customer support, and most background jobs do not need it. Use service identities, short-lived credentials, audit logs, and environment separation.</p>
+<p>A database administrator and a secret-store administrator should not automatically be the same role in high-assurance systems. Separation reduces the chance that one compromised account exposes both layers.</p>
+<h2>Threats a pepper helps with</h2>
+<ul>
+<li>A database-only breach or leaked backup.</li>
+<li>Read-only SQL injection that cannot access application secrets.</li>
+<li>Unauthorized exports by a user without secret-store permission.</li>
+<li>Partial infrastructure compromise that stops at the data layer.</li>
+</ul>
+<h2>Threats a pepper does not solve</h2>
+<ul>
+<li>Compromise of the running authentication service.</li>
+<li>Phishing and credential stuffing.</li>
+<li>Weak reset flows or stolen sessions.</li>
+<li>Password logging before hashing.</li>
+<li>Malware on the user’s device.</li>
+<li>Low password entropy after both database and pepper are stolen.</li>
+</ul>
+<h2>When a pepper is worth considering</h2>
+<p>It makes sense when the organization already runs reliable key management, can separate the database from the authentication secret, and has a tested rotation and recovery plan. It may be useful for high-value identity systems or environments where database exports are a prominent threat.</p>
+<p>It may not be worth the complexity for a small service that would store the pepper beside the database credentials and has no safe rotation process. In that case, invest first in Argon2id parameters, access control, backups, multifactor authentication, monitoring, and secure recovery.</p>
+<h2>Implementation checklist</h2>
+<ol>
+<li>Document the threat model and expected benefit.</li>
+<li>Select a reviewed pre-hash or post-hash construction.</li>
+<li>Version pepper keys and stored records.</li>
+<li>Restrict key access to the authentication path.</li>
+<li>Test rotation, outage, backup, and recovery scenarios.</li>
+<li>Never fall back to unpeppered verification silently.</li>
+<li>Keep the underlying password function strong and current.</li>
+</ol>
+<h2>The balanced answer</h2>
+<p>A password pepper can reduce damage from a database-only breach, but it is an operational key-management commitment. Use it as an additional layer, not as a shortcut around proper password hashing. A team that cannot rotate, recover, and restrict the secret safely should fix those capabilities or keep the design simpler. Strong Argon2id or scrypt records with unique salts remain the foundation.</p>

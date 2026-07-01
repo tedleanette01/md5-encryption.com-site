@@ -1,0 +1,55 @@
+
+<p>Password storage often fails through ordinary implementation choices rather than exotic cryptanalysis. A team selects a fast hash, reuses one salt, truncates a library output, keeps obsolete parameters, or creates a fallback path that bypasses the main design. Reviewing these mistakes is useful because each one has a practical fix.</p>
+<h2>Using MD5, SHA-1, or plain SHA-256</h2>
+<p>General-purpose hashes are designed for speed. That helps attackers test offline password guesses. A longer output does not turn SHA-256 into a password function. Use Argon2id, scrypt, bcrypt, or an appropriately configured PBKDF2 implementation.</p>
+<p>The article <a href="why-md5-not-for-passwords.html">why MD5 should never be used for passwords</a> explains why collision weakness is only part of MD5’s problem. Guessing cost is the central password-storage concern.</p>
+<h2>Believing a salt is a complete solution</h2>
+<p>Unique random salts stop identical passwords from sharing a stored value and defeat reusable precomputed tables. They do not slow each fresh guess enough when the underlying function is MD5 or SHA-256.</p>
+<p>Use a salt and an expensive password function. Let the library generate and encode the salt rather than building it from a user ID or timestamp.</p>
+<h2>Reusing one global salt</h2>
+<p>A global value may force attackers to precompute specifically for your application, but it still lets them reuse work across every account. If the value is stored in the application or database, it will often be exposed with the rest of the system.</p>
+<p>Every password record needs its own random salt. An optional global secret is a pepper, which has different storage and rotation requirements.</p>
+<h2>Copying parameters from an old tutorial</h2>
+<p>Password-hashing cost settings age. Hardware gets faster, cloud resources become cheaper, and application architecture changes. A configuration selected years ago may now be too cheap.</p>
+<p>Benchmark on production-class systems, define a target verification cost, and revisit it regularly. Store parameters with each record so older values remain verifiable while active users are upgraded.</p>
+<h2>Writing custom cryptography</h2>
+<p>Repeated MD5, SHA-256 in a homemade loop, secret prefixes, and mixed algorithms may look stronger but lack the review, test vectors, and interoperability of standard password functions. Encoding and length mistakes are common.</p>
+<p>Use a high-level library API. It should hash, verify, encode parameters, generate salts, and identify records that need rehashing.</p>
+<h2>Silently truncating passwords</h2>
+<p>Some bcrypt implementations use only the first 72 bytes. A user may believe a longer password adds protection while the application ignores the remainder. Unicode characters also occupy a variable number of bytes in UTF-8.</p>
+<p>Understand the exact library behavior. Do not silently cut input. If legacy compatibility forces a limit, document it, test boundary cases, and plan migration to a function that handles long inputs cleanly.</p>
+<h2>Truncating the stored record</h2>
+<p>Self-describing password strings can be longer than old database columns. Silent truncation may make accounts unverifiable or, worse, remove important parameter data in a way that creates inconsistent fallback behavior.</p>
+<p>Size columns for current and future formats. Test round trips through databases, ORMs, APIs, exports, replicas, and backups.</p>
+<h2>Comparing hashes by hand</h2>
+<p>Developers sometimes parse encoded values, recalculate a digest, and compare strings with ordinary equality. This can introduce format errors and timing differences. Use the library’s verification function, which understands its own encoding and comparison requirements.</p>
+<h2>Logging secrets during troubleshooting</h2>
+<p>Passwords can leak through request logs, debug traces, analytics events, error reports, queue payloads, and support screenshots. Hashing them correctly in the database does not protect those copies.</p>
+<p>Redact password fields at the earliest logging boundary. Test observability systems and disable body capture on authentication endpoints.</p>
+<h2>Forgetting imports and alternate login paths</h2>
+<p>The main registration flow may use Argon2id while imported users, mobile clients, admin-created accounts, or old API versions still write MD5. Attackers target the weakest path.</p>
+<p>Inventory every function that creates, changes, verifies, resets, or migrates a password. Centralize operations in one authentication service or shared library.</p>
+<h2>Using reversible encryption for user passwords</h2>
+<p>If the application stores encrypted passwords, anyone who obtains the decryption key can recover every credential. User passwords normally do not need recovery. Store a verifier and provide a secure reset flow instead.</p>
+<h2>Weak reset tokens</h2>
+<p>Password storage can be excellent while recovery is predictable or long-lived. Generate random, single-use, expiring tokens. Bind them to an account and purpose, and invalidate them after use. Consider storing only a hash of the reset token.</p>
+<h2>Ignoring online attacks</h2>
+<p>Argon2id protects against offline guessing after a database breach. It does not stop unlimited attempts against the live login form, credential stuffing, phishing, or session theft. Add rate limits, anomaly detection, multifactor authentication, secure cookies, and protected recovery.</p>
+<h2>Failing to rehash</h2>
+<p>A secure design should identify outdated records and upgrade them after successful login. Without that mechanism, parameters remain frozen until a disruptive reset project.</p>
+<p>Use an explicit algorithm marker or self-describing format. Test rehash behavior during library updates and infrastructure changes.</p>
+<h2>Treating compliance as the finish line</h2>
+<p>A checklist may require salted hashing but leave room for obsolete parameters or weak operational controls. Compliance can set a minimum; threat modeling and measurement must complete the design.</p>
+<h2>A focused review checklist</h2>
+<ul>
+<li>Current password-specific algorithm.</li>
+<li>Unique random salts.</li>
+<li>Measured and documented parameters.</li>
+<li>Complete encoded records with sufficient field length.</li>
+<li>High-level verify and rehash APIs.</li>
+<li>No password logging or recoverable storage.</li>
+<li>Secure reset, rate limiting, and multifactor options.</li>
+<li>One consistent path across all clients and imports.</li>
+</ul>
+<h2>Make the safe path the easy path</h2>
+<p>Centralize password operations, provide tested wrappers, remove old helpers, and add automated checks for forbidden algorithms. The best design does not depend on every developer remembering every cryptographic detail. It makes secure defaults automatic and legacy exceptions visible, temporary, and measurable.</p>

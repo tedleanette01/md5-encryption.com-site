@@ -1,0 +1,49 @@
+
+<p>Argon2id is a password-hashing and key-derivation function designed to make offline guessing expensive. It combines features of Argon2i and Argon2d to balance resistance to side-channel attacks with resistance to time-memory trade-offs. For new application password storage, it is a strong default when a maintained library and enough memory are available.</p>
+<h2>Why memory hardness matters</h2>
+<p>Attackers parallelize password guessing across GPUs, rented servers, and specialized hardware. A function that requires only fast arithmetic lets them run many candidates at once. Argon2 consumes a configurable amount of memory for each operation. Large-scale attackers must provide that memory and its bandwidth for every parallel guess, increasing cost.</p>
+<p>Memory hardness does not make guessing impossible. Common passwords remain vulnerable, especially after a database breach. It changes the economics and gives defenders control over the cost of each verification.</p>
+<h2>The three main parameters</h2>
+<h3>Memory cost</h3>
+<p>This controls how much memory one Argon2 operation uses. It is often the most important setting for resisting parallel attacks. Choose a value that is meaningful on your production hardware without exhausting memory under expected concurrent logins.</p>
+<h3>Time cost</h3>
+<p>This controls the number of passes over memory. Raising it increases work and latency. Test the complete authentication path rather than assuming that twice the time cost always means exactly twice the wall-clock time.</p>
+<h3>Parallelism</h3>
+<p>This controls lanes used inside one operation. It is not the same as the number of simultaneous user logins. Platform libraries and hardware behavior affect the best choice, so start with reviewed guidance and benchmark the deployed environment.</p>
+<h2>Start from current guidance, then benchmark</h2>
+<p><a href="https://www.rfc-editor.org/rfc/rfc9106.html">RFC 9106</a> specifies Argon2 and provides recommended profiles. OWASP also publishes practical minimum configurations for application developers. These are starting points, not values to copy blindly for every device or service.</p>
+<p>Set a target verification time that users will not notice in normal login flows but that creates meaningful attacker cost. Measure under realistic load, including container limits, serverless memory allocation, mobile hardware if hashing occurs locally, and peak concurrency. Leave capacity for the rest of the application.</p>
+<h2>Use an established library</h2>
+<p>Do not implement Argon2 from the specification. Use a maintained library with a high-level password API. It should generate salts securely, encode parameters with the result, verify records, and report when rehashing is needed. Review its support status, language bindings, version history, and secure defaults.</p>
+<p>The encoded value normally begins with an Argon2 identifier and includes version and parameter fields. Store the complete string in a column long enough for future changes. Do not parse and rebuild it unless your framework explicitly requires that behavior.</p>
+<h2>A practical registration flow</h2>
+<ol>
+<li>Receive the password over TLS and keep it out of logs and analytics.</li>
+<li>Apply any application-level length and Unicode policy consistently.</li>
+<li>Pass the password to the library’s Argon2id hash function.</li>
+<li>Let the library create a random salt.</li>
+<li>Store the complete encoded result.</li>
+<li>Clear or release password buffers where the language and framework permit.</li>
+</ol>
+<p>Do not silently truncate long passwords. Some older functions have input limits that applications handled badly. Argon2 accepts variable-length inputs, but the application should still set reasonable request limits to prevent denial-of-service abuse.</p>
+<h2>A practical login flow</h2>
+<p>Fetch the user’s stored record and call the library’s verification function with the submitted password. If verification succeeds, establish the session through the application’s normal secure process. Then check whether the record uses outdated settings. If it does, hash the password again with current parameters and replace the record.</p>
+<p>Keep authentication errors generic. Revealing whether an email exists allows account enumeration. Rate-limit attempts, monitor credential stuffing, and protect session creation. Argon2 only covers the offline-verifier part of the system.</p>
+<h2>Handling denial-of-service risk</h2>
+<p>The same resource cost that slows attackers also consumes server capacity. An unauthenticated endpoint that starts expensive hashes without controls can become a denial-of-service target. Use per-account and per-network limits, request throttling, sensible timeouts, and infrastructure monitoring.</p>
+<p>Do not reduce parameters to nearly zero because traffic grows. Instead, scale capacity, queue expensive work carefully, strengthen online controls, and re-evaluate the target cost with evidence.</p>
+<h2>Migrating from older hashes</h2>
+<p>You cannot normally transform an MD5, SHA-1, or bcrypt record directly into an Argon2id record without the password. Support the old verifier temporarily. On a successful login, use the submitted plaintext password to create an Argon2id record and delete the legacy value. For inactive accounts, require a reset after a defined deadline.</p>
+<p>Store an explicit algorithm marker or use self-describing encoded formats. Avoid guessing algorithms only from string length. The article <a href="why-md5-not-for-passwords.html">why MD5 should never be used for passwords</a> explains the urgency of replacing fast legacy hashes.</p>
+<h2>Operational review points</h2>
+<ul>
+<li>Benchmark parameters at least annually and after major infrastructure changes.</li>
+<li>Track library security updates and Argon2 version support.</li>
+<li>Confirm database fields do not truncate encoded records.</li>
+<li>Test backup restoration and cross-service verification.</li>
+<li>Record parameter policy in architecture documentation.</li>
+<li>Use multifactor authentication for high-risk accounts.</li>
+</ul>
+<h2>Argon2id is a component, not the whole system</h2>
+<p>Good password storage reduces the damage of a stolen database. It does not stop phishing, malware, weak reset flows, stolen sessions, or passwords reused on another breached service. Combine Argon2id with long-password support, breached-password screening where appropriate, secure recovery, rate limits, session protection, and clear incident procedures.</p>
+<p>The practical approach is straightforward: select Argon2id through a trusted library, begin with current standards guidance, benchmark memory and time settings on real hardware, store complete self-describing records, and rehash as systems improve. That gives developers a defensible design and a path to keep it current.</p>

@@ -1,0 +1,42 @@
+
+<p>A plain hash can detect whether data matches an expected digest, but anyone can calculate it. HMAC combines a cryptographic hash with a secret key so that only parties holding the key can create or verify the authentication value. This makes HMAC suitable for API request signing, webhook verification, message integrity, and other shared-secret protocols.</p>
+<h2>What a plain hash proves</h2>
+<p>If you publish SHA-256(file), another person can calculate the file’s SHA-256 value and compare it. A match shows byte integrity relative to the expected digest. It does not prove who created the digest because no secret was required.</p>
+<p>Plain hashes are useful for checksums, content addressing, duplicate detection, and internal data structures. Authenticity needs a trusted distribution channel, digital signature, HMAC, or another authentication mechanism.</p>
+<h2>What HMAC adds</h2>
+<p>HMAC uses a defined construction with a secret key, an inner pad, an outer pad, and a cryptographic hash. It is standardized in <a href="https://www.rfc-editor.org/rfc/rfc2104.html">RFC 2104</a>. The construction avoids weaknesses found in naive secret-prefix or secret-suffix schemes.</p>
+<p>Two parties with the same key can calculate the same HMAC for the same canonical message. An attacker who changes the message but lacks the key should not be able to create a valid new value.</p>
+<h2>Why hash(secret || message) is risky</h2>
+<p>With Merkle-Damgård hashes such as SHA-256, a secret-prefix construction may be vulnerable to length-extension attacks. An attacker who knows the digest and the secret’s approximate length may append data and compute a valid digest for the extended message without learning the secret.</p>
+<p>HMAC is designed to resist this class of attack. Do not invent a replacement by changing concatenation order or applying the hash twice. Use the platform’s HMAC API.</p>
+<h2>HMAC does not encrypt the message</h2>
+<p>The message remains readable unless it is encrypted separately. HMAC provides integrity and authentication under a shared key. If confidentiality is needed, use an authenticated-encryption mode such as AES-GCM or ChaCha20-Poly1305 through a reviewed protocol and library.</p>
+<p>Do not reuse the same key casually across HMAC, encryption, and unrelated services. Derive or provision separate keys for separate purposes.</p>
+<h2>API request signing</h2>
+<p>A typical scheme authenticates a canonical representation containing the HTTP method, path, selected headers, body digest, timestamp, and nonce. The server reconstructs the same representation and verifies the HMAC.</p>
+<p>Canonicalization must be exact. Differences in case, whitespace, URL encoding, JSON ordering, or line endings can cause false failures or security gaps. Use an established protocol where possible.</p>
+<h2>Replay protection is separate</h2>
+<p>A valid HMAC can be captured and replayed if the protocol accepts the same message repeatedly. Include a timestamp, expiry, sequence number, or nonce and define how the receiver rejects reuse. Store enough state or use a bounded time window based on the threat model.</p>
+<p>HMAC authenticates message contents; it does not make them fresh.</p>
+<h2>Webhook verification</h2>
+<p>Webhook providers often send an HMAC in a header. Verify the signature over the exact raw request bytes before parsing or transforming the body. Re-serializing JSON may change whitespace or key order and produce a different value.</p>
+<p>Check the provider’s versioned header format, timestamp rules, and key-rotation process. Reject missing or invalid signatures and avoid logging secret keys.</p>
+<h2>Key management determines real security</h2>
+<ul>
+<li>Generate keys with a cryptographically secure random source.</li>
+<li>Use sufficient key length for the selected HMAC.</li>
+<li>Store keys in a secret manager or protected platform facility.</li>
+<li>Assign key identifiers and support rotation.</li>
+<li>Limit which services and staff can access each key.</li>
+<li>Audit use and respond to suspected exposure.</li>
+</ul>
+<p>If every application instance can dump all organization-wide keys, the HMAC construction may be mathematically strong but operationally fragile.</p>
+<h2>Safe comparison</h2>
+<p>Use the library’s HMAC verification or constant-time comparison function. Ordinary string comparison may return earlier on a mismatch and reveal timing information in some environments. Also decode expected formats strictly and reject malformed or incorrectly sized values.</p>
+<h2>Choosing the hash inside HMAC</h2>
+<p>HMAC-SHA-256 is widely supported and appropriate for many new systems. HMAC-SHA-512 may be selected by a protocol. HMAC-MD5 has different security considerations from plain MD5 collisions, but it is a legacy choice and should not be selected for new designs. RFC 6151 provides historical guidance on MD5 and HMAC-MD5.</p>
+<h2>HMAC versus digital signatures</h2>
+<p>HMAC uses one shared secret. Any holder can create a valid value, so it cannot prove which key holder sent the message. Digital signatures use a private signing key and public verification key, which supports broader distribution and stronger attribution properties.</p>
+<p>Use HMAC for controlled service-to-service relationships with shared secrets. Use digital signatures when many verifiers should not gain signing power or when public verification is needed.</p>
+<h2>The practical rule</h2>
+<p>Use a plain hash when you need an unkeyed digest. Use HMAC when two trusted parties share a secret and need message authentication. Use a digital signature when verification should be public or separated from signing authority. The earlier <a href="checksums-vs-digital-signatures.html">checksums versus digital signatures guide</a> explains the public-key side. In every case, define message bytes, key handling, failure behavior, and replay controls rather than relying on the algorithm name alone.</p>

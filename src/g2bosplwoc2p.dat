@@ -1,0 +1,53 @@
+
+<p>File integrity monitoring, often shortened to FIM, detects changes to selected files, directories, configurations, and system objects. It can reveal unauthorized modification, accidental edits, failed deployments, malware activity, or configuration drift. A useful system combines cryptographic hashes with metadata, access context, baselines, alert rules, and an investigation process.</p>
+<h2>What a file hash contributes</h2>
+<p>A hash such as SHA-256 creates a compact digest of file contents. If the bytes change, the digest should change. This gives monitoring tools a reliable content signal without storing a second complete copy of every file.</p>
+<p>MD5 may still appear in older FIM products, but SHA-256 or another current hash is a better choice when attackers could manipulate monitored files. See <a href="is-md5-safe.html">is MD5 still safe</a> for the threat-model distinction.</p>
+<h2>Hashes are only one part of a baseline</h2>
+<p>Record file path, size, owner, permissions, timestamps, extended attributes, symbolic-link target, and package or deployment source where relevant. A file can retain identical content while permissions change to create risk. Conversely, a legitimate update may change a hash but remain authorized.</p>
+<p>Baselines should be created from a known-good state. Hashing an already compromised server creates a precise record of the wrong files.</p>
+<h2>Choose what to monitor</h2>
+<p>Start with security-critical and operationally stable targets: authentication configuration, startup scripts, web roots, binaries, scheduled tasks, service definitions, firewall rules, certificate stores, deployment manifests, and audit settings.</p>
+<p>Monitoring every temporary file creates noise and cost. Exclude caches, logs, sessions, build outputs, and frequently changing application data unless a specific use case justifies them.</p>
+<h2>Real-time and scheduled monitoring</h2>
+<p>Real-time monitoring uses operating-system events to detect changes quickly. It can miss events during agent downtime or overflow under heavy activity. Scheduled scans recalculate state periodically and can catch missed changes, but detection is delayed.</p>
+<p>High-value systems often use both: event-driven alerts for speed and recurring full scans for assurance.</p>
+<h2>Protect the baseline</h2>
+<p>If an attacker can alter both a file and its expected hash, monitoring may report no difference. Store baselines and signing keys away from the monitored host or protect them through a central service with strict access control.</p>
+<p>Consider signing baseline manifests. Use authenticated transport between agents and the monitoring server. Audit baseline updates separately from ordinary file changes.</p>
+<h2>Handle legitimate changes</h2>
+<p>Integrate FIM with change management and deployment systems. An approved package update should create an expected set of changes with a ticket, actor, version, and time window. Unexpected differences outside that context deserve more attention.</p>
+<p>Do not auto-approve a new baseline immediately after every change. That can teach the system to trust malicious modifications. Require validation and preserve the previous state for comparison.</p>
+<h2>Alert quality matters more than alert volume</h2>
+<ul>
+<li>Prioritize executable, authentication, and startup changes.</li>
+<li>Include who or what process changed the file when available.</li>
+<li>Group related deployment changes into one event.</li>
+<li>Suppress known noisy paths.</li>
+<li>Escalate repeated or out-of-window changes.</li>
+<li>Provide the old and new hashes plus relevant metadata.</li>
+</ul>
+<p>A flood of low-value alerts trains teams to ignore the tool. Tune based on investigation outcomes.</p>
+<h2>What to do after an unexpected change</h2>
+<ol>
+<li>Preserve evidence and avoid overwriting the changed file.</li>
+<li>Confirm whether a deployment, administrator, or package manager made the change.</li>
+<li>Compare the file with a trusted package or source repository.</li>
+<li>Review process, account, network, and audit logs around the event.</li>
+<li>Check related systems for the same indicator.</li>
+<li>Contain the host if malicious activity is plausible.</li>
+<li>Restore from a known-good source only after understanding the cause.</li>
+</ol>
+<h2>FIM in containers and cloud environments</h2>
+<p>Immutable images change the monitoring model. Instead of accepting live edits, teams can compare running containers with signed images and replace altered instances. Monitor image digests, deployment manifests, admission policies, mounted secrets, host configuration, and persistent volumes.</p>
+<p>Short-lived infrastructure still needs central evidence because the affected instance may disappear before investigation.</p>
+<h2>FIM for websites</h2>
+<p>Monitor server-side code, templates, configuration, scheduled jobs, and public assets that should change only through deployment. Web shells often appear as new or modified scripts. Also monitor permissions and ownership, not only content.</p>
+<p>Keep the monitoring agent and baseline outside the web application’s write permissions. A compromised application account should not be able to approve its own changes.</p>
+<h2>Performance planning</h2>
+<p>Hashing large files consumes I/O and CPU. Schedule full scans to avoid peak workloads, use incremental events, and prioritize critical paths. Do not truncate digests to save storage; metadata usually consumes more space than a full SHA-256 value.</p>
+<p>Handle files that change during reading. A tool should detect inconsistent size or timestamps and retry rather than recording a misleading digest.</p>
+<h2>Test the control</h2>
+<p>Create authorized test changes, unauthorized simulated changes, permission-only changes, rapid bursts, agent outages, and baseline-tampering attempts. Confirm alerts reach the responsible team and contain enough detail to act. Test restoration and evidence retention.</p>
+<h2>The practical goal</h2>
+<p>File integrity monitoring should tell you when important system state changes outside an expected process. Strong hashes make content comparison dependable, but secure baselines, metadata, authorization context, tuning, and response procedures make the system useful. Build around the files that matter, protect the reference state, and measure whether alerts lead to timely investigation.</p>

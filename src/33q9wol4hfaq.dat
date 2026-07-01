@@ -1,0 +1,48 @@
+
+<p>scrypt and Argon2id are memory-hard password functions designed to make large-scale guessing expensive. Both are stronger choices than fast hashes such as MD5 or SHA-256. Argon2id is generally the preferred option for new systems with good library support, while scrypt remains a credible alternative and is widely implemented in operating systems, libraries, and file formats.</p>
+<h2>Why both algorithms use memory</h2>
+<p>Attackers gain speed by running many guesses in parallel on GPUs or specialized hardware. A function that requires meaningful memory for each guess limits how many operations fit on a device and makes hardware trade-offs more expensive.</p>
+<p>Memory hardness is not absolute. Attackers can sometimes reduce memory at the cost of more computation. Good parameters aim to make those trade-offs unattractive while keeping legitimate authentication reliable.</p>
+<h2>scrypt’s design</h2>
+<p>scrypt was introduced for password-based key derivation and is standardized in RFC 7914. Its main parameters control CPU and memory cost, block size, and parallelization. Correct combinations matter because they determine resource use and implementation limits.</p>
+<p>scrypt has a mature deployment history and broad support. Misconfigured values, integer overflow, excessive resource requests, or weak defaults can still undermine it, so use a high-level maintained library rather than implementing the low-level function directly.</p>
+<h2>Argon2id’s design</h2>
+<p>Argon2id combines data-independent and data-dependent memory access. It exposes memory cost, time cost, and parallelism directly. The design and recommended profiles are documented in <a href="https://www.rfc-editor.org/rfc/rfc9106.html">RFC 9106</a>.</p>
+<p>Argon2id won the Password Hashing Competition and was designed with modern attack models and implementation concerns in mind. Its parameter interface is often easier for application teams to reason about than scrypt’s lower-level combination.</p>
+<h2>Security is more than the algorithm name</h2>
+<p>A weak Argon2id configuration can provide less protection than a strong scrypt configuration. An outdated scrypt library may behave differently from a current, reviewed implementation. The security comparison must include parameters, implementation, hardware, concurrency, salts, input handling, and rehashing.</p>
+<p>Both algorithms should use unique random salts and self-describing stored records.</p>
+<h2>Parameter tuning</h2>
+<h3>Start with memory</h3>
+<p>Choose a meaningful memory allocation that production systems can sustain under expected concurrent authentication. Measure container and serverless limits rather than relying only on physical host memory.</p>
+<h3>Add time cost</h3>
+<p>Increase computation until verification latency meets the organization’s target. Test login bursts, password resets, background migrations, and degraded infrastructure.</p>
+<h3>Review parallel behavior</h3>
+<p>Internal parallelism and external request concurrency are different. More lanes do not automatically improve security or production throughput. Benchmark the exact library and processor.</p>
+<h2>Denial-of-service considerations</h2>
+<p>Memory-hard functions consume defender resources too. Rate-limit unauthenticated requests, bound password size before hashing, and monitor memory pressure. Avoid allocating attacker-controlled parameter values from stored or transmitted data without validation.</p>
+<p>Do not respond to capacity pressure by reducing settings silently. Revisit architecture, scaling, queues, and online controls.</p>
+<h2>Platform and compliance constraints</h2>
+<p>Some frameworks provide first-class Argon2id support; others include scrypt in standard libraries. Managed identity services may support neither directly. Certain compliance programs favor PBKDF2 implementations validated under specific modules.</p>
+<p>Choose the strongest option that your environment can implement and operate correctly, then document why. A custom native extension with poor maintenance may be riskier than a strong supported scrypt implementation.</p>
+<h2>Migration between the two</h2>
+<p>Use opportunistic rehashing. Verify the old scrypt record at login, then create an Argon2id record from the submitted password. Preserve explicit algorithm markers. Inactive accounts can be reset later according to policy.</p>
+<p>There is rarely a need for an emergency move from well-configured scrypt solely because Argon2id exists. Prioritize MD5, SHA-1, unsalted hashes, low-cost bcrypt, and clearly weak configurations first.</p>
+<h2>Storage format and interoperability</h2>
+<p>Do not store only the derived bytes without the salt and parameters. Prefer an encoded format that identifies the algorithm and preserves every setting needed for verification. When several services authenticate the same users, test that all implementations interpret parameter units, Base64 encoding, and input bytes consistently. A migration can fail operationally even when each library is secure on its own.</p>
+<h2>Library evaluation checklist</h2>
+<ul>
+<li>Active maintenance and security response.</li>
+<li>High-level hash, verify, and needs-rehash functions.</li>
+<li>Automatic cryptographic salt generation.</li>
+<li>Self-describing output format.</li>
+<li>Protection against invalid or excessive parameters.</li>
+<li>Documented Unicode and length behavior.</li>
+<li>Test vectors and cross-platform consistency.</li>
+</ul>
+<h2>When to choose scrypt</h2>
+<p>scrypt is reasonable when the platform provides a trusted built-in implementation, Argon2id support is immature, or compatibility with an existing format is required. Tune it carefully and keep a migration path.</p>
+<h2>When to choose Argon2id</h2>
+<p>Argon2id is the stronger default for new application password storage when a mature library is available. Its modern design and clear memory, time, and parallelism controls fit current guidance. The <a href="argon2id-password-hashing-guide.html">Argon2id guide for developers</a> covers implementation and benchmarking in detail.</p>
+<h2>The conclusion</h2>
+<p>Both scrypt and Argon2id can make stolen password verifiers expensive to attack. Argon2id usually wins the new-system decision, while scrypt remains valid when implemented and tuned well. Focus less on labels and more on measurable cost, unique salts, maintained libraries, safe failure behavior, and the ability to raise parameters over time.</p>

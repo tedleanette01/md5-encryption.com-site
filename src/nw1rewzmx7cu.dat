@@ -1,0 +1,48 @@
+
+<p>Holiday promotions, new-device setups, and year-end upgrades often lead to a burst of software downloads. That makes December a good time to slow down before running an installer. A checksum can detect changed bytes, while a digital signature can connect those bytes to a trusted publisher key. Using both gives stronger evidence than trusting a file name, download button, or mirror alone.</p>
+<h2>Begin at the publisher’s official release page</h2>
+<p>Search results and advertisements can lead to look-alike domains. Go through the vendor’s known website, repository, package manager, or documentation. Confirm the product, version, operating system, and processor architecture before downloading.</p>
+<p>A secure HTTPS connection protects the session to the site, but it does not guarantee that the site itself has not been compromised. That is why independent signatures and trusted package metadata remain useful.</p>
+<h2>Choose the strongest available checksum</h2>
+<p>Prefer SHA-256, SHA-384, SHA-512, or a current SHA-3 option. Avoid relying on MD5 or SHA-1 when an attacker could replace the package. A legacy MD5 value can still detect a broken download, but it should not be the final security control.</p>
+<p>Save the checksum page or manifest and note where it came from. If possible, obtain it through a different trusted channel from the binary mirror.</p>
+<h2>Calculate the local checksum</h2>
+<p>On Windows PowerShell, run Get-FileHash .\installer.exe -Algorithm SHA256. On macOS, run shasum -a 256 installer.dmg. On Linux, run sha256sum package.tar.xz. Replace the file names with the actual download.</p>
+<p>Compare the complete digest. Letter case is irrelevant in hexadecimal, but every character must match. The earlier <a href="verify-file-checksum-windows-macos-linux.html">cross-platform checksum tutorial</a> provides troubleshooting and automation guidance.</p>
+<h2>Verify a signed checksum manifest</h2>
+<p>Many open-source projects publish a checksum file and a detached signature. First verify the signature over the manifest using the expected project key. Then use the verified checksum values to check individual files.</p>
+<p>Do not import a key and trust it only because it has the project’s name. Compare the full fingerprint with a value published through an established official channel. Key servers distribute keys; they do not prove identity by themselves.</p>
+<h2>Use platform code-signing information</h2>
+<p>Windows installers may carry Authenticode signatures. macOS applications may be signed and notarized. Linux distributions commonly use signed repository metadata and packages. These systems automate parts of key trust and integrity checking.</p>
+<p>Inspect the signer name, certificate status, timestamp, and warnings. A valid signature from an unknown publisher is not the same as a valid signature from the vendor you intended to use.</p>
+<h2>Package managers are often safer than manual downloads</h2>
+<p>A well-configured package manager verifies signed repository metadata and package integrity. It also provides repeatable updates and removes the need to browse for installers. Use official repositories and review third-party repository keys before adding them.</p>
+<p>Do not disable signature checks to work around a temporary repository error. A verification failure may indicate stale metadata, a clock problem, a changed key, corruption, or an attack. Diagnose the cause.</p>
+<h2>What to do when a checksum fails</h2>
+<ol>
+<li>Do not run or extract the file.</li>
+<li>Confirm the expected checksum belongs to the same version and architecture.</li>
+<li>Calculate the digest again using the specified algorithm.</li>
+<li>Download from a different official mirror.</li>
+<li>Check release notes for a republished package or corrected manifest.</li>
+<li>Report persistent mismatches to the publisher.</li>
+</ol>
+<p>Renaming a file does not change its hash, but extracting, recompressing, or line-ending conversion does. Verify the exact object the publisher hashed.</p>
+<h2>What to do when a signature fails</h2>
+<p>Check that you have the correct public key and that the signature matches the exact file or manifest. Review expiration and revocation information. Confirm your system clock. If the project rotated keys, validate the transition through an already trusted channel.</p>
+<p>Never treat a failed signature as a minor warning and continue automatically. Security controls that fail open provide little protection.</p>
+<h2>Common seasonal traps</h2>
+<ul>
+<li>Fake codec or media-player downloads linked from streaming pages.</li>
+<li>“Driver update” utilities from unrelated vendors.</li>
+<li>Cracked commercial software bundled with malware.</li>
+<li>Browser extensions that imitate popular shopping or coupon tools.</li>
+<li>Old installers copied from unofficial archive sites.</li>
+<li>QR codes or shortened links that hide the destination domain.</li>
+</ul>
+<p>Verification cannot make pirated or unknown software trustworthy when no legitimate publisher checksum or key exists. The safest action is to obtain the software through an authorized channel.</p>
+<h2>Keep evidence for important systems</h2>
+<p>For firmware, production tools, and long-lived installers, record the source URL, download date, version, file size, checksum algorithm, expected value, calculated value, signature result, and signer identity. Preserve signed manifests with the archived binary.</p>
+<p>This helps incident response determine exactly what was installed and whether it matched a known release.</p>
+<h2>A five-minute verification habit</h2>
+<p>Use the official source, calculate a current checksum, verify the publisher signature, inspect any warnings, and stop on mismatch. These steps are especially worthwhile during busy upgrade periods when people rush through prompts. Checksums establish byte integrity; signatures establish approval by a trusted key. Together, they make software installation a deliberate process rather than a guess based on appearance.</p>

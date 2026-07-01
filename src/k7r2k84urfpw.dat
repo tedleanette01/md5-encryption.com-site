@@ -1,0 +1,34 @@
+
+<p>A hash collision occurs when two different inputs produce the same hash value. Collisions are mathematically unavoidable because a hash function accepts an unlimited number of possible inputs but returns one of a limited number of fixed-length outputs. Good cryptographic design does not eliminate collisions; it makes finding a useful collision so difficult that attackers cannot do it in practice.</p>
+<h2>Why fixed-length output guarantees collisions</h2>
+<p>Imagine a simplified hash that produces only an eight-bit result. It has 256 possible outputs. If you hash more than 256 different messages, at least two must share a result. Real hashes have much larger output spaces: MD5 has 128 bits, SHA-1 has 160 bits, and SHA-256 has 256 bits. The same principle still applies, but the search space is vastly larger.</p>
+<p>The important question is not whether collisions exist. They do. The question is how much work an attacker needs to find one and whether the attacker can control the colliding inputs in a useful way.</p>
+<h2>The birthday effect changes the numbers</h2>
+<p>To find any two matching outputs in an ideal n-bit hash, the expected work is around 2 to the power of n divided by two, not 2 to the power of n. This is related to the birthday paradox: in a group of only 23 people, the chance that two share a birthday is already above 50 percent, even though there are 365 possible birthdays.</p>
+<p>For an ideal 128-bit hash, generic collision work is therefore around 2 to the power of 64 evaluations. For an ideal 256-bit hash, it is around 2 to the power of 128. Those are theoretical baselines. Weaknesses in an algorithm can reduce the required work far below the generic level, which is exactly what happened to MD5.</p>
+<h2>Collision attacks are not all the same</h2>
+<h3>Ordinary collisions</h3>
+<p>An attacker looks for any two different messages that hash to the same value. The messages may be meaningless, but the result proves that the function does not provide its intended collision security.</p>
+<h3>Chosen-prefix collisions</h3>
+<p>The attacker starts with two different chosen prefixes, then calculates additional blocks so the completed files share a hash. This is much more dangerous because each prefix can carry different visible meaning. Research from the <a href="https://hashclash.win.tue.nl/">HashClash project</a> demonstrated practical chosen-prefix techniques for MD5.</p>
+<h3>Preimage and second-preimage attacks</h3>
+<p>A preimage attack starts with a target digest and tries to find any input that produces it. A second-preimage attack starts with one specific message and tries to find a different message with the same digest. These are different goals from finding any collision, and they can have very different difficulty. Saying that MD5 has collisions does not mean an attacker can instantly recover every input from an MD5 value.</p>
+<h2>Why collisions break trust systems</h2>
+<p>Collision resistance matters when a hash is used inside a digital signature, certificate workflow, content identifier, or approval process. Suppose an organization reviews and signs a harmless document. If an attacker can create a malicious document with the same hash, the signature over the harmless digest may also appear valid for the malicious file, depending on the surrounding format and controls.</p>
+<p>This is not only theoretical history. Researchers have used MD5 collision techniques in certificate-related demonstrations, and in 2017 the SHAttered research team produced two different PDF files with the same SHA-1 digest. The <a href="https://shattered.io/static/shattered.pdf">published SHA-1 collision paper</a> documents that work.</p>
+<h2>Accidental collisions versus engineered collisions</h2>
+<p>For ordinary file checking, users often worry that two unrelated files might accidentally share a digest. With a strong 256-bit hash, that probability is negligible at normal scales. Operational mistakes are far more likely: comparing the wrong version, copying an incomplete value, hashing a compressed file instead of its extracted content, or trusting a checksum from an untrusted page.</p>
+<p>Engineered collisions are different. An attacker is actively searching for structure that makes two selected files collide. A broken algorithm can make this practical even when random accidental collisions remain unlikely. Security decisions must account for the attacker, not only random chance.</p>
+<h2>How MD5 and SHA-256 differ</h2>
+<p>MD5’s practical collision resistance is broken. You should not use it where an attacker can influence content and a matching hash would create trust. SHA-256 has no known practical full-round collision attack and remains a standard choice for modern integrity systems. See <a href="md5-vs-sha-256.html">the MD5 and SHA-256 comparison</a> for a direct decision guide.</p>
+<p>Using two weak hashes together does not automatically restore security. Concatenating MD5 and SHA-1, for example, creates a custom construction with complicated assumptions and poor interoperability. Use a current, reviewed algorithm and a standard protocol instead.</p>
+<h2>How developers should respond</h2>
+<ul>
+<li>Use SHA-256, SHA-384, SHA-512, SHA-3, or another current algorithm selected for the protocol.</li>
+<li>Do not use MD5 or SHA-1 for digital signatures, certificates, adversarial file verification, or new content-addressing designs.</li>
+<li>Verify authenticity with digital signatures or authenticated metadata, not a bare checksum alone.</li>
+<li>Store the algorithm name with every digest so future systems know how it was calculated.</li>
+<li>Plan migration before a legacy hash becomes a hard dependency across databases and APIs.</li>
+</ul>
+<h2>The practical lesson</h2>
+<p>A collision is not the same as decryption, password recovery, or finding the original file. It is a failure of uniqueness under attack. That distinction helps you judge risk correctly. MD5 can still catch accidental corruption in a controlled legacy workflow, but it cannot provide modern collision-based trust. When a hash protects a signature, software release, certificate, or security decision, use a current algorithm and an authenticated process around it.</p>

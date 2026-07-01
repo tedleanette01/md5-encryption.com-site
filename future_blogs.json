@@ -2,217 +2,271 @@
   {
     "title": "What Is MD5 Hashing and Why Is It Still Used?",
     "date": "2026-03-15",
-    "excerpt": "A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.",
-    "image": "ij8o35qwa8rp.bak",
-    "content_file": "ij8o35qwa8rp.dat",
+    "excerpt": "A beginner-friendly explanation of MD5 hashing, how it creates fixed-length digests, where it still appears, and why it should not be used for modern security.",
     "real_slug": "what-is-md5-hashing",
-    "internal_id": "ij8o35qwa8rp"
+    "internal_id": "fnzcw3pbmnw8",
+    "content_file": "fnzcw3pbmnw8.dat",
+    "image": "fnzcw3pbmnw8.bak"
   },
   {
     "title": "MD5 Encryption vs Hashing: What People Usually Mean",
     "date": "2026-04-18",
-    "excerpt": "Learn why people often say MD5 encryption, why that wording is technically wrong, and what hashing actually means in practice.",
-    "image": "69zw56nwgxfh.bak",
-    "content_file": "69zw56nwgxfh.dat",
+    "excerpt": "Learn why MD5 is a hashing algorithm rather than encryption, how hashing differs from reversible encryption, and why the distinction matters for developers.",
     "real_slug": "md5-encryption-vs-hashing",
-    "internal_id": "69zw56nwgxfh"
+    "internal_id": "6zjcgziqh5we",
+    "content_file": "6zjcgziqh5we.dat",
+    "image": "6zjcgziqh5we.bak"
   },
   {
     "title": "Can MD5 Be Decrypted? The Honest Answer",
     "date": "2026-05-15",
-    "excerpt": "A practical explanation of why MD5 cannot truly be decrypted, how lookup databases work, and why weak inputs are still easy to match.",
-    "image": "xoq5cr1lz7wj.bak",
-    "content_file": "xoq5cr1lz7wj.dat",
+    "excerpt": "A practical explanation of why MD5 cannot truly be decrypted, how lookup databases and password guessing work, and why weak inputs may still be identified.",
     "real_slug": "can-md5-be-decrypted",
-    "internal_id": "xoq5cr1lz7wj"
+    "internal_id": "ypji58wz9a6i",
+    "content_file": "ypji58wz9a6i.dat",
+    "image": "ypji58wz9a6i.bak"
   },
   {
     "title": "How an MD5 Checksum Helps Verify File Integrity",
     "date": "2026-06-11",
-    "excerpt": "Understand how MD5 checksums help detect changed or damaged files, and where checksum verification still makes sense today.",
-    "image": "ahwvbeum9duy.bak",
-    "content_file": "ahwvbeum9duy.dat",
+    "excerpt": "Understand how MD5 checksums detect changed or corrupted files, where they remain useful, and why SHA-256 is a better choice for new verification workflows.",
     "real_slug": "md5-checksum-file-integrity",
-    "internal_id": "ahwvbeum9duy"
+    "internal_id": "5yhkvn077cyp",
+    "content_file": "5yhkvn077cyp.dat",
+    "image": "5yhkvn077cyp.bak"
   },
   {
-    "title": "How to Verify File Checksums on Windows, macOS, and Linux",
-    "date": "2026-07-03",
-    "excerpt": "A simple cross-platform guide to checking file hashes on Windows, macOS, and Linux before trusting downloads or transferred files.",
-    "image": "3b6nr7gj316y.bak",
-    "content_file": "3b6nr7gj316y.dat",
-    "real_slug": "verify-file-checksums-windows-mac-linux",
-    "internal_id": "3b6nr7gj316y"
+    "title": "MD5 vs SHA-256: What Is the Difference?",
+    "date": "2026-06-24",
+    "excerpt": "Compare MD5 and SHA-256 by digest length, collision resistance, performance, and practical use to understand which algorithm belongs in modern systems.",
+    "real_slug": "md5-vs-sha-256",
+    "internal_id": "27rw4tod8ae9",
+    "content_file": "27rw4tod8ae9.dat",
+    "image": "27rw4tod8ae9.bak"
   },
   {
-    "title": "MD5 vs SHA-256: Which Hash Should You Use?",
-    "date": "2026-08-04",
-    "excerpt": "Compare MD5 and SHA-256 in plain language, including security strength, common use cases, and when older MD5 checksums are not enough.",
-    "image": "2uv1nv7ayvs3.bak",
-    "content_file": "2uv1nv7ayvs3.dat",
-    "real_slug": "md5-vs-sha256",
-    "internal_id": "2uv1nv7ayvs3"
+    "title": "How to Verify a File Checksum on Windows, macOS, and Linux",
+    "date": "2026-06-29",
+    "excerpt": "A practical guide to calculating and comparing file checksums with built-in tools on Windows, macOS, and Linux before installing or archiving downloads.",
+    "real_slug": "verify-file-checksum-windows-macos-linux",
+    "internal_id": "7rvxgdyjjhmi",
+    "content_file": "7rvxgdyjjhmi.dat",
+    "image": "7rvxgdyjjhmi.bak"
   },
   {
-    "title": "What Is SHA-256 and Why Is It Used So Often?",
-    "date": "2026-08-22",
-    "excerpt": "A practical introduction to SHA-256, why it became a common hashing standard, and how it differs from older algorithms like MD5.",
-    "image": "kit84yifbpcw.bak",
-    "content_file": "kit84yifbpcw.dat",
-    "real_slug": "what-is-sha256",
-    "internal_id": "kit84yifbpcw"
+    "title": "What Is a Hash Collision?",
+    "date": "2026-07-04",
+    "excerpt": "Learn how two different inputs can produce the same hash, why collisions are mathematically unavoidable, and why practical collision attacks make MD5 unsafe.",
+    "real_slug": "hash-collision-explained",
+    "internal_id": "k7r2k84urfpw",
+    "content_file": "k7r2k84urfpw.dat",
+    "image": "k7r2k84urfpw.bak"
   },
   {
-    "title": "SHA-1 vs MD5 vs SHA-256: A Practical Comparison",
-    "date": "2026-09-17",
-    "excerpt": "A clear comparison of SHA-1, MD5, and SHA-256, with guidance on which algorithms are outdated and which remain suitable for modern use.",
-    "image": "sqhxx1upzw2j.bak",
-    "content_file": "sqhxx1upzw2j.dat",
-    "real_slug": "sha1-vs-md5-vs-sha256",
-    "internal_id": "sqhxx1upzw2j"
+    "title": "Is MD5 Still Safe to Use in 2026?",
+    "date": "2026-07-16",
+    "excerpt": "A clear assessment of where MD5 may still appear in non-security workflows and where its collision weaknesses make it an unacceptable choice.",
+    "real_slug": "is-md5-safe",
+    "internal_id": "eniwfps84dfi",
+    "content_file": "eniwfps84dfi.dat",
+    "image": "eniwfps84dfi.bak"
   },
   {
-    "title": "Password Hashing vs Encryption: What Developers Should Know",
-    "date": "2026-11-04",
-    "excerpt": "Learn the difference between password hashing and encryption, why passwords should not be stored in reversible form, and what safer storage means.",
-    "image": "4k2w1e1ss0u0.bak",
-    "content_file": "4k2w1e1ss0u0.dat",
+    "title": "Why MD5 Should Never Be Used for Passwords",
+    "date": "2026-07-27",
+    "excerpt": "Understand why MD5 is too fast and structurally unsuitable for password storage, and why modern systems should use Argon2id, bcrypt, or scrypt instead.",
+    "real_slug": "why-md5-not-for-passwords",
+    "internal_id": "ppty19yqzm28",
+    "content_file": "ppty19yqzm28.dat",
+    "image": "ppty19yqzm28.bak"
+  },
+  {
+    "title": "Password Hashing vs Encryption: What Developers Need to Know",
+    "date": "2026-08-03",
+    "excerpt": "Learn when data should be encrypted for later recovery and when passwords should be protected with one-way, purpose-built password hashing.",
     "real_slug": "password-hashing-vs-encryption",
-    "internal_id": "4k2w1e1ss0u0"
+    "internal_id": "2vzu6fwyp8wr",
+    "content_file": "2vzu6fwyp8wr.dat",
+    "image": "2vzu6fwyp8wr.bak"
   },
   {
-    "title": "Why MD5 Is Bad for Passwords, Even With a Salt",
-    "date": "2026-11-13",
-    "excerpt": "A practical explanation of why MD5 is unsuitable for password storage, even when salts are used, and what developers should use instead.",
-    "image": "4jr49f0t5rb4.bak",
-    "content_file": "4jr49f0t5rb4.dat",
-    "real_slug": "why-md5-is-bad-for-passwords",
-    "internal_id": "4jr49f0t5rb4"
-  },
-  {
-    "title": "Holiday Download Safety: How Checksums Help Avoid Bad Files",
-    "date": "2026-12-22",
-    "excerpt": "A seasonal guide to using checksums during holiday downloads, software installs, backups, and file transfers to reduce avoidable risks.",
-    "image": "mvh9xgjcruu6.bak",
-    "content_file": "mvh9xgjcruu6.dat",
-    "real_slug": "holiday-download-safety-checksums",
-    "internal_id": "mvh9xgjcruu6"
-  },
-  {
-    "title": "Bcrypt Password Hashing: A Practical Beginner Guide",
-    "date": "2027-01-10",
-    "excerpt": "A beginner-friendly guide to bcrypt, how it slows password attacks, and why it remains a practical choice for secure password storage.",
-    "image": "3jvz4pyp7ua1.bak",
-    "content_file": "3jvz4pyp7ua1.dat",
-    "real_slug": "bcrypt-password-hashing",
-    "internal_id": "3jvz4pyp7ua1"
-  },
-  {
-    "title": "Argon2id Password Hashing: What It Solves",
-    "date": "2027-03-09",
-    "excerpt": "Learn what Argon2id is, why modern password storage needs memory-hard hashing, and how it compares with older approaches.",
-    "image": "n505wcrxvr2n.bak",
-    "content_file": "n505wcrxvr2n.dat",
-    "real_slug": "argon2id-password-hashing",
-    "internal_id": "n505wcrxvr2n"
-  },
-  {
-    "title": "Password Salting Explained Without the Confusion",
-    "date": "2027-03-18",
-    "excerpt": "A clear guide to password salts, what they protect against, what they do not solve, and why they must be paired with proper hashing.",
-    "image": "c4i75alixev7.bak",
-    "content_file": "c4i75alixev7.dat",
+    "title": "What Is a Salt in Password Hashing?",
+    "date": "2026-08-14",
+    "excerpt": "Learn how unique random salts prevent identical passwords from creating identical stored records and reduce the effectiveness of precomputed attacks.",
     "real_slug": "password-salting-explained",
-    "internal_id": "c4i75alixev7"
+    "internal_id": "u8dtkk0iucnw",
+    "content_file": "u8dtkk0iucnw.dat",
+    "image": "u8dtkk0iucnw.bak"
   },
   {
-    "title": "How to Migrate Old MD5 Password Hashes Safely",
-    "date": "2027-04-17",
-    "excerpt": "A practical migration guide for systems that still contain MD5 password hashes, with a safer path toward bcrypt or Argon2id.",
-    "image": "94w43sl8b4ea.bak",
-    "content_file": "94w43sl8b4ea.dat",
-    "real_slug": "migrate-md5-password-hashes",
-    "internal_id": "94w43sl8b4ea"
+    "title": "Argon2id Password Hashing Guide for Developers",
+    "date": "2026-08-25",
+    "excerpt": "A developer-focused guide to Argon2id, including memory cost, time cost, parallelism, salts, parameter tuning, and secure password verification.",
+    "real_slug": "argon2id-password-hashing-guide",
+    "internal_id": "itbslf6ugvb2",
+    "content_file": "itbslf6ugvb2.dat",
+    "image": "itbslf6ugvb2.bak"
   },
   {
-    "title": "Python Hashlib Guide: MD5, SHA-256, and File Hashes",
-    "date": "2027-04-29",
-    "excerpt": "A practical Python hashlib guide for generating MD5 and SHA-256 hashes, checking files, and avoiding unsafe password-storage mistakes.",
-    "image": "rpiggo8ka9ux.bak",
-    "content_file": "rpiggo8ka9ux.dat",
-    "real_slug": "python-hashlib-md5-sha256",
-    "internal_id": "rpiggo8ka9ux"
+    "title": "bcrypt vs Argon2id: Which Should You Use?",
+    "date": "2026-09-07",
+    "excerpt": "Compare bcrypt and Argon2id by security properties, hardware resistance, input handling, compatibility, and suitability for new or existing applications.",
+    "real_slug": "bcrypt-vs-argon2id",
+    "internal_id": "thpu7kxyf4xh",
+    "content_file": "thpu7kxyf4xh.dat",
+    "image": "thpu7kxyf4xh.bak"
   },
   {
-    "title": "PHP Password Hashing: Why password_hash Beats MD5",
-    "date": "2027-05-04",
-    "excerpt": "Learn why PHP developers should use password_hash and password_verify instead of MD5 when storing and checking user passwords.",
-    "image": "pnyrpeer9pnx.bak",
-    "content_file": "pnyrpeer9pnx.dat",
-    "real_slug": "php-password-hash-guide",
-    "internal_id": "pnyrpeer9pnx"
+    "title": "SHA-256 vs SHA-3: What Developers Need to Know",
+    "date": "2026-09-18",
+    "excerpt": "Compare SHA-256 and SHA3-256, including their internal designs, digest sizes, security properties, interoperability, and appropriate use cases.",
+    "real_slug": "sha-256-vs-sha-3",
+    "internal_id": "02dt1bek227y",
+    "content_file": "02dt1bek227y.dat",
+    "image": "02dt1bek227y.bak"
   },
   {
-    "title": "Node.js Crypto Hashing Guide for Files and Text",
-    "date": "2027-06-26",
-    "excerpt": "A practical Node.js guide to hashing text and files with the crypto module, including where SHA-256 fits and where password hashing needs more.",
-    "image": "sg7stpbeiul3.bak",
-    "content_file": "sg7stpbeiul3.dat",
-    "real_slug": "nodejs-crypto-hashing-guide",
-    "internal_id": "sg7stpbeiul3"
+    "title": "Brute-Force vs Dictionary Attacks on Password Hashes",
+    "date": "2026-09-29",
+    "excerpt": "Learn how brute-force and dictionary attacks select password guesses, why human password habits matter, and how slow password hashing raises attack costs.",
+    "real_slug": "brute-force-vs-dictionary-attacks",
+    "internal_id": "ptcgqrvb4zee",
+    "content_file": "ptcgqrvb4zee.dat",
+    "image": "ptcgqrvb4zee.bak"
   },
   {
-    "title": "Year-End Backup Checksum Audit: A Practical Guide",
-    "date": "2027-12-02",
-    "excerpt": "A year-end guide to using checksums during backup reviews, archive checks, file migrations, and long-term data maintenance.",
-    "image": "2rv101afxp77.bak",
-    "content_file": "2rv101afxp77.dat",
-    "real_slug": "year-end-backup-checksum-audit",
-    "internal_id": "2rv101afxp77"
+    "title": "Can Two Different Files Have the Same MD5 Hash?",
+    "date": "2026-10-05",
+    "excerpt": "Explore why different files can share an MD5 digest, the difference between accidental and engineered collisions, and what a matching checksum actually proves.",
+    "real_slug": "can-two-files-have-same-md5-hash",
+    "internal_id": "784eub9kgwg5",
+    "content_file": "784eub9kgwg5.dat",
+    "image": "784eub9kgwg5.bak"
   },
   {
-    "title": "Checksum Mismatch: What It Means and How to Fix It",
-    "date": "2028-01-17",
-    "excerpt": "Learn what a checksum mismatch means, what usually causes it, and how to troubleshoot downloads, transfers, backups, and file changes.",
-    "image": "3xzharm347fs.bak",
-    "content_file": "3xzharm347fs.dat",
-    "real_slug": "checksum-mismatch-troubleshooting",
-    "internal_id": "3xzharm347fs"
+    "title": "Checksums vs Digital Signatures: What Does Each One Prove?",
+    "date": "2026-10-17",
+    "excerpt": "Understand why checksums detect changed data while digital signatures can also provide evidence about origin, authenticity, and publisher identity.",
+    "real_slug": "checksums-vs-digital-signatures",
+    "internal_id": "b2ba6lniqjox",
+    "content_file": "b2ba6lniqjox.dat",
+    "image": "b2ba6lniqjox.bak"
   },
   {
-    "title": "Hash Collisions Explained: Why They Matter",
-    "date": "2028-01-28",
-    "excerpt": "A practical explanation of hash collisions, why they weakened MD5 and SHA-1, and why collision resistance matters in security work.",
-    "image": "5yqq6ecnkxzp.bak",
-    "content_file": "5yqq6ecnkxzp.dat",
-    "real_slug": "hash-collisions-explained",
-    "internal_id": "5yqq6ecnkxzp"
+    "title": "MD5 vs SHA-1 vs SHA-256: A Practical Comparison",
+    "date": "2026-10-28",
+    "excerpt": "Compare three widely encountered hash algorithms and learn why MD5 and SHA-1 are unsuitable for collision-sensitive security while SHA-256 remains accepted.",
+    "real_slug": "md5-sha1-sha256-comparison",
+    "internal_id": "dn5ihzxi0tlu",
+    "content_file": "dn5ihzxi0tlu.dat",
+    "image": "dn5ihzxi0tlu.bak"
   },
   {
-    "title": "Rainbow Tables Explained and Why Salts Matter",
-    "date": "2028-01-30",
-    "excerpt": "A clear guide to rainbow tables, how they target unsalted password hashes, and why unique salts help defend against precomputed attacks.",
-    "image": "rwb6n0ulfp8o.bak",
-    "content_file": "rwb6n0ulfp8o.dat",
+    "title": "What Is a Rainbow Table and How Does It Attack Password Hashes?",
+    "date": "2026-11-02",
+    "excerpt": "Learn how rainbow tables trade preparation and storage for faster hash lookups, and why unique salts make precomputed password attacks less useful.",
     "real_slug": "rainbow-tables-explained",
-    "internal_id": "rwb6n0ulfp8o"
+    "internal_id": "df2ldbhuhjxq",
+    "content_file": "df2ldbhuhjxq.dat",
+    "image": "df2ldbhuhjxq.bak"
   },
   {
-    "title": "Windows CertUtil File Hash Guide for MD5 and SHA-256",
-    "date": "2028-02-18",
-    "excerpt": "A Windows-focused guide to using CertUtil for MD5 and SHA-256 file hashes, with practical advice for checking downloaded files.",
-    "image": "d1k7rmz5rm7q.bak",
-    "content_file": "d1k7rmz5rm7q.dat",
-    "real_slug": "windows-certutil-file-hash-guide",
-    "internal_id": "d1k7rmz5rm7q"
+    "title": "How Cryptographic Hash Functions Work",
+    "date": "2026-11-13",
+    "excerpt": "A clear technical introduction to fixed-length digests, determinism, avalanche behavior, preimage resistance, collision resistance, and common hashing applications.",
+    "real_slug": "how-cryptographic-hash-functions-work",
+    "internal_id": "50f7z3xxbu7t",
+    "content_file": "50f7z3xxbu7t.dat",
+    "image": "50f7z3xxbu7t.bak"
   },
   {
-    "title": "Secure Hashing Checklist for Developers and Site Owners",
-    "date": "2028-02-22",
-    "excerpt": "A final practical checklist for choosing hash algorithms, verifying files, storing passwords safely, and avoiding outdated MD5-based habits.",
-    "image": "glghijl7ykky.bak",
-    "content_file": "glghijl7ykky.dat",
-    "real_slug": "secure-hashing-checklist",
-    "internal_id": "glghijl7ykky"
+    "title": "Common Password-Hashing Mistakes Developers Still Make",
+    "date": "2026-11-26",
+    "excerpt": "Review common password-storage failures, including fast hashes, reused salts, weak parameters, truncated outputs, custom schemes, and unsafe migration practices.",
+    "real_slug": "password-hashing-mistakes",
+    "internal_id": "ukn91wnrs25v",
+    "content_file": "ukn91wnrs25v.dat",
+    "image": "ukn91wnrs25v.bak"
+  },
+  {
+    "title": "How to Store Passwords Securely in a Database",
+    "date": "2026-12-06",
+    "excerpt": "A practical password-storage workflow covering modern hashing algorithms, unique salts, tuned parameters, secure verification, rehashing, and breach preparation.",
+    "real_slug": "secure-password-storage-guide",
+    "internal_id": "udg9xdei6egn",
+    "content_file": "udg9xdei6egn.dat",
+    "image": "udg9xdei6egn.bak"
+  },
+  {
+    "title": "How to Verify Software Downloads with Checksums and Signatures",
+    "date": "2026-12-15",
+    "excerpt": "Learn how checksums and digital signatures work together to verify downloaded installers, operating-system images, firmware, and software packages.",
+    "real_slug": "verify-software-downloads-checksums-signatures",
+    "internal_id": "nw1rewzmx7cu",
+    "content_file": "nw1rewzmx7cu.dat",
+    "image": "nw1rewzmx7cu.bak"
+  },
+  {
+    "title": "Year-End Hashing Security Audit for Development Teams",
+    "date": "2026-12-27",
+    "excerpt": "A year-end review process for finding outdated hashes, weak password settings, unverified releases, exposed secrets, and cryptographic technical debt.",
+    "real_slug": "year-end-hashing-security-audit",
+    "internal_id": "h5w3g1696t74",
+    "content_file": "h5w3g1696t74.dat",
+    "image": "h5w3g1696t74.bak"
+  },
+  {
+    "title": "File Integrity Monitoring: A Practical Guide",
+    "date": "2027-01-08",
+    "excerpt": "Learn how file integrity monitoring detects unauthorized or accidental changes to files, directories, configurations, and critical system objects.",
+    "real_slug": "file-integrity-monitoring-guide",
+    "internal_id": "g2bosplwoc2p",
+    "content_file": "g2bosplwoc2p.dat",
+    "image": "g2bosplwoc2p.bak"
+  },
+  {
+    "title": "Hashing Security Checklist for Developers in 2027",
+    "date": "2027-01-19",
+    "excerpt": "A practical 2027 checklist for reviewing password hashing, file verification, API authentication, digital signatures, algorithm choices, and migration plans.",
+    "real_slug": "hashing-security-checklist-2027",
+    "internal_id": "3to9chbs7mdp",
+    "content_file": "3to9chbs7mdp.dat",
+    "image": "3to9chbs7mdp.bak"
+  },
+  {
+    "title": "HMAC vs Hash: When Do You Need a Secret Key?",
+    "date": "2027-01-30",
+    "excerpt": "Learn how HMAC combines a cryptographic hash with a secret key to authenticate messages, API requests, webhooks, and other transmitted data.",
+    "real_slug": "hmac-vs-hash",
+    "internal_id": "3dvw58snho2k",
+    "content_file": "3dvw58snho2k.dat",
+    "image": "3dvw58snho2k.bak"
+  },
+  {
+    "title": "How to Migrate a Database Away from MD5 Password Hashes",
+    "date": "2027-02-04",
+    "excerpt": "A staged migration guide covering login-based rehashing, algorithm versioning, password resets, legacy account handling, and safe removal of MD5 records.",
+    "real_slug": "migrate-md5-password-hashes",
+    "internal_id": "a7q3rcv7p3si",
+    "content_file": "a7q3rcv7p3si.dat",
+    "image": "a7q3rcv7p3si.bak"
+  },
+  {
+    "title": "What Is a Password Pepper and Should You Use One?",
+    "date": "2027-02-16",
+    "excerpt": "Learn how a password pepper differs from a salt, where the secret should be stored, and when it can add another layer of protection.",
+    "real_slug": "password-pepper-explained",
+    "internal_id": "u8n7jxxvxmco",
+    "content_file": "u8n7jxxvxmco.dat",
+    "image": "u8n7jxxvxmco.bak"
+  },
+  {
+    "title": "scrypt vs Argon2id for Password Hashing",
+    "date": "2027-02-25",
+    "excerpt": "Compare two memory-hard password functions by security model, parameter tuning, platform support, operational requirements, and suitability for new applications.",
+    "real_slug": "scrypt-vs-argon2id",
+    "internal_id": "33q9wol4hfaq",
+    "content_file": "33q9wol4hfaq.dat",
+    "image": "33q9wol4hfaq.bak"
   }
 ]

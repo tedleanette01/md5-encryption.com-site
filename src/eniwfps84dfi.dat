@@ -1,0 +1,34 @@
+
+<p>MD5 is not safe for modern cryptographic security, but that statement needs context. The algorithm is broken for collision resistance, unsuitable for password storage, and inappropriate for digital signatures or hostile file-verification scenarios. It can still serve limited non-security roles, such as identifying accidental changes in data you control or matching a legacy checksum. The correct decision depends on what failure would mean and whether an attacker can influence the input.</p>
+<h2>Start with the threat model</h2>
+<p>Ask who creates the data, who publishes the expected digest, and what happens when the values match. If your own backup system calculates MD5 before and after a transfer on an isolated network, the main concern may be random corruption. If a public download page uses MD5 to tell users that an executable is authentic, the concern includes deliberate replacement and collision attacks. Those are very different environments.</p>
+<p>A hash does not become safe or unsafe in isolation. Its security property must match the job. MD5 no longer offers dependable collision resistance, so any job that depends on attackers being unable to create matching files needs another algorithm.</p>
+<h2>Uses you should reject</h2>
+<h3>Password databases</h3>
+<p>MD5 is extremely fast and has no built-in salt or work factor. Attackers who steal an MD5 password database can test guesses at high speed with commodity hardware. Even salted MD5 remains too cheap. Passwords require a dedicated, adjustable function such as Argon2id, scrypt, bcrypt, or a standards-compliant PBKDF2 configuration.</p>
+<h3>Digital signatures and certificates</h3>
+<p>A signature commonly signs a digest rather than an entire large file directly. If two different messages can be made to share that digest, the signature’s meaning can fail. MD5 collision research has shown why this is not an acceptable theoretical risk. Modern signature systems use approved, collision-resistant hashes and current signature algorithms.</p>
+<h3>Security-sensitive download verification</h3>
+<p>An MD5 match can detect a broken transfer, but it should not be the sole protection against a maliciously replaced installer, firmware image, or update package. Prefer SHA-256 or stronger, and verify a publisher signature when authenticity matters. The practical commands in <a href="verify-file-checksum-windows-macos-linux.html">the file-checksum guide</a> show how to calculate current checksums on common operating systems.</p>
+<h3>New API authentication designs</h3>
+<p>Do not invent request-signing schemes that concatenate a secret with MD5. Such designs can suffer from weak algorithms, ambiguous encoding, replay problems, and construction errors. Use a standard protocol or HMAC with a current hash, defined canonicalization, timestamps or nonces, and safe key handling.</p>
+<h2>Where MD5 may remain acceptable</h2>
+<p>A legacy application may use MD5 as a quick non-adversarial identifier, cache key, database lookup value, or duplicate-file hint. In these cases, a collision should not grant authorization, approve code, or overwrite valuable content without further checks. The system should be able to tolerate a collision as an ordinary data-quality issue.</p>
+<p>MD5 may also appear in old archives, forensic collections, malware databases, and published historical records. Recalculating it can help match those records. Keep the original value for compatibility, but add SHA-256 for future verification and label both algorithms explicitly.</p>
+<h2>Why “it has worked for years” is not evidence</h2>
+<p>Legacy systems often appear stable because no one has tested the failure condition. A checksum column may quietly control deduplication, object replacement, synchronization, or trust decisions added years after the original design. Review every place the digest is consumed, not only where it is generated.</p>
+<p>Also check for truncation. Storing only part of an MD5 value reduces the output space further and increases accidental collision risk. A system that keeps eight hexadecimal characters has only 32 bits of output, making collisions realistic at modest data volumes even without cryptanalytic attacks.</p>
+<h2>A simple 2026 decision table</h2>
+<ul>
+<li>Accidental error detection on trusted internal data: MD5 may work, but SHA-256 is usually an easy improvement.</li>
+<li>Matching an old published MD5 value: acceptable as a legacy comparison, not as proof of authenticity.</li>
+<li>Passwords, API secrets, tokens, or recovery codes: do not use MD5.</li>
+<li>Digital signatures, certificates, signed documents, or software releases: do not use MD5.</li>
+<li>New file-integrity systems: use SHA-256 or another current approved algorithm.</li>
+<li>Data controlled by a possible attacker: assume MD5 is unsafe.</li>
+</ul>
+<h2>How to migrate without breaking everything</h2>
+<p>Inventory every field, protocol, script, and external integration that stores or exchanges MD5. Add an algorithm identifier instead of assuming every digest has the same format. During a transition, calculate both MD5 and SHA-256 where compatibility requires the old value. Make new security decisions with SHA-256, then retire MD5 consumers in stages.</p>
+<p>For content stores, consider a versioned identifier such as sha256: followed by the full digest. For database records, add new columns rather than silently replacing values that external systems may reference. Test backups, restore tools, and audit exports before removing the old field.</p>
+<h2>The honest answer</h2>
+<p>MD5 is safe only for narrow, non-adversarial compatibility tasks where a collision has no security consequence. It is not a modern security primitive. If you are designing a new system, choose a current hash. If you maintain a legacy system, document why MD5 remains, add a stronger digest, and prevent the old value from making authorization or authenticity decisions. That approach respects MD5’s limited practical uses without repeating the myth that it still protects passwords or trusted software.</p>

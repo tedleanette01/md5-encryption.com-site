@@ -1,0 +1,66 @@
+
+<p>Hashing appears in authentication, software delivery, APIs, file storage, signatures, and data pipelines. The same function can be appropriate in one role and dangerous in another. This 2027 checklist helps teams review purpose, algorithm choice, parameters, key handling, migration, and failure behavior without treating every digest as the same control.</p>
+<h2>First identify the security claim</h2>
+<ul>
+<li>File checksum: do these bytes match an expected value?</li>
+<li>Password verifier: can the user prove knowledge of a password?</li>
+<li>Message authentication: did a holder of a shared key create this message?</li>
+<li>Digital signature: did a holder of a private key approve this data?</li>
+<li>Content identifier: can the system refer to data by digest?</li>
+<li>Duplicate hint: are two objects likely to have the same content?</li>
+</ul>
+<p>Choose the construction after stating the claim. A plain SHA-256 checksum cannot replace HMAC, and HMAC cannot provide public verification without sharing signing power.</p>
+<h2>Retire weak algorithms from security decisions</h2>
+<p>Do not create new MD5 or SHA-1 dependencies for signatures, hostile file verification, certificates, or trusted content identifiers. Preserve old values only where historical matching or protocol compatibility requires them. Add a current digest and move the trust decision.</p>
+<p>NIST guidance continues to direct users toward SHA-2 and SHA-3 rather than SHA-1. Review vendor roadmaps when a legacy protocol remains unavoidable.</p>
+<h2>Use SHA-256 or a current alternative for checksums</h2>
+<p>Store the algorithm name and full digest. Obtain expected values from a trusted source. For public software, pair checksums with digital signatures or signed repository metadata. Do not compare only the first few characters.</p>
+<p>SHA-3 is a valid alternative when a protocol requires it or design diversity is useful. Do not assume that “Keccak-256” always means standardized SHA3-256.</p>
+<h2>Use password-specific functions</h2>
+<p>Prefer Argon2id for new systems with mature support. Consider scrypt when it fits the platform, bcrypt for maintained legacy systems, or PBKDF2 where required. Use unique random salts and store self-describing records.</p>
+<p>Benchmark cost settings on production-class hardware. Rehash after successful login when records become outdated. Never store plain MD5, SHA-1, SHA-256, or SHA-3 password digests.</p>
+<h2>Review long-password and Unicode behavior</h2>
+<p>Confirm byte limits, normalization policy, encoding, and truncation behavior. bcrypt’s common 72-byte boundary requires attention. Do not transform passwords inconsistently across registration, login, mobile, imports, and resets.</p>
+<p>Apply request-size limits before expensive hashing to reduce denial-of-service risk, but support useful long passphrases and password-manager output.</p>
+<h2>Use HMAC for shared-secret authentication</h2>
+<p>Do not build hash(secret || message) or hash(message || secret). Use HMAC-SHA-256 or the protocol-defined construction. Canonicalize messages precisely, include replay protection, version keys, and compare values through a safe library function.</p>
+<p>Separate HMAC keys by service and purpose. Store them in a protected secret-management system rather than source code or public configuration.</p>
+<h2>Use digital signatures for public verification</h2>
+<p>Follow a current signature standard and library. Protect private keys, distribute public-key trust through established channels, and verify signer identity, validity, and revocation state. Signature verification should fail closed.</p>
+<p>For release workflows, sign a manifest containing file names, versions, sizes, and SHA-256 digests.</p>
+<h2>Prevent accidental truncation</h2>
+<p>Check database columns, API fields, log formats, and user interfaces. A full SHA-256 digest needs 64 hexadecimal characters, but encoded and versioned records may be longer. Password hashes must preserve the entire library output.</p>
+<p>If output is intentionally truncated by a standard, document the resulting security level and expected number of objects or requests.</p>
+<h2>Centralize cryptographic operations</h2>
+<p>Provide approved wrappers or services for password hashing, HMAC, checksums, and signatures. Remove duplicate helpers and forbid deprecated algorithms in new code through static analysis or policy checks.</p>
+<p>Centralization should not hide parameters completely. Teams need versioned formats, documentation, metrics, and a way to migrate safely.</p>
+<h2>Validate dependencies and modules</h2>
+<ul>
+<li>Use maintained cryptographic libraries.</li>
+<li>Track security advisories and platform changes.</li>
+<li>Confirm compliance requirements apply to the exact deployment.</li>
+<li>Run known test vectors.</li>
+<li>Test backup, restore, and cross-service compatibility.</li>
+<li>Review hardware acceleration and side-channel considerations where relevant.</li>
+</ul>
+<h2>Design algorithm agility without unsafe fallback</h2>
+<p>Store explicit algorithm identifiers and versions. Support old records only when marked as old. Do not try weaker algorithms automatically after a modern verification failure. Set retirement dates and migration metrics.</p>
+<p>Agility means controlled change, not accepting every algorithm forever.</p>
+<h2>Test failure behavior</h2>
+<p>Corrupt files, signatures, manifests, password records, and HMAC headers in a test environment. Confirm systems stop safely, produce useful logs without secrets, and do not install, authenticate, or process data after verification fails.</p>
+<p>Simulate unavailable key and secret services. Never skip a required control as an availability shortcut.</p>
+<h2>Protect logs and observability</h2>
+<p>Do not log passwords, raw authentication tokens, reset links, HMAC keys, or private keys. Hashing a secret before logging is not always safe if the input space is guessable. Define redaction at collection points and test traces and error reporting.</p>
+<h2>Measure and review</h2>
+<p>Track remaining legacy password records, weak checksum publications, verification failures, key age, rehash rates, parameter benchmarks, and approved exceptions. Review after major infrastructure changes and at least annually.</p>
+<h2>Priority order for remediation</h2>
+<ol>
+<li>Plaintext, encrypted, unsalted, MD5, or SHA-1 password storage.</li>
+<li>Weak hashes in digital signatures or software updates.</li>
+<li>Custom API authentication and exposed keys.</li>
+<li>Missing verification or fail-open behavior.</li>
+<li>Truncated security digests and undocumented formats.</li>
+<li>Low-risk legacy identifiers where collisions have no security impact.</li>
+</ol>
+<h2>A standard teams can maintain</h2>
+<p>Good hashing security comes from matching the tool to the claim, using reviewed libraries, recording parameters, protecting keys, and planning upgrades. The <a href="year-end-hashing-security-audit.html">year-end hashing security audit</a> provides a deeper inventory process. Use this checklist as the ongoing development gate: new code should not create another hidden MD5 dependency, another custom password scheme, or another unsigned release path for the next team to repair.</p>
