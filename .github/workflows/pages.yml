@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir public
           cp -r blogs images public/
-          cp index.html about.html legal-notice.html tools.html file-md5-checker.html md5-checksum.html md5-generator.html tools.html public/ || true
+          cp index.html about.html legal-notice.html tools.html file-md5-checker.html md5-checksum.html md5-generator.html public/ || true
           
       - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
