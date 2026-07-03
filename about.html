@@ -14,23 +14,25 @@
 </head>
 <body class="tail-container bg-slate-950 text-slate-200">
     <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-screen-2xl mx-auto px-8">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
             <div class="flex items-center justify-between py-5">
                 <a href="index.html" class="flex items-center gap-x-2 group">
                     <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center rounded-2xl text-slate-950 text-2xl font-bold rotate-12 group-hover:rotate-0 transition-transform">🔐</div>
-                    <span class="heading-font text-3xl tracking-[-1px] text-white">md5-encryption</span>
+                    <span class="heading-font text-2xl md:text-3xl tracking-[-1px] text-white">md5-encryption</span>
                     <span class="text-cyan-400 text-3xl tracking-[-1px]">.</span>
-                    <span class="text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
+                    <span class="hidden sm:inline text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
                 </a>
-                <nav class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <nav class="hidden md:flex items-center gap-x-6 text-sm font-medium">
                     <a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a>
-                    <a href="tools.html" class="hover:text-cyan-400 transition-colors">Tools</a>
+                    <a href="md5-generator.html" class="hover:text-cyan-400 transition-colors">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="hover:text-cyan-400 transition-colors">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="hover:text-cyan-400 transition-colors">File MD5 Checker</a>
                     <a href="index.html#archive" class="hover:text-cyan-400 transition-colors">Articles</a>
-                    <a href="about.html" class="text-cyan-400">About</a>
+                    <a href="about.html" class="hover:text-cyan-400 transition-colors">About</a>
                     <a href="legal-notice.html" class="hover:text-cyan-400 transition-colors">Legal</a>
                 </nav>
-                <button onclick="window.location.href='tools.html'" class="flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
-                    TRY HASH TOOL <span class="text-lg leading-none">⚡</span>
+                <button onclick="window.location.href='md5-generator.html'" class="hidden lg:flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
+                    TRY MD5 TOOL <span class="text-lg leading-none">⚡</span>
                 </button>
             </div>
         </div>
@@ -58,7 +60,33 @@
     </div>
 
     <footer class="bg-slate-950 border-t border-slate-800 py-12">
-        <div class="max-w-screen-2xl mx-auto px-8 text-xs font-mono text-slate-400">© 2026 md5-encryption.com • Honest hashing education</div>
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
+            <div class="grid md:grid-cols-12 gap-y-8 gap-x-8">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-x-2 mb-4">
+                        <span class="text-4xl">🔐</span>
+                        <span class="heading-font text-3xl tracking-[-1px]">md5-encryption.com</span>
+                    </div>
+                    <p class="text-slate-400 max-w-xs">Practical guides and browser-based tools for hashing, checksums, file integrity, and password security.</p>
+                    <p class="text-xs text-slate-500 mt-8 font-mono">© 2026 • Client-side tools • No file uploads</p>
+                </div>
+                <div class="md:col-span-3 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">TOOLS</div>
+                    <a href="md5-generator.html" class="block py-1 hover:text-white">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="block py-1 hover:text-white">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="block py-1 hover:text-white">File MD5 Checker</a>
+                    <a href="index.html#archive" class="block py-1 hover:text-white">All Articles</a>
+                </div>
+                <div class="md:col-span-2 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">SITE</div>
+                    <a href="about.html" class="block py-1 hover:text-white">About</a>
+                    <a href="legal-notice.html" class="block py-1 hover:text-white">Legal Notice</a>
+                </div>
+                <div class="md:col-span-2 text-xs text-slate-500 font-mono leading-6">
+                    Hash calculations run locally in your browser. Selected files are not sent to this website.
+                </div>
+            </div>
+        </div>
     </footer>
 </body>
 </html>

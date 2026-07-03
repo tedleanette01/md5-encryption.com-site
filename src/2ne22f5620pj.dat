@@ -1,0 +1,260 @@
+
+
+<p>MD5 and SHA-256 are cryptographic hash functions. Both convert input data of any practical size into a fixed-length digest. Both are deterministic, and both show a strong avalanche effect: a small input change produces a very different output.</p>
+
+<p>They are not equally secure. MD5 is a legacy algorithm with practical collision attacks. SHA-256 belongs to the SHA-2 family and remains suitable for many current security applications when used correctly.</p>
+
+<h2>MD5 and SHA-256 at a glance</h2>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>MD5</th>
+<th>SHA-256</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Digest size</td>
+<td>128 bits</td>
+<td>256 bits</td>
+</tr>
+<tr>
+<td>Hexadecimal length</td>
+<td>32 characters</td>
+<td>64 characters</td>
+</tr>
+<tr>
+<td>Published</td>
+<td>1992</td>
+<td>2001 as part of SHA-2</td>
+</tr>
+<tr>
+<td>Collision resistance</td>
+<td>Broken</td>
+<td>No practical collision attack publicly known</td>
+</tr>
+<tr>
+<td>Typical role today</td>
+<td>Legacy checksums and non-adversarial identification</td>
+<td>Integrity checks, digital-signature systems, HMAC, and many security protocols</td>
+</tr>
+<tr>
+<td>Password storage</td>
+<td>Unsuitable</td>
+<td>Unsuitable by itself</td>
+</tr>
+</tbody>
+</table>
+
+<h2>What a cryptographic hash function does</h2>
+
+<p>A hash function maps a message to a fixed-size value. The message may be a short string, a software package, a disk image, or a large data stream.</p>
+
+<p>A useful cryptographic hash function aims to provide several properties:</p>
+
+<ul>
+<li><strong>Determinism:</strong> identical input always produces identical output.</li>
+<li><strong>Preimage resistance:</strong> given a digest, finding an input that produces it should be impractical.</li>
+<li><strong>Second-preimage resistance:</strong> given one input, finding a different input with the same digest should be impractical.</li>
+<li><strong>Collision resistance:</strong> finding any two different inputs with the same digest should be impractical.</li>
+<li><strong>Avalanche behavior:</strong> small input changes should cause large, unpredictable digest changes.</li>
+</ul>
+
+<p>A hash is not encryption. It has no decryption key and is not intended to recover the original input. It is also not automatically proof of authenticity. Anyone who can replace a file may also be able to replace an unprotected checksum displayed beside it.</p>
+
+<h2>How MD5 works at a high level</h2>
+
+<p>MD5 processes data in 512-bit blocks and produces a 128-bit digest. The digest is commonly written as 32 hexadecimal characters.</p>
+
+<p>For example, the UTF-8 bytes for <code>hello</code>, without a trailing newline, produce:</p>
+
+<pre><code>5d41402abc4b2a76b9719d911017c592</code></pre>
+
+<p>MD5 became popular because it was compact, fast, and easy to implement. It appeared in file-verification systems, software repositories, protocols, database schemas, and password databases.</p>
+
+<p>Its speed later became a liability for password storage, and cryptanalysis demonstrated that its collision resistance was fundamentally broken.</p>
+
+<h2>How SHA-256 works at a high level</h2>
+
+<p>SHA-256 is one member of the SHA-2 family specified by NIST. It also processes messages in 512-bit blocks, but it produces a 256-bit digest written as 64 hexadecimal characters.</p>
+
+<p>The same <code>hello</code> input produces:</p>
+
+<pre><code>2cf24dba5fb0a30e26e83b2ac5b9e29e
+1b161e5c1fa7425e73043362938b9824</code></pre>
+
+<p>The line break above is only for readability. A standard SHA-256 hexadecimal digest is one continuous 64-character string.</p>
+
+<p>SHA-256 has a larger internal state and more rounds than MD5. Its design provides a much stronger security margin against collisions and other attacks relevant to general-purpose hashing.</p>
+
+<h2>Digest length and collision probability</h2>
+
+<p>MD5 has 128 possible output bits, giving <code>2^128</code> possible digest values. SHA-256 has <code>2^256</code> possible values.</p>
+
+<p>For an ideal hash, generic collision attacks follow the birthday bound. A collision is expected after roughly the square root of the output space has been explored:</p>
+
+<ul>
+<li>About <code>2^64</code> operations for an ideal 128-bit hash.</li>
+<li>About <code>2^128</code> operations for an ideal 256-bit hash.</li>
+</ul>
+
+<p>MD5 is worse than this ideal estimate because researchers developed practical methods that exploit weaknesses in its structure. Its collision resistance should therefore not be treated as 64-bit security.</p>
+
+<p>SHA-256 is designed to provide approximately 128 bits of collision resistance when its full output is used.</p>
+
+<h2>Why MD5 collisions matter</h2>
+
+<p>A collision occurs when two different inputs have the same digest. This can undermine systems that assume a digest uniquely identifies trusted content.</p>
+
+<p>Collision attacks are especially relevant when an attacker can influence two versions of a document, certificate, executable, or structured file and arrange for their hashes to match. The attacker may present a benign version for approval and later substitute a malicious colliding version.</p>
+
+<p>This does not mean every existing MD5 checksum can instantly be replaced with an arbitrary malicious file. Collision attacks and preimage attacks are different. However, the existence of practical collision techniques means MD5 should not be selected for a new security-sensitive design.</p>
+
+<h2>Speed: faster is not always better</h2>
+
+<p>MD5 is usually faster than SHA-256 in software, though the exact difference depends on processor architecture, hardware acceleration, library implementation, file size, and I/O speed.</p>
+
+<p>For large-file checksums, storage and network throughput may dominate the calculation time. In many practical workflows, SHA-256 is fast enough that the security improvement outweighs a small performance difference.</p>
+
+<p>For password storage, both algorithms are too fast when used directly. Attackers benefit from fast hashing because they can test huge numbers of password guesses. Password databases need dedicated, configurable password-hashing functions designed to be expensive in time, memory, or both.</p>
+
+<h2>Appropriate uses for MD5</h2>
+
+<p>MD5 can still be adequate in narrow situations where there is no malicious actor and the digest is only a convenient error-detection or identification value.</p>
+
+<p>Examples include:</p>
+
+<ul>
+<li>Detecting accidental corruption in an internal, trusted data pipeline.</li>
+<li>Comparing files when both copies and the expected digest are controlled by the same trusted party.</li>
+<li>Maintaining compatibility with a legacy system that requires MD5.</li>
+<li>Using an existing MD5 value as a non-security database key or deduplication hint, with collision handling in place.</li>
+<li>Checking old archives that were originally published with MD5 digests.</li>
+</ul>
+
+<p>Even in these cases, new systems should usually prefer SHA-256 because migration later can be costly and MD5 creates ambiguity about the intended security level.</p>
+
+<h2>Uses where MD5 should not be chosen</h2>
+
+<ul>
+<li>Digital signatures and certificate systems.</li>
+<li>Software-update authenticity.</li>
+<li>Security-sensitive file distribution.</li>
+<li>Integrity protection against a deliberate attacker.</li>
+<li>Password storage.</li>
+<li>Token generation.</li>
+<li>Any design that relies on collision resistance.</li>
+</ul>
+
+<p>When authenticity matters, a bare SHA-256 checksum is also insufficient. Use a digital signature, an authenticated update framework, or a keyed message authentication code such as HMAC-SHA-256.</p>
+
+<h2>Appropriate uses for SHA-256</h2>
+
+<p>SHA-256 remains a common choice for:</p>
+
+<ul>
+<li>Publishing file checksums to detect changes.</li>
+<li>Hashing content within digital-signature systems.</li>
+<li>HMAC constructions for message authentication.</li>
+<li>Content-addressed storage.</li>
+<li>Commitments and identifiers where collision resistance matters.</li>
+<li>Certificate, protocol, and software-distribution systems that specify SHA-256.</li>
+</ul>
+
+<p>The surrounding system still matters. A checksum downloaded from the same compromised server as a file does not independently prove that the file is authentic. The checksum needs a trusted delivery channel or cryptographic signature.</p>
+
+<h2>Neither MD5 nor plain SHA-256 is suitable for passwords</h2>
+
+<p>Password hashing has different requirements from file hashing. A file hash should be fast so large files can be processed efficiently. A password hash should be deliberately expensive so each attacker guess costs meaningful time and memory.</p>
+
+<p>Do not store passwords as:</p>
+
+<pre><code>MD5(password)
+SHA256(password)
+SHA256(salt + password)</code></pre>
+
+<p>Adding a salt prevents identical passwords from sharing one digest and defeats many precomputed tables, but it does not make a fast general-purpose hash slow. Attackers can still test guesses efficiently.</p>
+
+<p>Use a password-hashing function such as Argon2id. Depending on platform and compliance requirements, scrypt, bcrypt, or PBKDF2 may also be appropriate when configured according to current guidance.</p>
+
+<h2>MD5 and SHA-256 for file verification</h2>
+
+<p>For accidental corruption, either algorithm can detect typical transmission or storage errors. For hostile environments, SHA-256 is the better baseline.</p>
+
+<p>On GNU/Linux:</p>
+
+<pre><code>md5sum archive.zip
+sha256sum archive.zip</code></pre>
+
+<p>On macOS:</p>
+
+<pre><code>md5 archive.zip
+shasum -a 256 archive.zip</code></pre>
+
+<p>In PowerShell:</p>
+
+<pre><code>Get-FileHash .\archive.zip -Algorithm MD5
+Get-FileHash .\archive.zip -Algorithm SHA256</code></pre>
+
+<p>Always compare the digest with a value obtained from a trusted source. A match only has meaning if the expected value itself has not been altered.</p>
+
+<h2>Should you replace existing MD5 checksums?</h2>
+
+<p>For public downloads, software updates, signed documents, or any workflow exposed to attackers, publish SHA-256 or a stronger approved alternative. Keep the old MD5 value temporarily only when users or legacy systems still require it.</p>
+
+<p>A practical migration approach is:</p>
+
+<ol>
+<li>Add SHA-256 alongside MD5.</li>
+<li>Update documentation and integrations to prefer SHA-256.</li>
+<li>Use signatures where authenticity is required.</li>
+<li>Monitor remaining MD5 consumers.</li>
+<li>Remove MD5 after the compatibility period.</li>
+</ol>
+
+<h2>Choosing between MD5 and SHA-256</h2>
+
+<h3>Choose SHA-256 when</h3>
+
+<ul>
+<li>You are designing a new system.</li>
+<li>The digest has any security purpose.</li>
+<li>Files come from outside a fully trusted environment.</li>
+<li>You need collision resistance.</li>
+<li>You publish checksums for downloads.</li>
+<li>You use the digest inside HMAC or digital-signature workflows.</li>
+</ul>
+
+<h3>Use MD5 only when</h3>
+
+<ul>
+<li>A legacy interface requires it.</li>
+<li>The task is explicitly non-adversarial.</li>
+<li>You understand that it does not provide modern collision security.</li>
+<li>You have a plan to handle accidental or deliberate collisions where relevant.</li>
+</ul>
+
+<h3>Use neither directly when</h3>
+
+<ul>
+<li>You store passwords.</li>
+<li>You need to prove who created a message or file.</li>
+<li>You need an unforgeable integrity check.</li>
+<li>You need encryption or confidentiality.</li>
+</ul>
+
+<h2>Key takeaway</h2>
+
+<p>MD5 and SHA-256 perform the same broad type of operation, but they provide very different security margins. MD5 remains useful mainly for compatibility and non-adversarial checks. SHA-256 is the correct default for general integrity hashing in modern systems, but a bare hash does not prove authenticity and is not a password-storage method.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1321">RFC 1321: The MD5 Message-Digest Algorithm</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6151">RFC 6151: Updated Security Considerations for MD5</a></li>
+<li><a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final">NIST FIPS 180-4: Secure Hash Standard</a></li>
+<li><a href="https://csrc.nist.gov/projects/hash-functions">NIST: Hash Functions</a></li>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP Password Storage Cheat Sheet</a></li>
+</ul>

@@ -1,0 +1,116 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet"><style>.tail-container *{font-family:'Inter',system-ui,sans-serif}.heading-font{font-family:'Space Grotesk',sans-serif}.drop-active{border-color:#22d3ee;background:rgba(34,211,238,.06)}</style><title>File MD5 Checker | Verify a File Checksum Locally</title><meta name="description" content="Calculate and compare an MD5 checksum for a local file. The file stays on your device and is processed in your browser."><link rel="canonical" href="https://md5-encryption.com/file-md5-checker.html"></head><body class="tail-container bg-slate-950 text-slate-200"><header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
+            <div class="flex items-center justify-between py-5">
+                <a href="index.html" class="flex items-center gap-x-2 group">
+                    <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center rounded-2xl text-slate-950 text-2xl font-bold rotate-12 group-hover:rotate-0 transition-transform">🔐</div>
+                    <span class="heading-font text-2xl md:text-3xl tracking-[-1px] text-white">md5-encryption</span>
+                    <span class="text-cyan-400 text-3xl tracking-[-1px]">.</span>
+                    <span class="hidden sm:inline text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
+                </a>
+                <nav class="hidden md:flex items-center gap-x-6 text-sm font-medium">
+                    <a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a>
+                    <a href="md5-generator.html" class="hover:text-cyan-400 transition-colors">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="hover:text-cyan-400 transition-colors">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="hover:text-cyan-400 transition-colors">File MD5 Checker</a>
+                    <a href="index.html#archive" class="hover:text-cyan-400 transition-colors">Articles</a>
+                    <a href="about.html" class="hover:text-cyan-400 transition-colors">About</a>
+                    <a href="legal-notice.html" class="hover:text-cyan-400 transition-colors">Legal</a>
+                </nav>
+                <button onclick="window.location.href='md5-generator.html'" class="hidden lg:flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
+                    TRY MD5 TOOL <span class="text-lg leading-none">⚡</span>
+                </button>
+            </div>
+        </div>
+    </header>
+<main><section class="max-w-screen-2xl mx-auto px-6 md:px-8 py-16"><div class="max-w-3xl mx-auto text-center"><span class="font-mono text-xs uppercase tracking-[3px] text-cyan-400">Local file integrity tool</span><h1 class="heading-font text-4xl md:text-6xl tracking-[-2px] mt-4">File MD5 Checker</h1><p class="mt-5 text-lg text-slate-400">Select a file to calculate its MD5 checksum and compare it with the value supplied by a download page, vendor, or administrator.</p></div>
+<div class="mt-12 max-w-4xl mx-auto bg-slate-900 border border-slate-700 rounded-3xl p-6 md:p-8"><div id="dropzone" class="border-2 border-dashed border-slate-600 rounded-3xl p-10 text-center transition-colors"><div class="text-4xl">📄</div><h2 class="heading-font text-2xl text-white mt-4">Drop a file here</h2><p class="text-slate-400 mt-2">or select one from your device</p><label class="inline-block mt-6 px-8 py-4 rounded-3xl bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-semibold cursor-pointer"><span>Choose file</span><input id="fileInput" type="file" class="sr-only"></label><p id="fileMeta" class="mt-5 text-sm text-slate-400"></p></div><label for="expectedFile" class="block text-sm font-semibold text-white mt-6 mb-3">Expected MD5 checksum <span class="font-normal text-slate-500">(optional)</span></label><input id="expectedFile" type="text" maxlength="32" placeholder="Paste the checksum published with the file" class="w-full bg-slate-950 border border-slate-700 focus:border-cyan-400 rounded-3xl px-6 py-4 font-mono outline-none"><button id="checkFile" disabled class="mt-6 px-8 py-4 rounded-3xl bg-cyan-400 text-slate-950 font-semibold disabled:opacity-40 disabled:cursor-not-allowed">Calculate file checksum</button><div id="fileResult" class="hidden mt-6 bg-slate-950 border border-dashed border-slate-600 rounded-3xl p-6" aria-live="polite"></div><p class="text-xs text-slate-400 mt-6">The selected file is read by your browser. This page does not send its contents to a server. Large files require browser memory roughly equal to the file size.</p></div></section>
+<section class="border-t border-slate-800 bg-slate-900/40"><div class="max-w-4xl mx-auto px-6 md:px-8 py-16 space-y-12"><div><h2 class="heading-font text-3xl text-white">How to verify a downloaded file</h2><ol class="mt-5 space-y-4 text-slate-300 leading-7 list-decimal pl-6"><li>Find the official MD5 checksum published by the software vendor or file provider.</li><li>Select the downloaded file above. The browser calculates a digest from the file's exact bytes.</li><li>Paste the official value into the expected-checksum field and calculate the result.</li><li>When the values match, the file is byte-for-byte consistent with the file used to produce the published checksum.</li></ol></div><div class="bg-amber-400/10 border border-amber-400/30 rounded-3xl p-7"><h2 class="heading-font text-2xl text-amber-300">A match is not proof of authenticity</h2><p class="mt-3 text-slate-300 leading-7">MD5 can detect ordinary corruption, but it is not collision-resistant. An attacker who can replace both a file and its published MD5 value can make a malicious file appear valid. Obtain checksums from an authenticated source, and prefer SHA-256 or a verified digital signature when available.</p></div><div><h2 class="heading-font text-3xl text-white">Common reasons checksums differ</h2><ul class="mt-5 grid md:grid-cols-2 gap-4 text-slate-300"><li class="bg-slate-900 border border-slate-700 rounded-2xl p-5">The download was incomplete or corrupted.</li><li class="bg-slate-900 border border-slate-700 rounded-2xl p-5">You selected a different version, build, or architecture.</li><li class="bg-slate-900 border border-slate-700 rounded-2xl p-5">The file was modified after publication.</li><li class="bg-slate-900 border border-slate-700 rounded-2xl p-5">The expected checksum contains a copying error.</li></ul></div><div><h2 class="heading-font text-3xl text-white">Checking text instead of a file</h2><p class="mt-4 text-slate-300 leading-8">For strings, configuration snippets, or copied content, use the <a class="text-cyan-400 hover:text-cyan-300 underline" href="md5-checksum.html">MD5 checksum generator and checker</a>.</p></div></div></section></main><footer class="bg-slate-950 border-t border-slate-800 py-12">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
+            <div class="grid md:grid-cols-12 gap-y-8 gap-x-8">
+                <div class="md:col-span-5">
+                    <div class="flex items-center gap-x-2 mb-4">
+                        <span class="text-4xl">🔐</span>
+                        <span class="heading-font text-3xl tracking-[-1px]">md5-encryption.com</span>
+                    </div>
+                    <p class="text-slate-400 max-w-xs">Practical guides and browser-based tools for hashing, checksums, file integrity, and password security.</p>
+                    <p class="text-xs text-slate-500 mt-8 font-mono">© 2026 • Client-side tools • No file uploads</p>
+                </div>
+                <div class="md:col-span-3 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">TOOLS</div>
+                    <a href="md5-generator.html" class="block py-1 hover:text-white">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="block py-1 hover:text-white">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="block py-1 hover:text-white">File MD5 Checker</a>
+                    <a href="index.html#archive" class="block py-1 hover:text-white">All Articles</a>
+                </div>
+                <div class="md:col-span-2 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">SITE</div>
+                    <a href="about.html" class="block py-1 hover:text-white">About</a>
+                    <a href="legal-notice.html" class="block py-1 hover:text-white">Legal Notice</a>
+                </div>
+                <div class="md:col-span-2 text-xs text-slate-500 font-mono leading-6">
+                    Hash calculations run locally in your browser. Selected files are not sent to this website.
+                </div>
+            </div>
+        </div>
+    </footer>
+<script>function md5Bytes(input) {
+  const bytes = input instanceof Uint8Array ? input : new Uint8Array(input);
+  const originalLength = bytes.length;
+  const paddedLength = (((originalLength + 8) >>> 6) + 1) << 6;
+  const buffer = new Uint8Array(paddedLength);
+  buffer.set(bytes);
+  buffer[originalLength] = 0x80;
+  const bitLength = BigInt(originalLength) * 8n;
+  for (let i = 0; i < 8; i++) buffer[paddedLength - 8 + i] = Number((bitLength >> BigInt(i * 8)) & 0xffn);
+
+  let a0 = 0x67452301;
+  let b0 = 0xefcdab89;
+  let c0 = 0x98badcfe;
+  let d0 = 0x10325476;
+
+  const s = [
+    7,12,17,22, 7,12,17,22, 7,12,17,22, 7,12,17,22,
+    5,9,14,20, 5,9,14,20, 5,9,14,20, 5,9,14,20,
+    4,11,16,23, 4,11,16,23, 4,11,16,23, 4,11,16,23,
+    6,10,15,21, 6,10,15,21, 6,10,15,21, 6,10,15,21
+  ];
+  const k = Array.from({length: 64}, (_, i) => Math.floor(Math.abs(Math.sin(i + 1)) * 2 ** 32) >>> 0);
+  const words = new Uint32Array(16);
+  const leftRotate = (x, amount) => ((x << amount) | (x >>> (32 - amount))) >>> 0;
+
+  for (let offset = 0; offset < paddedLength; offset += 64) {
+    for (let i = 0; i < 16; i++) {
+      const j = offset + i * 4;
+      words[i] = (buffer[j] | (buffer[j + 1] << 8) | (buffer[j + 2] << 16) | (buffer[j + 3] << 24)) >>> 0;
+    }
+
+    let a = a0, b = b0, c = c0, d = d0;
+    for (let i = 0; i < 64; i++) {
+      let f, g;
+      if (i < 16) { f = (b & c) | (~b & d); g = i; }
+      else if (i < 32) { f = (d & b) | (~d & c); g = (5 * i + 1) % 16; }
+      else if (i < 48) { f = b ^ c ^ d; g = (3 * i + 5) % 16; }
+      else { f = c ^ (b | ~d); g = (7 * i) % 16; }
+      const nextD = c;
+      c = b;
+      const sum = (a + f + k[i] + words[g]) >>> 0;
+      b = (b + leftRotate(sum, s[i])) >>> 0;
+      a = d;
+      d = nextD;
+    }
+    a0 = (a0 + a) >>> 0;
+    b0 = (b0 + b) >>> 0;
+    c0 = (c0 + c) >>> 0;
+    d0 = (d0 + d) >>> 0;
+  }
+
+  const toHexLE = value => [0, 8, 16, 24].map(shift => ((value >>> shift) & 0xff).toString(16).padStart(2, '0')).join('');
+  return toHexLE(a0) + toHexLE(b0) + toHexLE(c0) + toHexLE(d0);
+}
+
+const dropzone=document.getElementById('dropzone'),fileInput=document.getElementById('fileInput'),fileMeta=document.getElementById('fileMeta'),checkFile=document.getElementById('checkFile'),fileResult=document.getElementById('fileResult');let selectedFile=null;
+function formatSize(bytes){if(bytes<1000)return bytes+' B';const units=['kB','MB','GB'];let value=bytes/1000,i=0;while(value>=1000&&i<units.length-1){value/=1000;i++}return value.toFixed(value>=10?1:2)+' '+units[i]}
+function setFile(file){selectedFile=file||null;fileMeta.textContent=file?`${file.name} • ${formatSize(file.size)}`:'';checkFile.disabled=!file;fileResult.classList.add('hidden')}
+fileInput.addEventListener('change',e=>setFile(e.target.files[0]));['dragenter','dragover'].forEach(name=>dropzone.addEventListener(name,e=>{e.preventDefault();dropzone.classList.add('drop-active')}));['dragleave','drop'].forEach(name=>dropzone.addEventListener(name,e=>{e.preventDefault();dropzone.classList.remove('drop-active')}));dropzone.addEventListener('drop',e=>setFile(e.dataTransfer.files[0]));
+checkFile.addEventListener('click',async()=>{if(!selectedFile)return;checkFile.disabled=true;checkFile.textContent='Calculating…';fileResult.classList.remove('hidden');fileResult.innerHTML='<span class="animate-pulse text-cyan-400">Reading the file locally…</span>';try{const hash=md5Bytes(await selectedFile.arrayBuffer());const expected=document.getElementById('expectedFile').value.trim().toLowerCase();let comparison='';if(expected){comparison=/^[a-f0-9]{32}$/i.test(expected)?(hash===expected?'<div class="mt-4 text-emerald-400 font-semibold">✓ File checksum matches</div>':'<div class="mt-4 text-rose-400 font-semibold">✕ File checksum does not match</div>'):'<div class="mt-4 text-amber-300">Expected checksum must contain exactly 32 hexadecimal characters.</div>'}fileResult.innerHTML=`<div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4"><div><div class="text-xs uppercase tracking-widest text-cyan-400">MD5 for ${selectedFile.name}</div><div class="font-mono text-lg md:text-xl break-all mt-2">${hash}</div>${comparison}</div><button id="copyFileHash" class="text-xs bg-slate-800 hover:bg-slate-700 px-4 h-9 rounded-3xl">COPY</button></div>`;document.getElementById('copyFileHash').onclick=async()=>{await navigator.clipboard.writeText(hash);document.getElementById('copyFileHash').textContent='COPIED!';setTimeout(()=>document.getElementById('copyFileHash').textContent='COPY',1200)}}catch(err){fileResult.innerHTML='<span class="text-rose-400">The browser could not read this file. Select it again and retry.</span>'}finally{checkFile.disabled=false;checkFile.textContent='Calculate file checksum'}});
+</script></body></html>

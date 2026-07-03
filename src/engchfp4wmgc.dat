@@ -1,0 +1,245 @@
+
+
+<p>You calculate an MD5 hash in a terminal, paste what appears to be the same text into an online MD5 tool, and receive a different result. That usually does not mean either tool is broken. It means the tools hashed different bytes.</p>
+
+<p>MD5 is deterministic: the same sequence of bytes always produces the same 128-bit digest. Even a one-byte difference creates a completely different hash. The challenge is that text displayed on a screen does not always reveal every byte being processed.</p>
+
+<h2>The most common cause: a hidden newline</h2>
+
+<p>On many command-line systems, the <code>echo</code> command adds a newline character after the text. An online form usually hashes only the characters typed into its input field. Those are different inputs.</p>
+
+<p>For example, this command normally hashes the bytes for <code>hello</code> followed by a line-feed character:</p>
+
+<pre><code>echo "hello" | md5sum</code></pre>
+
+<p>On a typical GNU/Linux system, the result is:</p>
+
+<pre><code>b1946ac92492d2347c6235b4d2611184</code></pre>
+
+<p>By contrast, this command suppresses the trailing newline:</p>
+
+<pre><code>printf %s "hello" | md5sum</code></pre>
+
+<p>It produces:</p>
+
+<pre><code>5d41402abc4b2a76b9719d911017c592</code></pre>
+
+<p>The second value is the MD5 digest commonly shown by browser-based tools for the visible text <code>hello</code>.</p>
+
+<p>You may also see this version:</p>
+
+<pre><code>echo -n "hello" | md5sum</code></pre>
+
+<p>It often works, but <code>printf</code> is safer in scripts because implementations of <code>echo</code> do not all handle options and escape sequences identically.</p>
+
+<h2>MD5 hashes bytes, not visual meaning</h2>
+
+<p>Humans interpret text as words and characters. A hash function receives bytes. Two strings can look identical while their byte sequences differ.</p>
+
+<p>Common hidden differences include:</p>
+
+<ul>
+<li>A trailing line feed, represented as <code>\n</code> or byte <code>0A</code>.</li>
+<li>A Windows-style carriage return plus line feed, represented as <code>\r\n</code> or bytes <code>0D 0A</code>.</li>
+<li>Leading or trailing spaces.</li>
+<li>A tab instead of one or more spaces.</li>
+<li>A non-breaking space copied from a web page.</li>
+<li>Different Unicode encodings or normalization forms.</li>
+<li>A byte order mark at the beginning of a file.</li>
+<li>Different letter case, such as <code>Hello</code> instead of <code>hello</code>.</li>
+</ul>
+
+<p>MD5 does not trim, normalize, or interpret these bytes. It processes exactly what it receives.</p>
+
+<h2>Text input and file input are not the same operation</h2>
+
+<p>An online tool may offer separate modes for hashing text and hashing a file. These modes can produce different results even when the file appears to contain only the text shown in the input box.</p>
+
+<p>A text field might hash five UTF-8 bytes for <code>hello</code>. A text file created by an editor might contain:</p>
+
+<ul>
+<li>The five bytes for <code>hello</code>.</li>
+<li>A final newline inserted when the file was saved.</li>
+<li>Windows line endings instead of Unix line endings.</li>
+<li>A UTF-8 byte order mark.</li>
+</ul>
+
+<p>To compare results correctly, compare file-to-file or exact-byte-to-exact-byte. Do not assume that pasting visible file contents into a text box reproduces the original file.</p>
+
+<h2>Line endings can change a hash</h2>
+
+<p>Unix-like systems typically use a single line-feed byte for a new line. Windows text files commonly use a carriage-return and line-feed pair. Classic Mac systems used a carriage return, though modern macOS uses Unix line feeds.</p>
+
+<p>Consider a file containing two lines:</p>
+
+<pre><code>alpha
+beta</code></pre>
+
+<p>The visible text can be represented in at least these ways:</p>
+
+<ul>
+<li><code>alpha\nbeta\n</code></li>
+<li><code>alpha\r\nbeta\r\n</code></li>
+<li><code>alpha\nbeta</code> with no final newline</li>
+</ul>
+
+<p>Each version has different bytes and therefore a different MD5 digest.</p>
+
+<p>This often happens when a repository or editor converts line endings automatically. Git settings, IDE preferences, file-transfer modes, and operating-system conventions can all affect text files.</p>
+
+<h2>Character encoding can also change the result</h2>
+
+<p>Plain ASCII characters usually map to the same bytes in UTF-8 and several older encodings. Non-ASCII characters do not.</p>
+
+<p>For example, the word <code>café</code> can be encoded in UTF-8, Windows-1252, ISO-8859-1, UTF-16, and other formats. The displayed word may look the same, but the underlying byte sequences differ.</p>
+
+<p>Unicode also allows some visible characters to be represented in more than one way. An accented character may be stored as one precomposed code point or as a base character followed by a combining mark. These representations can render identically while hashing differently.</p>
+
+<p>A hashing tool should not silently normalize text unless it clearly documents that behavior. For exact verification, the bytes must remain unchanged.</p>
+
+<h2>Whitespace is easy to miss</h2>
+
+<p>Leading spaces, trailing spaces, blank lines, and tabs all affect the digest. Some online forms trim whitespace before hashing. Others preserve it. A command-line pipeline may add or remove characters depending on quoting and shell expansion.</p>
+
+<p>Compare these inputs:</p>
+
+<pre><code>hello
+hello 
+ hello
+hello	</code></pre>
+
+<p>They look similar in proportional fonts, but none is guaranteed to have the same digest.</p>
+
+<p>When testing text, use a tool that states whether it preserves whitespace. A correct general-purpose hash tool should normally hash the exact input rather than call a trimming function first.</p>
+
+<h2>Shell quoting and escape sequences matter</h2>
+
+<p>The shell can transform input before the hashing program receives it.</p>
+
+<p>These commands do not necessarily send the same bytes:</p>
+
+<pre><code>printf %s "line\nbreak"
+printf "line\nbreak"
+printf %s $'line\nbreak'</code></pre>
+
+<p>In the first command, <code>\n</code> may remain two literal characters because it is passed as data. In the second, <code>printf</code> interprets the backslash escape in its format string. In the third, shells that support ANSI-C quoting convert <code>\n</code> into an actual newline before passing the argument.</p>
+
+<p>For reliable tests, use an explicit format string:</p>
+
+<pre><code>printf '%s' 'text to hash' | md5sum</code></pre>
+
+<h2>Filename and file content are separate</h2>
+
+<p>Hashing a file normally processes the file’s contents, not its name. Renaming a file without changing its bytes should leave its MD5 digest unchanged.</p>
+
+<p>However, confusion can arise when someone hashes a filename as text:</p>
+
+<pre><code>printf '%s' 'report.pdf' | md5sum</code></pre>
+
+<p>That command hashes the characters in the filename. It does not open or read <code>report.pdf</code>.</p>
+
+<p>To hash the file contents, use:</p>
+
+<pre><code>md5sum report.pdf</code></pre>
+
+<p>On macOS, the built-in command commonly uses this form:</p>
+
+<pre><code>md5 report.pdf</code></pre>
+
+<p>PowerShell can use:</p>
+
+<pre><code>Get-FileHash .\report.pdf -Algorithm MD5</code></pre>
+
+<h2>Binary and text modes can cause platform-specific differences</h2>
+
+<p>Some checksum programs distinguish between binary and text input modes. On GNU systems, this distinction generally does not alter the bytes read on Unix-like platforms. On systems where text mode performs line-ending translation, the selected mode can matter.</p>
+
+<p>For cross-platform file verification, use binary mode where the tool supports it and compare the digest of the original file bytes.</p>
+
+<h2>The displayed format may differ even when the digest is the same</h2>
+
+<p>Sometimes the actual hash agrees, but the output format looks different.</p>
+
+<p>Examples include:</p>
+
+<ul>
+<li>Uppercase versus lowercase hexadecimal characters.</li>
+<li>A filename printed after the checksum.</li>
+<li>An asterisk or space separating the digest from the filename.</li>
+<li>A label such as <code>MD5 (file) =</code>.</li>
+<li>A Base64 representation instead of hexadecimal.</li>
+</ul>
+
+<p>Hexadecimal case does not change the value. These two strings represent the same digest:</p>
+
+<pre><code>5d41402abc4b2a76b9719d911017c592
+5D41402ABC4B2A76B9719D911017C592</code></pre>
+
+<p>But Base64 and hexadecimal are different encodings of the digest, so the strings will not look alike even when they represent the same 16 bytes.</p>
+
+<h2>How to diagnose a mismatch</h2>
+
+<h3>1. Confirm what each tool hashes</h3>
+
+<p>Determine whether each tool receives typed text, standard input, or a file. Do not compare a text-input digest with a file digest unless you know the file contains exactly the same bytes.</p>
+
+<h3>2. Remove the automatic newline</h3>
+
+<p>For a literal command-line string, start with:</p>
+
+<pre><code>printf '%s' 'your text' | md5sum</code></pre>
+
+<h3>3. Inspect the exact bytes</h3>
+
+<p>On Unix-like systems, tools such as <code>od</code> and <code>xxd</code> can reveal invisible bytes:</p>
+
+<pre><code>printf '%s' 'hello' | od -An -tx1
+printf '%s\n' 'hello' | od -An -tx1</code></pre>
+
+<p>The second command will show an extra <code>0a</code> byte.</p>
+
+<p>For files:</p>
+
+<pre><code>xxd sample.txt
+od -An -tx1 sample.txt</code></pre>
+
+<h3>4. Check encoding and line endings</h3>
+
+<p>Confirm whether the file uses UTF-8, UTF-16, Windows-1252, or another encoding. Also check whether lines end with LF or CRLF and whether the file ends with a newline.</p>
+
+<h3>5. Verify with a second local tool</h3>
+
+<p>Hash the same file with another local implementation. When both tools read the same bytes, they should return the same digest.</p>
+
+<h3>6. Avoid uploading sensitive files</h3>
+
+<p>An online checksum tool may be convenient, but uploading private files creates an unnecessary disclosure risk unless the tool runs fully in the browser and clearly states that no file data is transmitted. For confidential material, use a trusted local tool.</p>
+
+<h2>A repeatable comparison workflow</h2>
+
+<ol>
+<li>Create or identify the exact input file.</li>
+<li>Avoid copying and pasting its visible contents into a text field.</li>
+<li>Calculate the local file digest with <code>md5sum</code>, <code>md5</code>, or <code>Get-FileHash</code>.</li>
+<li>Use a browser tool that hashes the selected file locally rather than uploading it.</li>
+<li>Compare the 32 hexadecimal characters without considering letter case.</li>
+<li>If they differ, inspect file size, line endings, encoding, and invisible bytes.</li>
+</ol>
+
+<h2>What a matching MD5 digest proves</h2>
+
+<p>A matching MD5 value is useful for detecting accidental changes when the expected digest comes from a trusted source. It indicates that the two inputs produced the same MD5 result.</p>
+
+<p>It does not provide strong protection against deliberate manipulation. MD5 has known collision weaknesses, so an attacker may be able to create different data with the same digest under relevant attack conditions. Use SHA-256 or a stronger modern mechanism when adversarial tampering matters, and use a digital signature or message authentication code when you also need authenticity.</p>
+
+<h2>Key takeaway</h2>
+
+<p>When command-line and online MD5 tools disagree, the cause is almost always an input difference rather than a mathematical disagreement. Check newlines, spaces, line endings, encoding, file mode, and whether you hashed text or file contents. Once both tools receive the exact same byte sequence, their MD5 outputs will match.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://www.rfc-editor.org/rfc/rfc1321">RFC 1321: The MD5 Message-Digest Algorithm</a></li>
+<li><a href="https://www.gnu.org/software/coreutils/manual/html_node/md5sum-invocation.html">GNU Coreutils: md5sum invocation</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6151">RFC 6151: Updated Security Considerations for MD5</a></li>
+</ul>

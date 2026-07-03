@@ -268,5 +268,32 @@
     "internal_id": "33q9wol4hfaq",
     "content_file": "33q9wol4hfaq.dat",
     "image": "33q9wol4hfaq.bak"
+  },
+  {
+    "title": "Why MD5 Hashes Differ Between Command-Line and Online Tools",
+    "date": "2026-07-01",
+    "excerpt": "Learn why MD5 results can differ between command-line and online tools, including hidden newlines, encoding differences, whitespace, and file handling.",
+    "image": "engchfp4wmgc.bak",
+    "content_file": "engchfp4wmgc.dat",
+    "real_slug": "why-md5-hashes-differ",
+    "internal_id": "engchfp4wmgc"
+  },
+  {
+    "title": "MD5 vs SHA-256: Differences, Security, and Appropriate Use Cases",
+    "date": "2026-07-02",
+    "excerpt": "Compare MD5 and SHA-256 by digest size, speed, collision resistance, security limits, and the situations where each algorithm may still be used.",
+    "image": "2ne22f5620pj.bak",
+    "content_file": "2ne22f5620pj.dat",
+    "real_slug": "md5-vs-sha256",
+    "internal_id": "2ne22f5620pj"
+  },
+  {
+    "title": "Why MD5 Should Never Be Used for Password Storage",
+    "date": "2026-07-03",
+    "excerpt": "Understand why MD5 is unsafe for password storage and why modern systems should use Argon2id or another dedicated password-hashing function.",
+    "image": "r1czsjkrn61r.bak",
+    "content_file": "r1czsjkrn61r.dat",
+    "real_slug": "md5-for-passwords",
+    "internal_id": "r1czsjkrn61r"
   }
 ]

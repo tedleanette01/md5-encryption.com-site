@@ -19,25 +19,25 @@
 <body class="tail-container bg-slate-950 text-slate-200">
     <!-- HEADER -->
     <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-screen-2xl mx-auto px-8">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
             <div class="flex items-center justify-between py-5">
                 <a href="index.html" class="flex items-center gap-x-2 group">
                     <div class="w-9 h-9 bg-gradient-to-br from-cyan-400 to-emerald-400 flex items-center justify-center rounded-2xl text-slate-950 text-2xl font-bold rotate-12 group-hover:rotate-0 transition-transform">🔐</div>
-                    <span class="heading-font text-3xl tracking-[-1px] text-white">md5-encryption</span>
+                    <span class="heading-font text-2xl md:text-3xl tracking-[-1px] text-white">md5-encryption</span>
                     <span class="text-cyan-400 text-3xl tracking-[-1px]">.</span>
-                    <span class="text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
+                    <span class="hidden sm:inline text-xs font-mono uppercase tracking-[2px] bg-slate-800 text-cyan-300 px-2 py-px rounded mt-2">COM</span>
                 </a>
-
-                <nav class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                <nav class="hidden md:flex items-center gap-x-6 text-sm font-medium">
                     <a href="index.html" class="hover:text-cyan-400 transition-colors">Home</a>
-                    <a href="tools.html" class="hover:text-cyan-400 transition-colors">Tools</a>
+                    <a href="md5-generator.html" class="hover:text-cyan-400 transition-colors">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="hover:text-cyan-400 transition-colors">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="hover:text-cyan-400 transition-colors">File MD5 Checker</a>
                     <a href="index.html#archive" class="hover:text-cyan-400 transition-colors">Articles</a>
                     <a href="about.html" class="hover:text-cyan-400 transition-colors">About</a>
                     <a href="legal-notice.html" class="hover:text-cyan-400 transition-colors">Legal</a>
                 </nav>
-
-                <button onclick="window.location.href='tools.html'" class="flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
-                    TRY HASH TOOL <span class="text-lg leading-none">⚡</span>
+                <button onclick="window.location.href='md5-generator.html'" class="hidden lg:flex items-center gap-x-2 bg-cyan-400 hover:bg-cyan-300 text-slate-950 px-6 h-10 rounded-3xl text-sm font-semibold transition-colors">
+                    TRY MD5 TOOL <span class="text-lg leading-none">⚡</span>
                 </button>
             </div>
         </div>
@@ -52,8 +52,8 @@
         <div class="hero-bg pt-12 pb-20">
             <div class="max-w-screen-2xl mx-auto px-8 grid md:grid-cols-12 gap-12 items-center">
                 <div class="md:col-span-7">
-                    <a href="blogs/md5-encryption-vs-hashing.html" class="block overflow-hidden rounded-3xl border border-slate-700 group">
-                        <img src="images/md5-encryption-vs-hashing.jpg" alt="MD5 Encryption vs Hashing: What People Usually Mean" 
+                    <a href="blogs/md5-for-passwords.html" class="block overflow-hidden rounded-3xl border border-slate-700 group">
+                        <img src="images/md5-for-passwords.jpg" alt="Why MD5 Should Never Be Used for Password Storage" 
                              class="w-full aspect-[16/9] object-cover group-hover:scale-105 transition-transform duration-700">
                     </a>
                 </div>
@@ -62,21 +62,21 @@
                     <div class="inline-flex items-center gap-x-2 text-cyan-400 text-sm font-mono mb-4">
                         <span class="px-3 py-1 bg-cyan-400/10 rounded-3xl"></span>
                         <span class="text-slate-400">•</span>
-                        <span>18. April 2026</span>
+                        <span>03. July 2026</span>
                     </div>
                     
-                    <a href="blogs/md5-encryption-vs-hashing.html" class="block group">
+                    <a href="blogs/md5-for-passwords.html" class="block group">
                         <h1 class="heading-font text-5xl md:text-6xl leading-none tracking-[-1px] text-white group-hover:text-cyan-400 transition-colors">
-                            MD5 Encryption vs Hashing: What People Usually Mean
+                            Why MD5 Should Never Be Used for Password Storage
                         </h1>
                     </a>
                     
                     <p class="mt-6 text-xl text-slate-300 leading-relaxed max-w-md">
-                        Learn why people often say MD5 encryption, why that wording is technically wrong, and what hashing actually means in practice.
+                        Understand why MD5 is unsafe for password storage and why modern systems should use Argon2id or another dedicated password-hashing function.
                     </p>
                     
                     <div class="mt-8 flex items-center gap-x-4">
-                        <a href="blogs/md5-encryption-vs-hashing.html" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-cyan-400 hover:text-slate-900 transition-colors px-8 h-12 rounded-3xl font-semibold text-lg">
+                        <a href="blogs/md5-for-passwords.html" class="inline-flex items-center justify-center bg-white text-slate-900 hover:bg-cyan-400 hover:text-slate-900 transition-colors px-8 h-12 rounded-3xl font-semibold text-lg">
                             Read the full story
                         </a>
                     </div>
@@ -89,12 +89,145 @@
         <div id="archive" class="max-w-screen-2xl mx-auto px-8 py-16">
             <div class="flex items-end justify-between mb-8">
                 <div>
-                    <span class="uppercase font-mono text-xs tracking-[1px] text-cyan-400">All articles • 2 total</span>
+                    <span class="uppercase font-mono text-xs tracking-[1px] text-cyan-400">All articles • 9 total</span>
                     <h2 class="heading-font text-4xl text-white">Latest from the hash lab</h2>
                 </div>
             </div>
             
             <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                
+                <a href="blogs/md5-vs-sha256.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/md5-vs-sha256.jpg" alt="MD5 vs SHA-256: Differences, Security, and Appropriate Use Cases" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">02. July 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">MD5 vs SHA-256: Differences, Security, and Appropriate Use Cases</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">Compare MD5 and SHA-256 by digest size, speed, collision resistance, security limits, and the situations where each algorithm may still be used.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/why-md5-hashes-differ.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/why-md5-hashes-differ.jpg" alt="Why MD5 Hashes Differ Between Command-Line and Online Tools" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">01. July 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">Why MD5 Hashes Differ Between Command-Line and Online Tools</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">Learn why MD5 results can differ between command-line and online tools, including hidden newlines, encoding differences, whitespace, and file handling.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/verify-file-checksum-windows-macos-linux.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/verify-file-checksum-windows-macos-linux.jpg" alt="How to Verify a File Checksum on Windows, macOS, and Linux" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">29. June 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">How to Verify a File Checksum on Windows, macOS, and Linux</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">A practical guide to calculating and comparing file checksums with built-in tools on Windows, macOS, and Linux before installing or archiving downloads.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/md5-vs-sha-256.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/md5-vs-sha-256.jpg" alt="MD5 vs SHA-256: What Is the Difference?" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">24. June 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">MD5 vs SHA-256: What Is the Difference?</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">Compare MD5 and SHA-256 by digest length, collision resistance, performance, and practical use to understand which algorithm belongs in modern systems.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/md5-checksum-file-integrity.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/md5-checksum-file-integrity.jpg" alt="How an MD5 Checksum Helps Verify File Integrity" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">11. June 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">How an MD5 Checksum Helps Verify File Integrity</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">Understand how MD5 checksums detect changed or corrupted files, where they remain useful, and why SHA-256 is a better choice for new verification workflows.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/can-md5-be-decrypted.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/can-md5-be-decrypted.jpg" alt="Can MD5 Be Decrypted? The Honest Answer" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">15. May 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">Can MD5 Be Decrypted? The Honest Answer</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">A practical explanation of why MD5 cannot truly be decrypted, how lookup databases and password guessing work, and why weak inputs may still be identified.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="blogs/md5-encryption-vs-hashing.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
+                    <div class="relative">
+                        <img src="images/md5-encryption-vs-hashing.jpg" alt="MD5 Encryption vs Hashing: What People Usually Mean" 
+                             class="w-full aspect-[16/9] object-cover">
+                        <div class="absolute top-4 left-4 px-3 py-1 text-[10px] font-mono bg-white/90 text-slate-900 rounded-3xl">
+                            
+                        </div>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col">
+                        <time class="text-xs text-slate-400">18. April 2026</time>
+                        <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">MD5 Encryption vs Hashing: What People Usually Mean</h3>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">Learn why MD5 is a hashing algorithm rather than encryption, how hashing differs from reversible encryption, and why the distinction matters for developers.</p>
+                        <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
+                            <span>READ →</span>
+                            <span class="font-mono">SHA-256 • MD5</span>
+                        </div>
+                    </div>
+                </a>
                 
                 <a href="blogs/what-is-md5-hashing.html" class="card-hover bg-slate-900 border border-slate-700 rounded-3xl overflow-hidden flex flex-col h-full">
                     <div class="relative">
@@ -107,7 +240,7 @@
                     <div class="p-6 flex-1 flex flex-col">
                         <time class="text-xs text-slate-400">15. March 2026</time>
                         <h3 class="heading-font text-xl leading-tight mt-3 mb-auto line-clamp-3">What Is MD5 Hashing and Why Is It Still Used?</h3>
-                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.</p>
+                        <p class="text-slate-400 text-sm mt-4 line-clamp-2">A beginner-friendly explanation of MD5 hashing, how it creates fixed-length digests, where it still appears, and why it should not be used for modern security.</p>
                         <div class="mt-6 pt-6 border-t border-slate-700 text-xs flex justify-between items-center text-cyan-400 font-medium">
                             <span>READ →</span>
                             <span class="font-mono">SHA-256 • MD5</span>
@@ -121,26 +254,30 @@
 
     <!-- FOOTER -->
     <footer class="bg-slate-950 border-t border-slate-800 py-12">
-        <div class="max-w-screen-2xl mx-auto px-8">
-            <div class="grid md:grid-cols-12 gap-y-8">
+        <div class="max-w-screen-2xl mx-auto px-6 md:px-8">
+            <div class="grid md:grid-cols-12 gap-y-8 gap-x-8">
                 <div class="md:col-span-5">
                     <div class="flex items-center gap-x-2 mb-4">
                         <span class="text-4xl">🔐</span>
                         <span class="heading-font text-3xl tracking-[-1px]">md5-encryption.com</span>
                     </div>
-                    <p class="text-slate-400 max-w-xs">Practical, no-nonsense guides on hashing, checksums and modern password security.</p>
-                    <p class="text-xs text-slate-500 mt-8 font-mono">© 2026 • All client-side tools • No tracking</p>
+                    <p class="text-slate-400 max-w-xs">Practical guides and browser-based tools for hashing, checksums, file integrity, and password security.</p>
+                    <p class="text-xs text-slate-500 mt-8 font-mono">© 2026 • Client-side tools • No file uploads</p>
                 </div>
-                
-                <div class="md:col-span-2 text-sm">
-                    <div class="font-semibold mb-4 text-cyan-400">EXPLORE</div>
-                    <a href="tools.html" class="block py-1 hover:text-white">Hash Tools</a>
+                <div class="md:col-span-3 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">TOOLS</div>
+                    <a href="md5-generator.html" class="block py-1 hover:text-white">MD5 Generator</a>
+                    <a href="md5-checksum.html" class="block py-1 hover:text-white">MD5 Checksum</a>
+                    <a href="file-md5-checker.html" class="block py-1 hover:text-white">File MD5 Checker</a>
                     <a href="index.html#archive" class="block py-1 hover:text-white">All Articles</a>
-                    <a href="about.html" class="block py-1 hover:text-white">About</a>
                 </div>
-                
-                <div class="md:col-span-5 text-xs text-slate-500 font-mono">
-                    Fully static site. All hash calculations happen in your browser.
+                <div class="md:col-span-2 text-sm">
+                    <div class="font-semibold mb-4 text-cyan-400">SITE</div>
+                    <a href="about.html" class="block py-1 hover:text-white">About</a>
+                    <a href="legal-notice.html" class="block py-1 hover:text-white">Legal Notice</a>
+                </div>
+                <div class="md:col-span-2 text-xs text-slate-500 font-mono leading-6">
+                    Hash calculations run locally in your browser. Selected files are not sent to this website.
                 </div>
             </div>
         </div>

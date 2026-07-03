@@ -1,0 +1,267 @@
+
+
+<p>MD5 is a fast general-purpose hash function created for message digests. It is not a password-hashing algorithm. Storing passwords as MD5 hashes exposes users to rapid offline guessing if the database is stolen.</p>
+
+<p>The correct replacement is not plain SHA-256. Password storage requires a dedicated, salted, configurable password-hashing function such as Argon2id. Other established choices include scrypt, bcrypt, and PBKDF2 when they fit platform or compliance requirements and are configured correctly.</p>
+
+<h2>What happens when a password database leaks</h2>
+
+<p>A typical login system does not need to recover a password. It stores a derived value and calculates the same derivation when the user signs in.</p>
+
+<p>If an attacker obtains the stored hashes, the attacker can work offline:</p>
+
+<ol>
+<li>Guess a candidate password.</li>
+<li>Hash the guess using the same algorithm and parameters.</li>
+<li>Compare the result with the stolen value.</li>
+<li>Repeat until a match is found.</li>
+</ol>
+
+<p>The attacker does not need to contact the website for every guess. Rate limits, account lockouts, CAPTCHA, and monitoring no longer help. The cost of each offline guess becomes the central security control.</p>
+
+<p>MD5 is designed to be fast, so each guess is cheap. Modern hardware can calculate enormous numbers of MD5 hashes in parallel. Weak and reused passwords can therefore be recovered quickly.</p>
+
+<h2>Hashing is not the same as password hashing</h2>
+
+<p>A cryptographic hash such as MD5 or SHA-256 aims to process data efficiently. That is useful for checking large files, indexing content, and building other cryptographic constructions.</p>
+
+<p>A password-hashing function has the opposite performance goal. It intentionally consumes time, memory, or both. Legitimate login verification remains acceptable because the server processes one password attempt at a time. An attacker testing millions or billions of guesses pays the cost repeatedly.</p>
+
+<p>A secure password hash also supports:</p>
+
+<ul>
+<li>A unique random salt for every stored password.</li>
+<li>A configurable work factor.</li>
+<li>Parameters that can be increased as hardware improves.</li>
+<li>A standard encoded format that stores the algorithm, salt, and settings with the result.</li>
+<li>Implementations designed and reviewed specifically for password storage.</li>
+</ul>
+
+<h2>Why MD5 fails as a password-storage algorithm</h2>
+
+<h3>It is far too fast</h3>
+
+<p>Speed is the main practical problem. Attackers can test large password dictionaries, common substitutions, leaked-password lists, and brute-force combinations at high rates.</p>
+
+<p>Even if a password is not in a standard dictionary, users often choose predictable patterns. A fast hash lets attackers explore those patterns cheaply.</p>
+
+<h3>Unsalted MD5 reveals password reuse</h3>
+
+<p>A plain MD5 scheme often stores:</p>
+
+<pre><code>MD5(password)</code></pre>
+
+<p>Every user with the same password receives the same hash. An attacker can immediately identify accounts that share a password and crack all of them after finding one matching guess.</p>
+
+<p>Unsalted hashes are also vulnerable to precomputed lookup databases. These are often called rainbow tables, though direct hash lookup collections and precomputed dictionaries are also common.</p>
+
+<h3>A salt does not make MD5 slow</h3>
+
+<p>A better-looking legacy design might store:</p>
+
+<pre><code>MD5(salt + password)</code></pre>
+
+<p>A unique random salt is important because it prevents identical passwords from producing identical stored values and makes precomputation less useful. However, it does not fix MD5’s speed. The attacker reads the salt from the database and includes it in each guess.</p>
+
+<p>Salts are not secret. Their purpose is uniqueness, not confidentiality.</p>
+
+<h3>Repeated MD5 is still a poor design</h3>
+
+<p>Some systems apply MD5 thousands of times to slow guessing. That is better than one iteration but remains an obsolete custom construction. It lacks the memory-hard design of modern algorithms, may be implemented incorrectly, and usually provides weaker upgrade and interoperability options.</p>
+
+<p>Use a standard password-hashing function instead of inventing a loop around a general-purpose hash.</p>
+
+<h3>MD5 also has broken collision resistance</h3>
+
+<p>Practical collision attacks are another reason not to select MD5 for new cryptographic systems. Password cracking normally targets preimages rather than collisions, so the collision weakness is not the main reason MD5 password databases fail. The speed and common lack of proper salting are usually more directly exploitable.</p>
+
+<p>Still, an algorithm with known structural weaknesses and no password-specific defenses has no place in a modern password-storage design.</p>
+
+<h2>Why plain SHA-256 is not the answer</h2>
+
+<p>Replacing MD5 with SHA-256 may sound like an upgrade because SHA-256 has much stronger collision resistance. For file integrity and many cryptographic uses, it is an upgrade.</p>
+
+<p>For passwords, plain SHA-256 remains too fast. This design is not adequate:</p>
+
+<pre><code>SHA256(password)</code></pre>
+
+<p>Neither is this:</p>
+
+<pre><code>SHA256(salt + password)</code></pre>
+
+<p>The salt solves only the uniqueness and precomputation problem. It does not impose enough cost on every guess.</p>
+
+<p>SHA-256 may appear inside a password-hashing construction such as PBKDF2-HMAC-SHA-256, where the construction adds a configurable iteration count and defined processing rules. That is different from hashing a password once with SHA-256.</p>
+
+<h2>What should be used instead</h2>
+
+<h3>Argon2id</h3>
+
+<p>Argon2id is the preferred option in current OWASP guidance when it is available. It is designed to consume configurable memory and processing time. Memory cost makes large-scale parallel attacks more expensive than attacks on fast hashes.</p>
+
+<p>Argon2id combines characteristics intended to resist different classes of attacks. Use a maintained library and select parameters based on current guidance and performance testing on your production hardware.</p>
+
+<p>A stored Argon2id value commonly includes the algorithm identifier, version, memory setting, iteration count, parallelism, salt, and derived output in one encoded string.</p>
+
+<h3>scrypt</h3>
+
+<p>scrypt is a memory-hard password-based key derivation function. It remains a valid choice where Argon2id is unavailable and a reliable scrypt implementation is supported.</p>
+
+<h3>bcrypt</h3>
+
+<p>bcrypt is widely supported and has a configurable cost factor. It is still used in many established systems, but it has limitations, including a maximum password input length in common implementations and less memory hardness than Argon2id or scrypt.</p>
+
+<p>Applications using bcrypt must handle long passwords carefully and should not silently truncate them. Follow the behavior of the selected library and current platform guidance.</p>
+
+<h3>PBKDF2</h3>
+
+<p>PBKDF2 applies a pseudorandom function repeatedly and supports a configurable iteration count. It is common in environments with formal compliance constraints or broad library support.</p>
+
+<p>PBKDF2 is primarily CPU-hard rather than memory-hard, so it generally needs a high iteration count. Use the hash function and work factor recommended for the relevant environment instead of copying old parameters.</p>
+
+<h2>Salt, pepper, and work factor</h2>
+
+<h3>Salt</h3>
+
+<p>A salt is a unique random value generated for each password. It is stored with the password hash. A secure password-hashing library normally creates and encodes it automatically.</p>
+
+<p>A salt prevents two users with the same password from having the same stored hash. It also forces an attacker to perform work separately for each salt.</p>
+
+<p>Do not use usernames, email addresses, timestamps, or a single application-wide constant as salts. Use a cryptographically secure random generator and an established library.</p>
+
+<h3>Pepper</h3>
+
+<p>A pepper is an optional secret value kept separately from the password database, usually in a secret manager, hardware security module, or similarly protected location.</p>
+
+<p>A pepper can add protection when an attacker obtains only the database. It also creates operational responsibilities: rotation, backup, availability, access control, and incident response. Losing the pepper can make all password verification impossible.</p>
+
+<p>A pepper does not replace a salt or a strong password-hashing function.</p>
+
+<h3>Work factor</h3>
+
+<p>The work factor controls how expensive verification is. Argon2id exposes memory, time, and parallelism settings. bcrypt uses a cost parameter. PBKDF2 uses an iteration count.</p>
+
+<p>Choose settings by testing on the actual server class. Verification should be expensive enough to slow attacks but fast enough to support expected login traffic and avoid denial-of-service risks. Reassess the settings periodically as hardware changes.</p>
+
+<h2>How secure password verification works</h2>
+
+<p>A safe implementation usually delegates formatting and verification to a mature library.</p>
+
+<p>At registration or password change:</p>
+
+<ol>
+<li>Accept the user’s full password without silent truncation.</li>
+<li>Generate a unique random salt.</li>
+<li>Run the selected password-hashing function with approved parameters.</li>
+<li>Store the library’s encoded output.</li>
+<li>Do not store the plaintext password.</li>
+</ol>
+
+<p>At login:</p>
+
+<ol>
+<li>Retrieve the stored encoded value.</li>
+<li>Pass the submitted password and stored value to the library’s verification function.</li>
+<li>Use the result to accept or reject the login.</li>
+<li>If the stored parameters are outdated, rehash the password after a successful login.</li>
+</ol>
+
+<p>Use constant-time verification functions provided by the library. Do not manually compare derived byte strings with ordinary string operations when the framework already offers a safe verifier.</p>
+
+<h2>How to migrate an existing MD5 password database</h2>
+
+<p>You usually cannot recover the original passwords from MD5 hashes, and you should not attempt to decrypt them because hashes are not encrypted values. Migration normally happens when users authenticate or reset their passwords.</p>
+
+<h3>Option 1: Rehash after a successful login</h3>
+
+<ol>
+<li>Keep a field or prefix that identifies the legacy MD5 format.</li>
+<li>When the user logs in, verify the submitted password against the old MD5 value.</li>
+<li>If it matches, immediately hash the submitted password with Argon2id or the selected modern method.</li>
+<li>Replace the legacy value.</li>
+<li>Remove the MD5 verification path after the migration window.</li>
+</ol>
+
+<p>This method gradually upgrades active accounts without knowing their plaintext passwords in advance.</p>
+
+<h3>Option 2: Force password resets</h3>
+
+<p>For high-risk systems, known breaches, or very old unsalted databases, require users to set new passwords. Send reset links through a secure, time-limited process rather than emailing passwords.</p>
+
+<p>Invalidate active sessions and review other account-recovery controls when the migration follows a security incident.</p>
+
+<h3>Option 3: Layer a modern hash temporarily</h3>
+
+<p>Some systems wrap an existing MD5 value in a modern password hash as an interim measure:</p>
+
+<pre><code>Argon2id(MD5(password))</code></pre>
+
+<p>This can reduce immediate offline attack speed after a database-only migration, but it preserves limitations of the legacy input and complicates verification. Treat it as a temporary bridge, then replace it with a direct modern hash after the user next supplies the password.</p>
+
+<h2>Do not expose which accounts use legacy hashes</h2>
+
+<p>Migration code should avoid user enumeration and inconsistent error messages. Login responses should not reveal whether an account exists, whether it still uses MD5, or which verification step failed.</p>
+
+<p>Apply rate limiting and multi-factor authentication as additional protections, but do not use them as excuses to keep weak stored hashes.</p>
+
+<h2>Password-storage mistakes to avoid</h2>
+
+<ul>
+<li>Storing plaintext passwords.</li>
+<li>Using reversible encryption so the application can retrieve passwords.</li>
+<li>Using MD5, SHA-1, or a single round of SHA-256.</li>
+<li>Using one shared salt for every account.</li>
+<li>Creating salts from predictable user data.</li>
+<li>Writing a custom password-hashing algorithm.</li>
+<li>Using outdated work factors indefinitely.</li>
+<li>Silently truncating long passwords.</li>
+<li>Logging passwords or including them in analytics events.</li>
+<li>Emailing users their existing passwords.</li>
+<li>Assuming a secret pepper alone fixes a weak hash.</li>
+</ul>
+
+<h2>Password policy still matters</h2>
+
+<p>A strong storage method limits damage after database theft, but it does not make weak passwords strong. Allow long passwords and password-manager-generated values. Screen new passwords against known-compromised-password lists where appropriate. Avoid arbitrary composition rules that encourage predictable substitutions.</p>
+
+<p>Multi-factor authentication can reduce account takeover risk when a password is compromised, but it does not remove the obligation to store passwords safely.</p>
+
+<h2>A practical decision guide</h2>
+
+<h3>For a new application</h3>
+
+<ul>
+<li>Use the framework’s current password-hashing API.</li>
+<li>Prefer Argon2id when supported and recommended for the platform.</li>
+<li>Store the complete encoded hash string returned by the library.</li>
+<li>Test and document work-factor settings.</li>
+<li>Plan for future rehashing.</li>
+</ul>
+
+<h3>For an existing application using MD5</h3>
+
+<ul>
+<li>Treat the database as high risk.</li>
+<li>Identify whether hashes are salted and how they are formatted.</li>
+<li>Add versioned verification logic.</li>
+<li>Upgrade hashes after successful logins.</li>
+<li>Force resets for inactive or high-risk accounts.</li>
+<li>Set a deadline to remove legacy verification.</li>
+</ul>
+
+<h3>For file checksums</h3>
+
+<p>Password-storage guidance does not mean MD5 can never calculate a file checksum. It means MD5 should not protect passwords. For modern file-integrity use, SHA-256 is usually a better choice, and authenticity requires a trusted checksum source, digital signature, or keyed authentication mechanism.</p>
+
+<h2>Key takeaway</h2>
+
+<p>MD5 fails for password storage because it lets attackers test guesses far too quickly and is often deployed without unique salts. Plain SHA-256 does not solve the speed problem. Use a dedicated password-hashing function, preferably Argon2id where supported, with unique salts, suitable parameters, maintained libraries, and a clear upgrade path.</p>
+
+<h2>References</h2>
+
+<ul>
+<li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html">OWASP Password Storage Cheat Sheet</a></li>
+<li><a href="https://owasp.org/Top10/2025/A04_2025-Cryptographic_Failures/">OWASP Top 10: Cryptographic Failures</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc6151">RFC 6151: Updated Security Considerations for MD5</a></li>
+<li><a href="https://pages.nist.gov/800-63-4/sp800-63b.html">NIST SP 800-63B: Authentication and Authenticator Management</a></li>
+</ul>
