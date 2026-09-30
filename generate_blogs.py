@@ -76,6 +76,7 @@ def main(mode="obfuscated"):
                 "content": content,
                 "meta": blog.get("meta", ""),
                 "category": blog.get("category", "Article"),
+                "seo_title": blog.get("seo_title", title),
                 "slug": real_slug
             }
         )
@@ -93,7 +94,9 @@ def main(mode="obfuscated"):
             "excerpt": blog.get("excerpt", ""),
             "image": real_slug + ".jpg",
             "url": f"blogs/{real_slug}.html",
-            "slug": real_slug
+            "slug": real_slug,
+            "category": blog.get("category", "Article"),
+            "seo_title": blog.get("seo_title", title)
         })
 
         print(f"✅ Generated: blogs/{blog_filename}")

@@ -6,7 +6,9 @@
     "real_slug": "what-is-md5-hashing",
     "internal_id": "fnzcw3pbmnw8",
     "content_file": "fnzcw3pbmnw8.dat",
-    "image": "fnzcw3pbmnw8.bak"
+    "image": "fnzcw3pbmnw8.bak",
+    "category": "MD5 Fundamentals",
+    "seo_title": "What Is MD5 Hashing? How It Works and Where It Fits"
   },
   {
     "title": "MD5 Encryption vs Hashing: What People Usually Mean",
@@ -15,7 +17,9 @@
     "real_slug": "md5-encryption-vs-hashing",
     "internal_id": "6zjcgziqh5we",
     "content_file": "6zjcgziqh5we.dat",
-    "image": "6zjcgziqh5we.bak"
+    "image": "6zjcgziqh5we.bak",
+    "category": "MD5 Fundamentals",
+    "seo_title": "MD5 Encryption vs Hashing: What’s the Difference?"
   },
   {
     "title": "Can MD5 Be Decrypted? The Honest Answer",
@@ -24,7 +28,9 @@
     "real_slug": "can-md5-be-decrypted",
     "internal_id": "ypji58wz9a6i",
     "content_file": "ypji58wz9a6i.dat",
-    "image": "ypji58wz9a6i.bak"
+    "image": "ypji58wz9a6i.bak",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Can MD5 Be Decrypted? What Actually Happens"
   },
   {
     "title": "How an MD5 Checksum Helps Verify File Integrity",
@@ -33,7 +39,9 @@
     "real_slug": "md5-checksum-file-integrity",
     "internal_id": "5yhkvn077cyp",
     "content_file": "5yhkvn077cyp.dat",
-    "image": "5yhkvn077cyp.bak"
+    "image": "5yhkvn077cyp.bak",
+    "category": "Checksums & File Integrity",
+    "seo_title": "MD5 Checksums for File Integrity: How They Work"
   },
   {
     "title": "MD5 vs SHA-256: What Is the Difference?",
@@ -42,7 +50,9 @@
     "real_slug": "md5-vs-sha-256",
     "internal_id": "27rw4tod8ae9",
     "content_file": "27rw4tod8ae9.dat",
-    "image": "27rw4tod8ae9.bak"
+    "image": "27rw4tod8ae9.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "MD5 vs SHA-256: Key Differences and Security"
   },
   {
     "title": "How to Verify a File Checksum on Windows, macOS, and Linux",
@@ -51,7 +61,9 @@
     "real_slug": "verify-file-checksum-windows-macos-linux",
     "internal_id": "7rvxgdyjjhmi",
     "content_file": "7rvxgdyjjhmi.dat",
-    "image": "7rvxgdyjjhmi.bak"
+    "image": "7rvxgdyjjhmi.bak",
+    "category": "Checksums & File Integrity",
+    "seo_title": "Verify File Checksums on Windows, macOS & Linux"
   },
   {
     "title": "What Is a Hash Collision?",
@@ -60,7 +72,9 @@
     "real_slug": "hash-collision-explained",
     "internal_id": "k7r2k84urfpw",
     "content_file": "k7r2k84urfpw.dat",
-    "image": "k7r2k84urfpw.bak"
+    "image": "k7r2k84urfpw.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "What Is a Hash Collision? Why It Matters"
   },
   {
     "title": "Is MD5 Still Safe to Use in 2026?",
@@ -69,16 +83,9 @@
     "real_slug": "is-md5-safe",
     "internal_id": "eniwfps84dfi",
     "content_file": "eniwfps84dfi.dat",
-    "image": "eniwfps84dfi.bak"
-  },
-  {
-    "title": "Why MD5 Should Never Be Used for Passwords",
-    "date": "2026-07-27",
-    "excerpt": "Understand why MD5 is too fast and structurally unsuitable for password storage, and why modern systems should use Argon2id, bcrypt, or scrypt instead.",
-    "real_slug": "why-md5-not-for-passwords",
-    "internal_id": "ppty19yqzm28",
-    "content_file": "ppty19yqzm28.dat",
-    "image": "ppty19yqzm28.bak"
+    "image": "eniwfps84dfi.bak",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Is MD5 Safe in 2026? Where It Still Fits"
   },
   {
     "title": "Password Hashing vs Encryption: What Developers Need to Know",
@@ -87,7 +94,9 @@
     "real_slug": "password-hashing-vs-encryption",
     "internal_id": "2vzu6fwyp8wr",
     "content_file": "2vzu6fwyp8wr.dat",
-    "image": "2vzu6fwyp8wr.bak"
+    "image": "2vzu6fwyp8wr.bak",
+    "category": "Password Security",
+    "seo_title": "Password Hashing vs Encryption: Key Differences"
   },
   {
     "title": "What Is a Salt in Password Hashing?",
@@ -96,7 +105,9 @@
     "real_slug": "password-salting-explained",
     "internal_id": "u8dtkk0iucnw",
     "content_file": "u8dtkk0iucnw.dat",
-    "image": "u8dtkk0iucnw.bak"
+    "image": "u8dtkk0iucnw.bak",
+    "category": "Password Security",
+    "seo_title": "What Is a Salt in Password Hashing?"
   },
   {
     "title": "Argon2id Password Hashing Guide for Developers",
@@ -105,7 +116,9 @@
     "real_slug": "argon2id-password-hashing-guide",
     "internal_id": "itbslf6ugvb2",
     "content_file": "itbslf6ugvb2.dat",
-    "image": "itbslf6ugvb2.bak"
+    "image": "itbslf6ugvb2.bak",
+    "category": "Password Security",
+    "seo_title": "Argon2id Password Hashing Guide"
   },
   {
     "title": "bcrypt vs Argon2id: Which Should You Use?",
@@ -114,7 +127,9 @@
     "real_slug": "bcrypt-vs-argon2id",
     "internal_id": "thpu7kxyf4xh",
     "content_file": "thpu7kxyf4xh.dat",
-    "image": "thpu7kxyf4xh.bak"
+    "image": "thpu7kxyf4xh.bak",
+    "category": "Password Security",
+    "seo_title": "bcrypt vs Argon2id: Which Should You Use?"
   },
   {
     "title": "SHA-256 vs SHA-3: What Developers Need to Know",
@@ -123,7 +138,9 @@
     "real_slug": "sha-256-vs-sha-3",
     "internal_id": "02dt1bek227y",
     "content_file": "02dt1bek227y.dat",
-    "image": "02dt1bek227y.bak"
+    "image": "02dt1bek227y.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "SHA-256 vs SHA-3: Key Differences for Developers"
   },
   {
     "title": "Brute-Force vs Dictionary Attacks on Password Hashes",
@@ -132,7 +149,9 @@
     "real_slug": "brute-force-vs-dictionary-attacks",
     "internal_id": "ptcgqrvb4zee",
     "content_file": "ptcgqrvb4zee.dat",
-    "image": "ptcgqrvb4zee.bak"
+    "image": "ptcgqrvb4zee.bak",
+    "category": "Password Security",
+    "seo_title": "Brute-Force vs Dictionary Attacks on Password Hashes"
   },
   {
     "title": "Can Two Different Files Have the Same MD5 Hash?",
@@ -141,7 +160,9 @@
     "real_slug": "can-two-files-have-same-md5-hash",
     "internal_id": "784eub9kgwg5",
     "content_file": "784eub9kgwg5.dat",
-    "image": "784eub9kgwg5.bak"
+    "image": "784eub9kgwg5.bak",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Can Two Files Have the Same MD5 Hash?"
   },
   {
     "title": "Checksums vs Digital Signatures: What Does Each One Prove?",
@@ -150,7 +171,9 @@
     "real_slug": "checksums-vs-digital-signatures",
     "internal_id": "b2ba6lniqjox",
     "content_file": "b2ba6lniqjox.dat",
-    "image": "b2ba6lniqjox.bak"
+    "image": "b2ba6lniqjox.bak",
+    "category": "Checksums & File Integrity",
+    "seo_title": "Checksums vs Digital Signatures: What Each Proves"
   },
   {
     "title": "MD5 vs SHA-1 vs SHA-256: A Practical Comparison",
@@ -159,7 +182,9 @@
     "real_slug": "md5-sha1-sha256-comparison",
     "internal_id": "dn5ihzxi0tlu",
     "content_file": "dn5ihzxi0tlu.dat",
-    "image": "dn5ihzxi0tlu.bak"
+    "image": "dn5ihzxi0tlu.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "MD5 vs SHA-1 vs SHA-256: Practical Comparison"
   },
   {
     "title": "What Is a Rainbow Table and How Does It Attack Password Hashes?",
@@ -168,7 +193,9 @@
     "real_slug": "rainbow-tables-explained",
     "internal_id": "df2ldbhuhjxq",
     "content_file": "df2ldbhuhjxq.dat",
-    "image": "df2ldbhuhjxq.bak"
+    "image": "df2ldbhuhjxq.bak",
+    "category": "Password Security",
+    "seo_title": "Rainbow Tables Explained: How They Attack Hashes"
   },
   {
     "title": "How Cryptographic Hash Functions Work",
@@ -177,7 +204,9 @@
     "real_slug": "how-cryptographic-hash-functions-work",
     "internal_id": "50f7z3xxbu7t",
     "content_file": "50f7z3xxbu7t.dat",
-    "image": "50f7z3xxbu7t.bak"
+    "image": "50f7z3xxbu7t.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "How Cryptographic Hash Functions Work"
   },
   {
     "title": "Common Password-Hashing Mistakes Developers Still Make",
@@ -186,7 +215,9 @@
     "real_slug": "password-hashing-mistakes",
     "internal_id": "ukn91wnrs25v",
     "content_file": "ukn91wnrs25v.dat",
-    "image": "ukn91wnrs25v.bak"
+    "image": "ukn91wnrs25v.bak",
+    "category": "Password Security",
+    "seo_title": "Password-Hashing Mistakes Developers Still Make"
   },
   {
     "title": "How to Store Passwords Securely in a Database",
@@ -195,7 +226,9 @@
     "real_slug": "secure-password-storage-guide",
     "internal_id": "udg9xdei6egn",
     "content_file": "udg9xdei6egn.dat",
-    "image": "udg9xdei6egn.bak"
+    "image": "udg9xdei6egn.bak",
+    "category": "Password Security",
+    "seo_title": "How to Store Passwords Securely in a Database"
   },
   {
     "title": "How to Verify Software Downloads with Checksums and Signatures",
@@ -204,7 +237,9 @@
     "real_slug": "verify-software-downloads-checksums-signatures",
     "internal_id": "nw1rewzmx7cu",
     "content_file": "nw1rewzmx7cu.dat",
-    "image": "nw1rewzmx7cu.bak"
+    "image": "nw1rewzmx7cu.bak",
+    "category": "Checksums & File Integrity",
+    "seo_title": "Verify Software Downloads with Checksums & Signatures"
   },
   {
     "title": "Year-End Hashing Security Audit for Development Teams",
@@ -213,7 +248,9 @@
     "real_slug": "year-end-hashing-security-audit",
     "internal_id": "h5w3g1696t74",
     "content_file": "h5w3g1696t74.dat",
-    "image": "h5w3g1696t74.bak"
+    "image": "h5w3g1696t74.bak",
+    "category": "Security Practice",
+    "seo_title": "Year-End Hashing Security Audit for Development Teams"
   },
   {
     "title": "File Integrity Monitoring: A Practical Guide",
@@ -222,7 +259,9 @@
     "real_slug": "file-integrity-monitoring-guide",
     "internal_id": "g2bosplwoc2p",
     "content_file": "g2bosplwoc2p.dat",
-    "image": "g2bosplwoc2p.bak"
+    "image": "g2bosplwoc2p.bak",
+    "category": "Checksums & File Integrity",
+    "seo_title": "File Integrity Monitoring: Practical Guide"
   },
   {
     "title": "Hashing Security Checklist for Developers in 2027",
@@ -231,7 +270,9 @@
     "real_slug": "hashing-security-checklist-2027",
     "internal_id": "3to9chbs7mdp",
     "content_file": "3to9chbs7mdp.dat",
-    "image": "3to9chbs7mdp.bak"
+    "image": "3to9chbs7mdp.bak",
+    "category": "Security Practice",
+    "seo_title": "Hashing Security Checklist for Developers in 2027"
   },
   {
     "title": "HMAC vs Hash: When Do You Need a Secret Key?",
@@ -240,7 +281,9 @@
     "real_slug": "hmac-vs-hash",
     "internal_id": "3dvw58snho2k",
     "content_file": "3dvw58snho2k.dat",
-    "image": "3dvw58snho2k.bak"
+    "image": "3dvw58snho2k.bak",
+    "category": "Hash Algorithms",
+    "seo_title": "HMAC vs Hash: When You Need a Secret Key"
   },
   {
     "title": "How to Migrate a Database Away from MD5 Password Hashes",
@@ -249,7 +292,9 @@
     "real_slug": "migrate-md5-password-hashes",
     "internal_id": "a7q3rcv7p3si",
     "content_file": "a7q3rcv7p3si.dat",
-    "image": "a7q3rcv7p3si.bak"
+    "image": "a7q3rcv7p3si.bak",
+    "category": "Password Security",
+    "seo_title": "How to Migrate MD5 Password Hashes Safely"
   },
   {
     "title": "What Is a Password Pepper and Should You Use One?",
@@ -258,7 +303,9 @@
     "real_slug": "password-pepper-explained",
     "internal_id": "u8n7jxxvxmco",
     "content_file": "u8n7jxxvxmco.dat",
-    "image": "u8n7jxxvxmco.bak"
+    "image": "u8n7jxxvxmco.bak",
+    "category": "Password Security",
+    "seo_title": "Password Pepper Explained: When and How to Use It"
   },
   {
     "title": "scrypt vs Argon2id for Password Hashing",
@@ -267,7 +314,9 @@
     "real_slug": "scrypt-vs-argon2id",
     "internal_id": "33q9wol4hfaq",
     "content_file": "33q9wol4hfaq.dat",
-    "image": "33q9wol4hfaq.bak"
+    "image": "33q9wol4hfaq.bak",
+    "category": "Password Security",
+    "seo_title": "scrypt vs Argon2id: Password Hashing Comparison"
   },
   {
     "title": "Why MD5 Hashes Differ Between Command-Line and Online Tools",
@@ -276,16 +325,9 @@
     "image": "engchfp4wmgc.bak",
     "content_file": "engchfp4wmgc.dat",
     "real_slug": "why-md5-hashes-differ",
-    "internal_id": "engchfp4wmgc"
-  },
-  {
-    "title": "MD5 vs SHA-256: Differences, Security, and Appropriate Use Cases",
-    "date": "2026-07-02",
-    "excerpt": "Compare MD5 and SHA-256 by digest size, speed, collision resistance, security limits, and the situations where each algorithm may still be used.",
-    "image": "2ne22f5620pj.bak",
-    "content_file": "2ne22f5620pj.dat",
-    "real_slug": "md5-vs-sha256",
-    "internal_id": "2ne22f5620pj"
+    "internal_id": "engchfp4wmgc",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Why MD5 Hashes Differ Between Tools"
   },
   {
     "title": "Why MD5 Should Never Be Used for Password Storage",
@@ -294,6 +336,8 @@
     "image": "r1czsjkrn61r.bak",
     "content_file": "r1czsjkrn61r.dat",
     "real_slug": "md5-for-passwords",
-    "internal_id": "r1czsjkrn61r"
+    "internal_id": "r1czsjkrn61r",
+    "category": "Password Security",
+    "seo_title": "Why MD5 Is Unsafe for Password Storage"
   }
 ]

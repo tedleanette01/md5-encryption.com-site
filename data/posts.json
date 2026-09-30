@@ -2,17 +2,161 @@
   {
     "title": "What Is MD5 Hashing and Why Is It Still Used?",
     "date": "2026-03-15",
-    "excerpt": "A clear beginner guide to MD5 hashing, what it does, where it still appears, and why it should not be confused with secure encryption.",
+    "excerpt": "A beginner-friendly explanation of MD5 hashing, how it creates fixed-length digests, where it still appears, and why it should not be used for modern security.",
     "image": "what-is-md5-hashing.jpg",
     "url": "blogs/what-is-md5-hashing.html",
-    "slug": "what-is-md5-hashing"
+    "slug": "what-is-md5-hashing",
+    "category": "MD5 Fundamentals",
+    "seo_title": "What Is MD5 Hashing? How It Works and Where It Fits"
   },
   {
     "title": "MD5 Encryption vs Hashing: What People Usually Mean",
     "date": "2026-04-18",
-    "excerpt": "Learn why people often say MD5 encryption, why that wording is technically wrong, and what hashing actually means in practice.",
+    "excerpt": "Learn why MD5 is a hashing algorithm rather than encryption, how hashing differs from reversible encryption, and why the distinction matters for developers.",
     "image": "md5-encryption-vs-hashing.jpg",
     "url": "blogs/md5-encryption-vs-hashing.html",
-    "slug": "md5-encryption-vs-hashing"
+    "slug": "md5-encryption-vs-hashing",
+    "category": "MD5 Fundamentals",
+    "seo_title": "MD5 Encryption vs Hashing: What’s the Difference?"
+  },
+  {
+    "title": "Can MD5 Be Decrypted? The Honest Answer",
+    "date": "2026-05-15",
+    "excerpt": "A practical explanation of why MD5 cannot truly be decrypted, how lookup databases and password guessing work, and why weak inputs may still be identified.",
+    "image": "can-md5-be-decrypted.jpg",
+    "url": "blogs/can-md5-be-decrypted.html",
+    "slug": "can-md5-be-decrypted",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Can MD5 Be Decrypted? What Actually Happens"
+  },
+  {
+    "title": "How an MD5 Checksum Helps Verify File Integrity",
+    "date": "2026-06-11",
+    "excerpt": "Understand how MD5 checksums detect changed or corrupted files, where they remain useful, and why SHA-256 is a better choice for new verification workflows.",
+    "image": "md5-checksum-file-integrity.jpg",
+    "url": "blogs/md5-checksum-file-integrity.html",
+    "slug": "md5-checksum-file-integrity",
+    "category": "Checksums & File Integrity",
+    "seo_title": "MD5 Checksums for File Integrity: How They Work"
+  },
+  {
+    "title": "MD5 vs SHA-256: What Is the Difference?",
+    "date": "2026-06-24",
+    "excerpt": "Compare MD5 and SHA-256 by digest length, collision resistance, performance, and practical use to understand which algorithm belongs in modern systems.",
+    "image": "md5-vs-sha-256.jpg",
+    "url": "blogs/md5-vs-sha-256.html",
+    "slug": "md5-vs-sha-256",
+    "category": "Hash Algorithms",
+    "seo_title": "MD5 vs SHA-256: Key Differences and Security"
+  },
+  {
+    "title": "How to Verify a File Checksum on Windows, macOS, and Linux",
+    "date": "2026-06-29",
+    "excerpt": "A practical guide to calculating and comparing file checksums with built-in tools on Windows, macOS, and Linux before installing or archiving downloads.",
+    "image": "verify-file-checksum-windows-macos-linux.jpg",
+    "url": "blogs/verify-file-checksum-windows-macos-linux.html",
+    "slug": "verify-file-checksum-windows-macos-linux",
+    "category": "Checksums & File Integrity",
+    "seo_title": "Verify File Checksums on Windows, macOS & Linux"
+  },
+  {
+    "title": "What Is a Hash Collision?",
+    "date": "2026-07-04",
+    "excerpt": "Learn how two different inputs can produce the same hash, why collisions are mathematically unavoidable, and why practical collision attacks make MD5 unsafe.",
+    "image": "hash-collision-explained.jpg",
+    "url": "blogs/hash-collision-explained.html",
+    "slug": "hash-collision-explained",
+    "category": "Hash Algorithms",
+    "seo_title": "What Is a Hash Collision? Why It Matters"
+  },
+  {
+    "title": "Is MD5 Still Safe to Use in 2026?",
+    "date": "2026-07-16",
+    "excerpt": "A clear assessment of where MD5 may still appear in non-security workflows and where its collision weaknesses make it an unacceptable choice.",
+    "image": "is-md5-safe.jpg",
+    "url": "blogs/is-md5-safe.html",
+    "slug": "is-md5-safe",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Is MD5 Safe in 2026? Where It Still Fits"
+  },
+  {
+    "title": "Password Hashing vs Encryption: What Developers Need to Know",
+    "date": "2026-08-03",
+    "excerpt": "Learn when data should be encrypted for later recovery and when passwords should be protected with one-way, purpose-built password hashing.",
+    "image": "password-hashing-vs-encryption.jpg",
+    "url": "blogs/password-hashing-vs-encryption.html",
+    "slug": "password-hashing-vs-encryption",
+    "category": "Password Security",
+    "seo_title": "Password Hashing vs Encryption: Key Differences"
+  },
+  {
+    "title": "What Is a Salt in Password Hashing?",
+    "date": "2026-08-14",
+    "excerpt": "Learn how unique random salts prevent identical passwords from creating identical stored records and reduce the effectiveness of precomputed attacks.",
+    "image": "password-salting-explained.jpg",
+    "url": "blogs/password-salting-explained.html",
+    "slug": "password-salting-explained",
+    "category": "Password Security",
+    "seo_title": "What Is a Salt in Password Hashing?"
+  },
+  {
+    "title": "Argon2id Password Hashing Guide for Developers",
+    "date": "2026-08-25",
+    "excerpt": "A developer-focused guide to Argon2id, including memory cost, time cost, parallelism, salts, parameter tuning, and secure password verification.",
+    "image": "argon2id-password-hashing-guide.jpg",
+    "url": "blogs/argon2id-password-hashing-guide.html",
+    "slug": "argon2id-password-hashing-guide",
+    "category": "Password Security",
+    "seo_title": "Argon2id Password Hashing Guide"
+  },
+  {
+    "title": "bcrypt vs Argon2id: Which Should You Use?",
+    "date": "2026-09-07",
+    "excerpt": "Compare bcrypt and Argon2id by security properties, hardware resistance, input handling, compatibility, and suitability for new or existing applications.",
+    "image": "bcrypt-vs-argon2id.jpg",
+    "url": "blogs/bcrypt-vs-argon2id.html",
+    "slug": "bcrypt-vs-argon2id",
+    "category": "Password Security",
+    "seo_title": "bcrypt vs Argon2id: Which Should You Use?"
+  },
+  {
+    "title": "SHA-256 vs SHA-3: What Developers Need to Know",
+    "date": "2026-09-18",
+    "excerpt": "Compare SHA-256 and SHA3-256, including their internal designs, digest sizes, security properties, interoperability, and appropriate use cases.",
+    "image": "sha-256-vs-sha-3.jpg",
+    "url": "blogs/sha-256-vs-sha-3.html",
+    "slug": "sha-256-vs-sha-3",
+    "category": "Hash Algorithms",
+    "seo_title": "SHA-256 vs SHA-3: Key Differences for Developers"
+  },
+  {
+    "title": "Brute-Force vs Dictionary Attacks on Password Hashes",
+    "date": "2026-09-29",
+    "excerpt": "Learn how brute-force and dictionary attacks select password guesses, why human password habits matter, and how slow password hashing raises attack costs.",
+    "image": "brute-force-vs-dictionary-attacks.jpg",
+    "url": "blogs/brute-force-vs-dictionary-attacks.html",
+    "slug": "brute-force-vs-dictionary-attacks",
+    "category": "Password Security",
+    "seo_title": "Brute-Force vs Dictionary Attacks on Password Hashes"
+  },
+  {
+    "title": "Why MD5 Hashes Differ Between Command-Line and Online Tools",
+    "date": "2026-07-01",
+    "excerpt": "Learn why MD5 results can differ between command-line and online tools, including hidden newlines, encoding differences, whitespace, and file handling.",
+    "image": "why-md5-hashes-differ.jpg",
+    "url": "blogs/why-md5-hashes-differ.html",
+    "slug": "why-md5-hashes-differ",
+    "category": "MD5 Fundamentals",
+    "seo_title": "Why MD5 Hashes Differ Between Tools"
+  },
+  {
+    "title": "Why MD5 Should Never Be Used for Password Storage",
+    "date": "2026-07-03",
+    "excerpt": "Understand why MD5 is unsafe for password storage and why modern systems should use Argon2id or another dedicated password-hashing function.",
+    "image": "md5-for-passwords.jpg",
+    "url": "blogs/md5-for-passwords.html",
+    "slug": "md5-for-passwords",
+    "category": "Password Security",
+    "seo_title": "Why MD5 Is Unsafe for Password Storage"
   }
 ]

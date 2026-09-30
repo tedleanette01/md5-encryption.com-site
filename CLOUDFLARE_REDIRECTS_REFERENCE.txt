@@ -1,0 +1,24 @@
+P3.1 md5-encryption.com — Cloudflare redirect reference
+
+Add only after the new deployment is verified.
+Canonical host: https://md5-encryption.com/
+
+1) Homepage duplicate
+Source: https://md5-encryption.com/index.html
+Target: https://md5-encryption.com/
+Status: 301
+Preserve query string: ON
+
+2) Consolidated MD5 vs SHA-256 article
+Source: https://md5-encryption.com/blogs/md5-vs-sha256.html
+Target: https://md5-encryption.com/blogs/md5-vs-sha-256.html
+Status: 301
+Preserve query string: ON
+
+3) Consolidated password-storage article
+Source: https://md5-encryption.com/blogs/why-md5-not-for-passwords.html
+Target: https://md5-encryption.com/blogs/md5-for-passwords.html
+Status: 301
+Preserve query string: ON
+
+Also verify that HTTP and www variants already redirect in one hop to https://md5-encryption.com/ before adding any extra host rules.
